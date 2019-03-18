@@ -123,4 +123,24 @@ def filtrarSubtemas(idTema):
 
     return listaSubtemas
 
-def filtarItems():
+def filtrarItems(idSubtema):
+    nuevaConexion = establecerConexion()
+
+    listaItems = []
+
+    if (not nuevaConexion):
+        try:
+            with nuevaConexion.cursor() as items:
+                queryitems = "SELECT id, descripcion,tipo, puntaje, indiceDiscriminacion FROM Item WHERE idSubtema = %s"
+                items.execute(queryitems, (idSubtema))
+
+                for atributos in items:
+                    listaItems += [[atributos[0], atributos[1],atributos[2],atributos[3],atributos[4]]]
+        except:
+            print("Error al filtrar los subtemas de estudio")
+        finally:
+            nuevaConexion.close()
+
+    return listaItems
+
+
