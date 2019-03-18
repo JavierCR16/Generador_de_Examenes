@@ -9,7 +9,7 @@ def establecerConexion():#usuario,password): #Definida por el momento como una c
 
         print("Error de Conexión")
 
-        return "ERROR"
+        return False
 
 def cerrarConexion(objetoConexion):
     objetoConexion.close()
@@ -17,10 +17,9 @@ def cerrarConexion(objetoConexion):
 def cargarUsuarios():
 
     nuevaConexion = establecerConexion()
+    listaUsuarios = []
+    if(not nuevaConexion):
 
-    if(isinstance(nuevaConexion,pymysql.Connection)):
-
-        listaUsuarios = []
         try:
             with nuevaConexion.cursor() as usuarios:
                 queryUsuarios = "SELECT nombreCompleto, correo FROM USUARIOS"
@@ -36,12 +35,92 @@ def cargarUsuarios():
         finally:
             nuevaConexion.close()
 
-        return listaUsuarios
+    return listaUsuarios
 
-def cargarPeriodoExamenes:
+def cargarPeriodoExamenes():
 
-def cargarTipoExamenes:
+    nuevaConexion = establecerConexion()
+    listaPeriodos = []
+    if(not nuevaConexion):
 
-def cargarTemas:
+        try:
+            with nuevaConexion.cursor() as periodos:
 
-def cargarSubtemas:
+                queryPeriodos = "SELECT id, descPeriodo FROM PERIODO"
+
+                periodos.execute(queryPeriodos)
+
+                for atributos in periodos:
+                    listaPeriodos+= [[atributos[0],atributos[1]]]
+
+        except:
+            print("Error al cargar los periódos de examen")
+
+        finally:
+            nuevaConexion.close()
+
+    return listaPeriodos
+
+def cargarTipoExamenes():
+    nuevaConexion = establecerConexion()
+
+    listaTipos=[]
+
+    if(not nuevaConexion):
+
+        try:
+            with nuevaConexion.cursor() as  tipoexamenes:
+                queryTipos = "SELECT id, descTipo FROM TipoExamen"
+                tipoexamenes.execute(queryTipos)
+
+                for atributos in tipoexamenes:
+                    listaTipos+= [[atributos[0],atributos[1]]]
+        except:
+            print("Error al cargar los periódos de examen")
+        finally:
+            nuevaConexion.close()
+
+    return listaTipos
+
+def cargarTemas():
+    nuevaConexion = establecerConexion()
+
+    listaTemas = []
+
+    if (not nuevaConexion):
+
+        try:
+            with nuevaConexion.cursor() as  temas:
+                queryTemas = "SELECT id, tema FROM Tema"
+                temas.execute(queryTemas)
+
+                for atributos in temas:
+                    listaTemas += [[atributos[0], atributos[1]]]
+        except:
+            print("Error al cargar los temas de estudio")
+        finally:
+            nuevaConexion.close()
+
+    return listaTemas
+
+def filtrarSubtemas(idTema):
+    nuevaConexion = establecerConexion()
+
+    listaSubtemas = []
+
+    if (not nuevaConexion):
+        try:
+            with nuevaConexion.cursor() as  subtemas:
+                querySubtemas = "SELECT id, subtema FROM SubTema WHERE idTema = %s"
+                subtemas.execute(querySubtemas,(idTema))
+
+                for atributos in subtemas:
+                    listaSubtemas += [[atributos[0], atributos[1]]]
+        except:
+            print("Error al filtrar los subtemas de estudio")
+        finally:
+            nuevaConexion.close()
+
+    return listaSubtemas
+
+def filtarItems():
