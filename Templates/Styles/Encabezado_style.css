@@ -1,0 +1,21 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+div#Izquierda{
+    margin: auto;
+    width: 200px;
+    height: 200px;
+    background-color: red;
+}
+
+div#Top{
+    float: top;
+    width: auto;
+    background-color: blue;
+}
+
+div#Bottom{
+    background-color: blue;
+}
