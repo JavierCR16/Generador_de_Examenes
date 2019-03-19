@@ -4,18 +4,39 @@
 }
 
 div#Izquierda{
+    float: left;
     margin: auto;
-    width: 200px;
-    height: 200px;
+    width: 400px;
+    height: 500px;
     background-color: red;
+    margin-top: 20px;
+    margin-left: 10px;
 }
 
 div#Top{
+    text-align: center;
     float: top;
+    width: auto;
+    background-color: blue
+}
+
+div#Bottom{
+    float: bottom;
+    margin: auto;
     width: auto;
     background-color: blue;
 }
 
-div#Bottom{
-    background-color: blue;
+div#Botones{
+    width: auto;
+    background-color: black;
+    float: bottom;
+}
+
+div#imagen1{
+    float: right;
+    width: 200;
+    height: 200;
+    background-color: brown;
+
 }

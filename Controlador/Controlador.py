@@ -1,4 +1,5 @@
 import datetime
+import symPy
 from Gestores import GestorBase
 from Gestores import GestorCorreo
 from Gestores import GestorEncabezado
@@ -15,7 +16,7 @@ from Modelo.ObjetoTema import ObjetoTema
 from Modelo.ObjetoTipoExamen import ObjetoTipoExamen
 from Modelo.ObjetoPeriodo import ObjetoPeriodo
 from Modelo.ObjetoUsuario import ObjetoUsuario
-
+from Modelo.ObjetoEncabezado import ObjetoEncabezado
 
 class Controlador:
 
@@ -114,4 +115,16 @@ class Controlador:
         informacionItem.puntaje = puntajeModificar if puntajeModificar != "" else informacionItem.puntaje
 
         GestorBase.modificarItem(informacionItem)
+
+    #Funciones de encabezado
+    def insertarNuevoEncabezado(self, nuevoEncabezado):
+        GestorBase.agregarEncabezado(nuevoEncabezado)
+    def previewDeEncabezado(self, nuevoEncabezado):
+
+        LatexConfig = " \documentclass{exam} \usepackage[utf8]{inputenc} \begin{document} \maketitle "
+
+        LatexWords = "\paragraph{Tecnologico de Costa Rica} \paragraph{ II Semestre, 2018} "
+
+        LatexEnd = "\end{document}"
+
 

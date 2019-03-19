@@ -8,7 +8,7 @@
 </head>
 <body>
 
-    <div id="Top" "style= background-color:blue;" >
+    <div id="Top"  >
         <h1 style= "font-size:300%; "> Configuración de encabezado</h1>
     </div>
 
@@ -17,22 +17,39 @@
         <!-- Agregar instrucciones -->
         <br>
         <textarea rows=" 5" > Aqui van las instrucciones del examen</textarea>
+        <br>
         <label>Periodo:</label>
+        <select>
+            <option value="1"> I Semestre</option>
+            <option value="2"> II Semestre</option>
+            <option value="3"> Verano</option>
+        </select>
         <br>
         <label>Año:</label>
+        <input type = "date">
         <br>
         <label>Tiempo</label>
+        <input type= "time">
         <br>
         <label>Tipo</label>
+        <select>
+            <option value="1"> I Parcial</option>
+            <option value="2"> II Parcial</option>
+            <option value="3"> III Parcial</option>
+            <option value="4"> Extraordinario</option>
+        </select>
 
     </div>
 
+    <div id="imagen1">
+        <img src="" alt="Previzualización" style="border-color: black">
+    </div>
     <div id="Bottom">
 
     </div>
 
 
-    <div>
+    <div id = Botones>
     <button>Previzualizar</button>
     <button>Guardar</button>
     </div>
