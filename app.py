@@ -6,8 +6,7 @@ Controller = Controlador()
 
 @app.route('/')
 def main():
-    temasExistentes = Controller.obtenerTemas() #CRUDTemasSubtemas.html
-    return render_template('CRUDItems.html',temas = temasExistentes)#TODO Aqui que redireccione a la de login
+    return render_template('OpcionesPrincipales.html')#TODO Aqui que redireccione a la de login
 
 @app.route('/Encabezado')
 def Encabezado():
@@ -125,6 +124,40 @@ def crudItemsModificar():
     temasExistentes = Controller.obtenerTemas()
     return render_template('CRUDItems.html', temas=temasExistentes, temaFiltroItemModificar=temaFiltroModificar,
                            subtemasItemModificar=subtemasFiltrados, itemsFiltro = itemsFiltrados)
+
+@app.route("/CRUDIndiceDiscriminacion.html")
+def crudIndiceDiscriminacion():
+
+    listaTemas = Controller.obtenerTemas()
+    return render_template("CRUDIndiceDiscriminacion.html", temas = listaTemas)
+
+@app.route("/BuscarSubtemasItems", methods=['post'])
+def buscarSubtemasItems():
+
+    valor_boton = request.form.get("buscarItems")
+    temaFiltroIndice = ""
+    subtemasFiltrados = []
+    itemsIndiceFiltrados = []
+
+    if(valor_boton == "Buscar"):
+        subtemaFiltro = request.form.get("subtemaIndice")
+
+        itemsIndiceFiltrados = Controller.filtrarObjetoItems(subtemaFiltro)
+
+    else:
+        temaFiltroIndice = request.form.get("selectBuscarTemaIndDis")
+        subtemasFiltrados = Controller.filtrarSubtemas(temaFiltroIndice)
+
+
+
+
+    listaTemas = Controller.obtenerTemas()
+
+    return render_template("CRUDIndiceDiscriminacion.html", temas = listaTemas, subtemasItemIndice = subtemasFiltrados,
+                           temaFiltroItemIndice = temaFiltroIndice, itemsFiltroIndice = itemsIndiceFiltrados)
+
+
+
 if __name__ == '__main__':
 
     app.run()

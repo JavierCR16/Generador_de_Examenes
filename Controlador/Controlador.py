@@ -87,6 +87,13 @@ class Controlador:
         listaItems = [item.getIdLargo()+"/Item"+str(item.getId()) for item in listaItems]
         return listaItems
 
+    def filtrarObjetoItems(self,subtemaSeleccionado):
+
+        idSubtema = subtemaSeleccionado.split("-")[0]
+
+        return GestorBase.filtrarItems(idSubtema)
+
+
     def modificarItem(self,itemModificarSeleccionado,tipoItem, descripcionModificar,puntajeModificar): #TODO VALIDAR LA DESCRIPCION QUE TENGA BUEN FORMATO LATEX
 
 

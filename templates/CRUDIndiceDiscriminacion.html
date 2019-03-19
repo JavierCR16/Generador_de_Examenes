@@ -16,11 +16,11 @@
             <h1> Índice de Discriminación </h1>
         </div>
         <div>
-           <form class="Buscar" action="" method="post">
+           <form action="BuscarSubtemasItems" method="post">
               <label>Tema:</label>
-                  <select onchange="this.form.submit(" name="selectBuscarTemaIndDis">
+                  <select onchange="this.form.submit()" name="selectBuscarTemaIndDis">
                       {% for tema in temas %}
-                          {% if tema == temaFiltroItemAgregar %}
+                          {% if tema == temaFiltroItemIndice %}
                               <option selected> {{tema}}</option>
                           {% else %}
                               <option> {{tema}}</option>
@@ -28,25 +28,34 @@
                       {% endfor %}
                   </select>
             <label>Subtema:</label>
-            <select name="subtema">
-                {% for subtema in subtemasItemAgregar %}
+            <select name="subtemaIndice">
+                {% for subtema in subtemasItemIndice %}
                     <option> {{subtema}}</option>
                 {% endfor %}
             </select>
-            <input class="btnSearch" type="submit" value="Buscar">
+            <input name = "buscarItems" class="btnSearch" type="submit" value="Buscar">
             </form>
             <table class="TablaIndice">
                 <thead>
                    <tr>
-                        <td>Tema</td>
-                        <td>Subtema</td>
-                        <td>Item</td>
-                        <td>Indice</td>
-                        <td>Información</td>
+                        <td>Identificador</td>
+                        <td>Tipo</td>
+                        <td>Puntaje</td>
+                        <td>Índice de Discriminación</td>
+                        <td>Consulta</td>
                     </tr>
                 </thead>
                 <tbody>
+                {% for item in itemsFiltroIndice %}
+                    <tr>
 
+                        <td> {{item.getIdLargo()}}/Item {{ item.getId() }} </td>
+                        <td> {{ item.getTipo() }}
+                        <td>{{ item.getPuntaje() }} </td>
+                        <td>{{ item.getIndice() }} </td>
+                        <td> </td>
+                    </tr>
+                {% endfor %}
                 </tbody>
             </table>
         </div>
