@@ -5,8 +5,10 @@ from Modelo.ObjetoTema import ObjetoTema
 from Modelo.ObjetoTipoExamen import ObjetoTipoExamen
 from Modelo.ObjetoPeriodo import ObjetoPeriodo
 from Modelo.ObjetoUsuario import ObjetoUsuario
-#TODO CLASES PARA MANEJAR LOS DATOS MAS FACILES, AGREGAR A LA SECCION DE ENCABEZADO BASE Y SISTEMA, LA OPCION DE METER ESCUELA Y CURSO
-
+#TODO AGREGAR A LA SECCION DE ENCABEZADO BASE Y SISTEMA, LA OPCION DE METER ESCUELA Y CURSO.
+#TODO AGREGAR FUNCIONES PARA CARGAR TODOS LOS ENCABEZADOS(PLANTILLAS) Y QUE ESTOS SEAN PREVISUALIZADOS POR EL USUARIO.
+#TODO EN UN FUTURO, QUE LE PUEDA CAMBIAR EL TEMA ASOCIADO A UN SUBTEMA,AHORITA SI SE EQUIVOCA DI QUE LO BORRE.
+#TODO EN UN FUTURO, QUE LE PUEDA CAMBIAR EL SUBTEMA ASOCIADO A UN ITEM,AHORITA SI SE EQUIVOCA DI QUE LO BORRE.
 
 def establecerConexion():#usuario,password): #Definida por el momento como una conexion root, luego todas las conexiones deben hacerse a traves de los usuarios con los permisos respectivos.
 
@@ -172,5 +174,101 @@ def agregarEncabezado(objetoEncabezado):
         except:
             print("Error al agregar un nuevo encabezado.")
 
+        finally:
+            nuevaConexion.close()
+
+def agregarTema(nuevoTemaIngresado):
+    nuevaConexion = establecerConexion()
+
+    if(nuevaConexion.open):
+
+        try:
+            with nuevaConexion.cursor() as nuevoTema:
+
+                insertTema = "INSERT INTO Tema (tema) VALUES(%s)"
+                nuevoTema.execute(insertTema,(nuevoTemaIngresado))
+        except:
+            print("Error al agregar un nuevo tema")
+        finally:
+            nuevaConexion.close()
+
+def agregarSubtema(nuevoObjetoSubtema):
+
+    nuevaConexion = establecerConexion()
+
+    if(nuevaConexion.open):
+        try:
+            with nuevaConexion.cursor() as nuevoSubtema:
+                insertSubtema = "INSERT INTO Subtema (subtema,idTema) VALUES (%s,%s)"
+                nuevoSubtema.execute(insertSubtema,(nuevoObjetoSubtema.getSubtema(),
+                                                    nuevoObjetoSubtema.getIdTema()))
+        except:
+            print("Error al agregar un nuevo subtema")
+        finally:
+            nuevaConexion.close()
+
+def modificarTema(objetoModTema):
+
+    nuevaConexion = establecerConexion()
+
+    if(nuevaConexion.open):
+
+        try:
+            with nuevaConexion.cursor() as temaModificar:
+
+                updateTema = "UPDATE Tema set tema = %s WHERE id = %s"
+                temaModificar.execute(updateTema,(objetoModTema.getTema(),
+                                                  objetoModTema.getId()))
+        except:
+            print("Error al modificar el tema")
+
+        finally:
+            nuevaConexion.close()
+
+def eliminarTema(idTema):
+    nuevaConexion = establecerConexion()
+
+    if (nuevaConexion.open):
+
+        try:
+            with nuevaConexion.cursor() as temaEliminar:
+
+                deleteTema = "DELETE FROM Tema WHERE id = %s"
+                temaEliminar.execute(deleteTema, (idTema))
+        except:
+            print("Error al eliminar el tema")
+
+        finally:
+            nuevaConexion.close()
+
+def modificarSubtema(objetoModSubtema):
+
+    nuevaConexion = establecerConexion()
+
+    if (nuevaConexion.open):
+
+        try:
+            with nuevaConexion.cursor() as subtemaModificar:
+                modifySubtema = "UPDATE Subtema SET subtema = %s WHERE id = %s"
+                subtemaModificar.execute(modifySubtema, (objetoModSubtema.getSubtema(),
+                                                         objetoModSubtema.getId()))
+        except:
+            print("Error al modificar el subtema")
+        finally:
+            nuevaConexion.close()
+
+
+def eliminarSubtema(idSubtema):
+
+    nuevaConexion = establecerConexion()
+
+    if(nuevaConexion.open):
+
+        try:
+            with nuevaConexion.cursor() as subtemaEliminar:
+                deleteSubtema = "DELETE FROM Subtema WHERE id = %s"
+                subtemaEliminar.execute(deleteSubtema, (idSubtema))
+        except:
+            print("Error al eliminar el subtema")
         finally:
             nuevaConexion.close()
