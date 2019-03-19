@@ -147,11 +147,11 @@ def filtrarItems(idSubtema):
     if (nuevaConexion.open):
         try:
             with nuevaConexion.cursor() as items:
-                queryitems = "SELECT id, descripcion,tipo, puntaje, indiceDiscriminacion FROM Item WHERE idSubtema = %s"
+                queryitems = "SELECT idItem,id, descripcion,tipo, puntaje, indiceDiscriminacion FROM Item WHERE idSubtema = %s"
                 items.execute(queryitems, (idSubtema))
 
                 for atributos in items:
-                    nuevoItem = ObjetoItem(atributos[0], atributos[1],atributos[2],idSubtema,atributos[3],atributos[4])
+                    nuevoItem = ObjetoItem(atributos[0], atributos[1],atributos[2],atributos[3],idSubtema,atributos[4],atributos[5])
                     listaItems += [nuevoItem]
         except:
             print("Error al filtrar los subtemas de estudio")
@@ -294,7 +294,7 @@ def agregarItem(nuevoObjetoItem):
             with nuevaConexion.cursor() as nuevoItem:
 
                 insertItem = "INSERT INTO Item (id, descripcion,tipo,idSubtema,puntaje) VALUES(%s,%s,%s,%s,%s)"
-                nuevoItem.execute(insertItem,(nuevoObjetoItem.getId(),nuevoObjetoItem.getDescripcion(),
+                nuevoItem.execute(insertItem,(nuevoObjetoItem.getIdLargo(),nuevoObjetoItem.getDescripcion(),
                                   nuevoObjetoItem.getTipo(),nuevoObjetoItem.getIdSubtema(),nuevoObjetoItem.getPuntaje()))
                 nuevaConexion.commit()
         except Exception as e:
@@ -312,8 +312,8 @@ def modificarItem(objetoModItem):
 
             with nuevaConexion.cursor() as itemModificar:
 
-                updateItem = "UPDATE Item SET descripcion = %s, tipo = %s, puntaje = %s WHERE id =%s"
-                itemModificar.execute(updateItem,(objetoModItem.getDescripcion(),objetoModItem.getTipo(),
+                updateItem = "UPDATE Item SET id = %s descripcion = %s, tipo = %s, puntaje = %s WHERE idItem =%s"
+                itemModificar.execute(updateItem,(objetoModItem.getIdLargo(),objetoModItem.getDescripcion(),objetoModItem.getTipo(),
                                                   objetoModItem.getPuntaje(),objetoModItem.getId()))
                 nuevaConexion.commit()
 
@@ -332,8 +332,9 @@ def eliminarItem(idItem):
 
             with nuevaConexion.cursor() as itemEliminar:
 
-                deleteItem = "DELETE FROM Item WHERE id =%s"
+                deleteItem = "DELETE FROM Item WHERE idItem = %s"
                 itemEliminar.execute(deleteItem, (idItem))
+                nuevaConexion.commit()
 
         except:
             print("Error al eliminar el item")

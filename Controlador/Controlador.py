@@ -62,7 +62,7 @@ class Controlador:
         idSubtema = subAEliminar.split("-")[0]
         GestorBase.eliminarSubtema(idSubtema)
 
-    def agregarItem(self,descripcion,tipo,subtemaSeleccionado,puntaje):
+    def agregarItem(self,descripcion,tipo,subtemaSeleccionado,puntaje): #TODO VALIDAR LA DESCRIPCION QUE TENGA BUEN FORMATO LATEX
         fechaActual =datetime.datetime.now()
 
         annoCreacion = fechaActual.year
@@ -72,5 +72,17 @@ class Controlador:
 
         idSubtema = subtemaSeleccionado.split("-")[0]
 
+        GestorBase.agregarItem(ObjetoItem(None,idItem,descripcion,tipo,idSubtema,puntaje,None))
 
-        GestorBase.agregarItem(ObjetoItem(idItem,descripcion,tipo,idSubtema,puntaje,None))
+    def eliminarItem(self,itemSeleccionado):
+
+        idItem = itemSeleccionado.split("/Item")[1]
+
+        GestorBase.eliminarItem(idItem)
+
+    def filtrarItems(self, subtemaSeleccionado):
+
+        idSubtema = subtemaSeleccionado.split("-")[0]
+        listaItems = GestorBase.filtrarItems(idSubtema)
+        listaItems = [item.getIdLargo()+"/Item"+str(item.getId()) for item in listaItems]
+        return listaItems

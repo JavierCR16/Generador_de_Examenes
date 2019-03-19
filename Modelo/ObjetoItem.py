@@ -1,6 +1,7 @@
 class ObjetoItem:
-    def __init__(self,id, descripcion, tipo, idSubtema,puntaje, indiceDiscriminacion):
+    def __init__(self,id,idLargo, descripcion, tipo, idSubtema,puntaje, indiceDiscriminacion):
         self.id = id
+        self.idLargo = idLargo
         self.descripcion = descripcion
         self.tipo = tipo
         self.idSubtema = idSubtema
@@ -9,6 +10,9 @@ class ObjetoItem:
 
     def getId(self):
         return self.id
+
+    def getIdLargo(self):
+        return self.idLargo
 
     def getDescripcion(self):
         return self.descripcion

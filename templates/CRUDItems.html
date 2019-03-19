@@ -40,12 +40,56 @@
         <label>Puntaje </label>
         <input type = text name="puntajeAgregar"> <br>
 
-        <input type = submit name = "accioncruditems" value = "Agregar Item">
+        <input type = submit name = "accioncruditems" value = "Agregar Item"> <br><br><br>
 
     </form>
 
 
     <form action = "crudItemsModificar" method="post">
+         <label>Temas</label>
+        <select  onchange="this.form.submit()" name = "selectTemaItemModificar">
+            {% for tema in temas %}
+
+                    {% if tema == temaFiltroItemModificar %}
+                        <option selected> {{tema}}</option>
+                    {% else %}
+                        <option> {{tema}}</option>
+                    {%endif%}
+
+                {% endfor %}
+        </select> <br>
+
+        <label>Subtemas</label>
+        <select name = "selectSubModificar" onchange="this.form.submit()">
+             {% for subtema in subtemasItemModificar %}
+                    <option> {{subtema}}</option>
+             {% endfor %}
+        </select> <br>
+
+        <label>Seleccione un Ítem para Modificar o Eliminar</label>
+
+        <select name = "selectItemModificarEliminar">
+            {% for item in itemsFiltro %}
+                    <option> {{item}}</option>
+             {% endfor %}
+        </select><br>
+
+        <label>Selección Única</label>
+        <input type =radio name = "tiposItemModificar" value = "S">
+        <label>Desarrollo</label>
+        <input type =radio name = "tiposItemModificar" value = "D">
+        <label>Práctica de Examen</label>
+        <input type =radio name = "tiposItemModificar" value = "P"><br><br>
+
+        <label>Inserte un ítem en formato LaTeX</label>
+        <textarea name="descripcionItemModificar"> </textarea> <br>
+
+        <label>Puntaje </label>
+        <input type = text name="puntajeModificar"> <br>
+
+        <input type = submit name = "accioncruditems" value = "Modificar Item">
+
+        <input type = submit name = "accioncruditems" value = "Eliminar Item">
 
     </form>
 </body>

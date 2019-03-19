@@ -6,8 +6,8 @@ Controller = Controlador()
 
 @app.route('/')
 def main():
-    temasExistentes = Controller.obtenerTemas()
-    return render_template('/CRUDItems.html/',temas = temasExistentes)#TODO Aqui que redireccione a la de login
+    temasExistentes = Controller.obtenerTemas() #CRUDTemasSubtemas.html
+    return render_template('CRUDItems.html',temas = temasExistentes)#TODO Aqui que redireccione a la de login
 
 @app.route('/Encabezado')
 def Encabezado():
@@ -86,18 +86,38 @@ def crudItemsAgregar():
     return render_template('CRUDItems.html', temas = temasExistentes, temaFiltroItemAgregar = temaFiltroAgregar,
                            subtemasItemAgregar = subtemasFiltrados)
 
-#@app.route('crudItemsModificar', methods = ['post'])
-#def crudItemsModificar():
+@app.route('/crudItemsModificar', methods = ['post'])
+def crudItemsModificar():
 
-#    valor_boton = request.form.get("accioncruditems")
+    valor_boton = request.form.get("accioncruditems")
+    temaFiltroModificar = ""
+    subtemasFiltrados = []
+    itemsFiltrados = []
 
-#    if(valor_boton == "Modificar Item"):
+    if(valor_boton == "Modificar Item"):
+        return None
 
-#    elif(valor_boton == "Eliminar Item")
+    elif(valor_boton == "Eliminar Item"):
 
-#    else:# filtro item modificar
+        itemEliminar = request.form.get("selectItemModificarEliminar")
+
+        Controller.eliminarItem(itemEliminar)
+
+    else:
+        if(request.form.get("selectSubModificar") == None or request.form.get("selectSubModificar") == "Escoger Subtema"):
+
+            temaFiltroModificar = request.form.get("selectTemaItemModificar")
+            subtemasFiltrados = Controller.filtrarSubtemas(temaFiltroModificar)
+
+        else:
+            subtemaFiltro = request.form.get("selectSubModificar")
+            itemsFiltrados = Controller.filtrarItems(subtemaFiltro)
 
 
+
+    temasExistentes = Controller.obtenerTemas()
+    return render_template('CRUDItems.html', temas=temasExistentes, temaFiltroItemModificar=temaFiltroModificar,
+                           subtemasItemModificar=subtemasFiltrados, itemsFiltro = itemsFiltrados)
 if __name__ == '__main__':
 
     app.run()
