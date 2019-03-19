@@ -9,7 +9,6 @@ from Modelo.ObjetoUsuario import ObjetoUsuario
 #TODO AGREGAR FUNCIONES PARA CARGAR TODOS LOS ENCABEZADOS(PLANTILLAS) Y QUE ESTOS SEAN PREVISUALIZADOS POR EL USUARIO.
 #TODO EN UN FUTURO, QUE LE PUEDA CAMBIAR EL TEMA ASOCIADO A UN SUBTEMA,AHORITA SI SE EQUIVOCA DI QUE LO BORRE.
 #TODO EN UN FUTURO, QUE LE PUEDA CAMBIAR EL SUBTEMA ASOCIADO A UN ITEM,AHORITA SI SE EQUIVOCA DI QUE LO BORRE.
-#TODO MANEJAR IDS DE ITEM COMO  #SEM-ANNO-TIPO/ITEM1
 
 def establecerConexion():#usuario,password): #Definida por el momento como una conexion root, luego todas las conexiones deben hacerse a traves de los usuarios con los permisos respectivos.
 
@@ -20,6 +19,26 @@ def establecerConexion():#usuario,password): #Definida por el momento como una c
         print("Error de Conexión")
 
         return False
+
+def obtenerInformacionItem(idItem):
+
+    nuevaConexion = establecerConexion()
+    objetoItem = ""
+    if(nuevaConexion.open):
+
+        try:
+            with nuevaConexion.cursor() as infoItem:
+                queryItem = "SELECT id, descripcion, puntaje FROM Item WHERE idItem = %s"
+                infoItem.execute(queryItem,(idItem))
+
+                for atributos in infoItem:
+                    objetoItem = ObjetoItem(idItem,atributos[0],atributos[1],None, None,atributos[2],None)
+
+        except:
+            print("Error al obtener la informacion del item")
+        finally:
+            nuevaConexion.close()
+    return objetoItem
 
 def cerrarConexion(objetoConexion):
     objetoConexion.close()
@@ -173,7 +192,7 @@ def agregarEncabezado(objetoEncabezado):
                 nuevoEncabezado.execute(insertEncabezado,(objetoEncabezado.getInstrucciones(),objetoEncabezado.getAnno(),
                                                           objetoEncabezado.getTiempo(),objetoEncabezado.getIdPeriodo(),
                                                           objetoEncabezado.getIdTipoExamen()))
-
+                nuevaConexion.commit()
         except:
             print("Error al agregar un nuevo encabezado.")
 
@@ -312,17 +331,17 @@ def modificarItem(objetoModItem):
 
             with nuevaConexion.cursor() as itemModificar:
 
-                updateItem = "UPDATE Item SET id = %s descripcion = %s, tipo = %s, puntaje = %s WHERE idItem =%s"
+                updateItem = "UPDATE Item SET id = %s, descripcion = %s, tipo = %s, puntaje = %s WHERE idItem =%s"
                 itemModificar.execute(updateItem,(objetoModItem.getIdLargo(),objetoModItem.getDescripcion(),objetoModItem.getTipo(),
                                                   objetoModItem.getPuntaje(),objetoModItem.getId()))
                 nuevaConexion.commit()
 
-        except:
+        except Exception as e:
+            print(e)
             print("Error al modificar el item")
 
         finally:
             nuevaConexion.close()
-
 
 def eliminarItem(idItem):
     nuevaConexion = establecerConexion()

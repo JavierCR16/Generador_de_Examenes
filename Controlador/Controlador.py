@@ -86,3 +86,25 @@ class Controlador:
         listaItems = GestorBase.filtrarItems(idSubtema)
         listaItems = [item.getIdLargo()+"/Item"+str(item.getId()) for item in listaItems]
         return listaItems
+
+    def modificarItem(self,itemModificarSeleccionado,tipoItem, descripcionModificar,puntajeModificar): #TODO VALIDAR LA DESCRIPCION QUE TENGA BUEN FORMATO LATEX
+
+
+        idItem = itemModificarSeleccionado.split("/Item")[1]
+
+        informacionItem = GestorBase.obtenerInformacionItem(idItem)
+
+        listaidLargo = informacionItem.idLargo.split("-")
+
+        listaidLargo[2] = tipoItem
+
+        informacionItem.tipo = tipoItem
+
+        informacionItem.idLargo = '-'.join(listaidLargo)
+
+        informacionItem.descripcion = descripcionModificar if descripcionModificar != "" else informacionItem.descripcion
+
+        informacionItem.puntaje = puntajeModificar if puntajeModificar != "" else informacionItem.puntaje
+
+        GestorBase.modificarItem(informacionItem)
+

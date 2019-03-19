@@ -95,7 +95,14 @@ def crudItemsModificar():
     itemsFiltrados = []
 
     if(valor_boton == "Modificar Item"):
-        return None
+
+        itemModificar = request.form.get("selectItemModificarEliminar")
+        tipoItemModificar = request.form.get("tiposItemModificar")
+        descripcionModificar = request.form.get("descripcionItemModificar")
+        puntajeModificar = request.form.get("puntajeModificar")
+
+        Controller.modificarItem(itemModificar, tipoItemModificar, descripcionModificar,puntajeModificar)
+
 
     elif(valor_boton == "Eliminar Item"):
 
