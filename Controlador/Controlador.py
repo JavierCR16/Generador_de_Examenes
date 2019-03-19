@@ -1,3 +1,4 @@
+import datetime
 from Gestores import GestorBase
 from Gestores import GestorCorreo
 from Gestores import GestorEncabezado
@@ -60,3 +61,16 @@ class Controlador:
     def eliminarSubtema(self,subAEliminar):
         idSubtema = subAEliminar.split("-")[0]
         GestorBase.eliminarSubtema(idSubtema)
+
+    def agregarItem(self,descripcion,tipo,subtemaSeleccionado,puntaje):
+        fechaActual =datetime.datetime.now()
+
+        annoCreacion = fechaActual.year
+
+        numSem = "I" if fechaActual.month <=6 else "II"
+        idItem = numSem+" Sem-"+str(annoCreacion)+"-"+tipo
+
+        idSubtema = subtemaSeleccionado.split("-")[0]
+
+
+        GestorBase.agregarItem(ObjetoItem(idItem,descripcion,tipo,idSubtema,puntaje,None))

@@ -293,11 +293,12 @@ def agregarItem(nuevoObjetoItem):
         try:
             with nuevaConexion.cursor() as nuevoItem:
 
-                insertItem = "INSERT INTO Item VALUES(%s,%s,%s,%s,%s,%s)"
-                nuevoItem.execute(insertItem,nuevoObjetoItem.getId(),nuevoObjetoItem.getDescripcion(),
-                                  nuevoObjetoItem.getTipo(),nuevoObjetoItem.getIdSubtema(),nuevoObjetoItem.getPuntaje(),
-                                  nuevoObjetoItem.getIndice())
-        except:
+                insertItem = "INSERT INTO Item (id, descripcion,tipo,idSubtema,puntaje) VALUES(%s,%s,%s,%s,%s)"
+                nuevoItem.execute(insertItem,(nuevoObjetoItem.getId(),nuevoObjetoItem.getDescripcion(),
+                                  nuevoObjetoItem.getTipo(),nuevoObjetoItem.getIdSubtema(),nuevoObjetoItem.getPuntaje()))
+                nuevaConexion.commit()
+        except Exception as e:
+            print(e)
             print("Error al agregar un nuevo item")
         finally:
             nuevaConexion.close()
@@ -314,6 +315,7 @@ def modificarItem(objetoModItem):
                 updateItem = "UPDATE Item SET descripcion = %s, tipo = %s, puntaje = %s WHERE id =%s"
                 itemModificar.execute(updateItem,(objetoModItem.getDescripcion(),objetoModItem.getTipo(),
                                                   objetoModItem.getPuntaje(),objetoModItem.getId()))
+                nuevaConexion.commit()
 
         except:
             print("Error al modificar el item")

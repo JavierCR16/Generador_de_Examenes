@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Ítems de Examen</title>
+</head>
+<body>
+
+    <form action = "crudItemsAgregar" method="post">
+        <label>Temas</label>
+        <select onchange="this.form.submit()" name = "selectTemaItemAgregar">
+            {% for tema in temas %}
+
+                    {% if tema == temaFiltroItemAgregar %}
+                        <option selected> {{tema}}</option>
+                    {% else %}
+                        <option> {{tema}}</option>
+                    {%endif%}
+
+                {% endfor %}
+        </select> <br>
+
+        <label>Subtemas</label>
+        <select name = "selectSubAgregar">
+             {% for subtema in subtemasItemAgregar %}
+                    <option> {{subtema}}</option>
+             {% endfor %}
+        </select> <br>
+
+        <label>Selección Única</label>
+        <input type =radio name = "tiposItemAgregar" value = "S">
+        <label>Desarrollo</label>
+        <input type =radio name = "tiposItemAgregar" value = "D">
+        <label>Práctica de Examen</label>
+        <input type =radio name = "tiposItemAgregar" value = "P"><br><br>
+
+        <label>Inserte un ítem en formato LaTeX</label>
+        <textarea name="descripcionItemAgregar"> </textarea> <br>
+
+        <label>Puntaje </label>
+        <input type = text name="puntajeAgregar"> <br>
+
+        <input type = submit name = "accioncruditems" value = "Agregar Item">
+
+    </form>
+
+
+    <form action = "crudItemsModificar" method="post">
+
+    </form>
+</body>
+</html>

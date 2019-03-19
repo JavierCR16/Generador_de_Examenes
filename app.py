@@ -7,14 +7,13 @@ Controller = Controlador()
 @app.route('/')
 def main():
     temasExistentes = Controller.obtenerTemas()
-    return render_template('CRUDTemasSubtemas.html',temas = temasExistentes)#TODO Aqui que redireccione a la de login
+    return render_template('/CRUDItems.html/',temas = temasExistentes)#TODO Aqui que redireccione a la de login
 
 @app.route('/Encabezado')
 def Encabezado():
     return render_template('Encabezado.html')
 
 @app.route('/crudTemasSubtemas', methods=['post'])
-
 def crudTemasSubtemas():
 
     temaAFiltrar = ""
@@ -60,6 +59,43 @@ def crudTemasSubtemas():
 
     return render_template('CRUDTemasSubtemas.html',temas = temasExistentes, temaFiltro = temaAFiltrar,
                            subFiltrados = subtemasFiltrados)
+
+@app.route('/crudItemsAgregar', methods = ['post'])
+def crudItemsAgregar():
+
+    valor_boton = request.form.get("accioncruditems")
+    temaFiltroAgregar = ""
+    subtemasFiltrados = []
+
+    if(valor_boton == "Agregar Item"):
+
+        descripcion = request.form.get("descripcionItemAgregar")
+        tipo = request.form.get("tiposItemAgregar")
+        subtemaSeleccionado = request.form.get("selectSubAgregar")
+        puntaje = request.form.get("puntajeAgregar")
+
+        Controller.agregarItem(descripcion,tipo,subtemaSeleccionado,puntaje)
+
+    else:
+        temaFiltroAgregar = request.form.get("selectTemaItemAgregar")
+        subtemasFiltrados = Controller.filtrarSubtemas(temaFiltroAgregar)
+
+
+
+    temasExistentes = Controller.obtenerTemas()
+    return render_template('CRUDItems.html', temas = temasExistentes, temaFiltroItemAgregar = temaFiltroAgregar,
+                           subtemasItemAgregar = subtemasFiltrados)
+
+#@app.route('crudItemsModificar', methods = ['post'])
+#def crudItemsModificar():
+
+#    valor_boton = request.form.get("accioncruditems")
+
+#    if(valor_boton == "Modificar Item"):
+
+#    elif(valor_boton == "Eliminar Item")
+
+#    else:# filtro item modificar
 
 
 if __name__ == '__main__':
