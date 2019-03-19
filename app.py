@@ -10,7 +10,7 @@ def main():
 
 @app.route('/Encabezado')
 def Encabezado():
-    return render_template('Encabezado.html')
+    return render_template('CRUDEncabezado.html')
 
 @app.route('/crudTemasSubtemas', methods=['post'])
 def crudTemasSubtemas():
@@ -157,6 +157,27 @@ def buscarSubtemasItems():
                            temaFiltroItemIndice = temaFiltroIndice, itemsFiltroIndice = itemsIndiceFiltrados)
 
 
+@app.route("/ConstruirExamen.html")
+
+def construirExamen():
+
+    return render_template("ConstruirExamen.html")
+
+@app.route("/CRUDTemasSubtemas.html")
+def ventanaCRUDTemasSubtemas():
+    listaTemas = Controller.obtenerTemas()
+    return render_template("CRUDTemasSubtemas.html", temas = listaTemas)
+
+
+@app.route("/CRUDItems.html")
+def ventanaCRUDItems():
+    listaTemas = Controller.obtenerTemas()
+
+    return render_template("CRUDItems.html", temas = listaTemas)
+
+@app.route("/CRUDEncabezado.html")
+def ventanaCRUDEncabezado():
+    return render_template("CRUDEncabezado.html")
 
 if __name__ == '__main__':
 
