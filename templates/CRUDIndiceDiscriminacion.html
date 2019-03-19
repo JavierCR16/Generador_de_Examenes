@@ -19,14 +19,20 @@
         <div>
            <form class="Buscar" action="" method="post">
               <label>Tema:</label>
-                  <select name="tema">
-                   {% for listaTema in listaTemas %}
-                      <option value=listaTema>{{ listaTema.1 }}</option>
+                  <select onchange="this.form.submit(" name="selectBuscarTemaIndDis">
+                   {% for tema in temas %}
+                      {% if tema == temaFiltroItemAgregar %}
+                        <option selected> {{tema}}</option>
+                      {% else %}
+                        <option> {{tema}}</option>
+                      {%endif%}
                    {% endfor %}
             </select>
             <label>Subtema:</label>
             <select name="subtema">
-                %Agregar las opciones
+                {% for subtema in subtemasItemAgregar %}
+                    <option> {{subtema}}</option>
+                {% endfor %}
             </select>
             <input class="btnSearch" type="submit" value="Buscar">
             </form>
