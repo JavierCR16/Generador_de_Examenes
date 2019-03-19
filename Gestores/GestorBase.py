@@ -9,6 +9,7 @@ from Modelo.ObjetoUsuario import ObjetoUsuario
 #TODO AGREGAR FUNCIONES PARA CARGAR TODOS LOS ENCABEZADOS(PLANTILLAS) Y QUE ESTOS SEAN PREVISUALIZADOS POR EL USUARIO.
 #TODO EN UN FUTURO, QUE LE PUEDA CAMBIAR EL TEMA ASOCIADO A UN SUBTEMA,AHORITA SI SE EQUIVOCA DI QUE LO BORRE.
 #TODO EN UN FUTURO, QUE LE PUEDA CAMBIAR EL SUBTEMA ASOCIADO A UN ITEM,AHORITA SI SE EQUIVOCA DI QUE LO BORRE.
+#TODO MANEJAR IDS DE ITEM COMO  #SEM-ANNO-TIPO/ITEM1
 
 def establecerConexion():#usuario,password): #Definida por el momento como una conexion root, luego todas las conexiones deben hacerse a traves de los usuarios con los permisos respectivos.
 
@@ -159,6 +160,8 @@ def filtrarItems(idSubtema):
 
     return listaItems
 
+
+#AQUI EMPIEZA EL CRUD DE ENCABEZADO, VER TODO´S
 def agregarEncabezado(objetoEncabezado):
     nuevaConexion = establecerConexion()
 
@@ -177,17 +180,20 @@ def agregarEncabezado(objetoEncabezado):
         finally:
             nuevaConexion.close()
 
+
+#AQUI EMPIEZA EL CRUD TEMAS SUBTEMAS
 def agregarTema(nuevoTemaIngresado):
     nuevaConexion = establecerConexion()
 
     if(nuevaConexion.open):
-
         try:
             with nuevaConexion.cursor() as nuevoTema:
 
                 insertTema = "INSERT INTO Tema (tema) VALUES(%s)"
                 nuevoTema.execute(insertTema,(nuevoTemaIngresado))
-        except:
+                nuevaConexion.commit()
+        except :
+
             print("Error al agregar un nuevo tema")
         finally:
             nuevaConexion.close()
@@ -202,6 +208,7 @@ def agregarSubtema(nuevoObjetoSubtema):
                 insertSubtema = "INSERT INTO Subtema (subtema,idTema) VALUES (%s,%s)"
                 nuevoSubtema.execute(insertSubtema,(nuevoObjetoSubtema.getSubtema(),
                                                     nuevoObjetoSubtema.getIdTema()))
+                nuevaConexion.commit()
         except:
             print("Error al agregar un nuevo subtema")
         finally:
@@ -219,6 +226,7 @@ def modificarTema(objetoModTema):
                 updateTema = "UPDATE Tema set tema = %s WHERE id = %s"
                 temaModificar.execute(updateTema,(objetoModTema.getTema(),
                                                   objetoModTema.getId()))
+                nuevaConexion.commit()
         except:
             print("Error al modificar el tema")
 
@@ -235,6 +243,7 @@ def eliminarTema(idTema):
 
                 deleteTema = "DELETE FROM Tema WHERE id = %s"
                 temaEliminar.execute(deleteTema, (idTema))
+                nuevaConexion.commit()
         except:
             print("Error al eliminar el tema")
 
@@ -252,11 +261,11 @@ def modificarSubtema(objetoModSubtema):
                 modifySubtema = "UPDATE Subtema SET subtema = %s WHERE id = %s"
                 subtemaModificar.execute(modifySubtema, (objetoModSubtema.getSubtema(),
                                                          objetoModSubtema.getId()))
+                nuevaConexion.commit()
         except:
             print("Error al modificar el subtema")
         finally:
             nuevaConexion.close()
-
 
 def eliminarSubtema(idSubtema):
 
@@ -268,7 +277,68 @@ def eliminarSubtema(idSubtema):
             with nuevaConexion.cursor() as subtemaEliminar:
                 deleteSubtema = "DELETE FROM Subtema WHERE id = %s"
                 subtemaEliminar.execute(deleteSubtema, (idSubtema))
+                nuevaConexion.commit()
         except:
             print("Error al eliminar el subtema")
         finally:
             nuevaConexion.close()
+
+
+#AQUI EMPIEZA EL CRUD DE ITEMS
+def agregarItem(nuevoObjetoItem):
+
+    nuevaConexion = establecerConexion()
+
+    if(nuevaConexion.open):
+        try:
+            with nuevaConexion.cursor() as nuevoItem:
+
+                insertItem = "INSERT INTO Item VALUES(%s,%s,%s,%s,%s,%s)"
+                nuevoItem.execute(insertItem,nuevoObjetoItem.getId(),nuevoObjetoItem.getDescripcion(),
+                                  nuevoObjetoItem.getTipo(),nuevoObjetoItem.getIdSubtema(),nuevoObjetoItem.getPuntaje(),
+                                  nuevoObjetoItem.getIndice())
+        except:
+            print("Error al agregar un nuevo item")
+        finally:
+            nuevaConexion.close()
+
+def modificarItem(objetoModItem):
+
+    nuevaConexion = establecerConexion()
+
+    if(nuevaConexion.open):
+        try:
+
+            with nuevaConexion.cursor() as itemModificar:
+
+                updateItem = "UPDATE Item SET descripcion = %s, tipo = %s, puntaje = %s WHERE id =%s"
+                itemModificar.execute(updateItem,(objetoModItem.getDescripcion(),objetoModItem.getTipo(),
+                                                  objetoModItem.getPuntaje(),objetoModItem.getId()))
+
+        except:
+            print("Error al modificar el item")
+
+        finally:
+            nuevaConexion.close()
+
+
+def eliminarItem(idItem):
+    nuevaConexion = establecerConexion()
+
+    if (nuevaConexion.open):
+        try:
+
+            with nuevaConexion.cursor() as itemEliminar:
+
+                deleteItem = "DELETE FROM Item WHERE id =%s"
+                itemEliminar.execute(deleteItem, (idItem))
+
+        except:
+            print("Error al eliminar el item")
+
+        finally:
+            nuevaConexion.close()
+
+#AQUI EMPIEZA EL CRUD DE RESPUESTAS
+
+#AQUI EMPIEZA EL CRUD DE INDICE DE DISCRIMINACION

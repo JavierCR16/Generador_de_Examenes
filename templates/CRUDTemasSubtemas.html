@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Temas y Subtemas</title>
+</head>
+<body>
+
+<label>Agregar Temas</label>
+<br>
+
+<form method="post" action="crudTemasSubtemas" name="formTemasSubtemas" >
+    <div>
+        <label>Nuevo Tema </label>
+        <input type = text name = "temaNuevo"> <br>
+        <input type = submit name = "accioncrudtemassubtemas" value = "Agregar Tema">
+    </div>
+
+    <div style ="margin-left: 100px">
+        <label>Agregar Subtemas </label> <br>
+
+        <label>Seleccionar Tema</label>
+
+        <select name = "selectTema">
+
+            {% for tema in temas %}
+                <option> {{ tema }}</option>
+            {% endfor %}
+
+        </select> <br>
+
+        <label> Nuevo Subtema </label> <br>
+        <input type = text name = "subtemaNuevo"><br>
+        <input type = submit value = "Agregar Subtema" name = "accioncrudtemassubtemas">
+
+    </div>
+
+
+    <div style ="margin-left: 150px">
+        <label>Modificar y Eliminar Temas</label><br>
+        <label>Seleccionar Tema</label>
+
+        <select name = "selectTemaModEli">
+
+            {% for tema in temas %}
+                <option> {{tema}}</option>
+            {% endfor %}
+
+        </select><br>
+
+        <label>Cambiar Nombre</label><br>
+        <input type = text name = nuevoModificarTema> <br>
+
+        <input type = submit name = "accioncrudtemassubtemas" value = "Modificar Tema"><br>
+
+        <input type = submit name = "accioncrudtemassubtemas" value = "Eliminar Tema">
+    </div>
+
+    <div style ="margin-left: 300px">
+
+        <label>Modificar Subtemas</label><br>
+
+        <div>
+            <label>Seleccionar Tema</label>
+            <select name = "selectTemaSub" onchange="this.form.submit()">
+                {% for tema in temas %}
+
+                    {% if tema == temaFiltro %}
+                        <option selected> {{tema}}</option>
+                    {% else %}
+                        <option> {{tema}}</option>
+                    {%endif%}
+
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <label>Seleccionar Subtema</label>
+            <select name = "selectSub">
+                {% for subtema in subFiltrados %}
+                    <option> {{subtema}}</option>
+                {% endfor %}
+
+            </select><br>
+        </div>
+
+        <label>Cambiar Nombre </label> <br>
+
+        <input type = text name = nuevoModificarSubtema><br>
+
+        <input type = submit name = "accioncrudtemassubtemas" value = "Modificar Subtema"><br>
+
+        <input type = submit name = "accioncrudtemassubtemas" value = "Eliminar Subtema">
+
+    </div>
+
+</form>
+</body>
+</html>
