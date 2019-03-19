@@ -1,4 +1,11 @@
 import pymysql
+from Modelo.ObjetoItem import ObjetoItem
+from Modelo.ObjetoSubtema import ObjetoSubtema
+from Modelo.ObjetoTema import ObjetoTema
+from Modelo.ObjetoTipoExamen import ObjetoTipoExamen
+from Modelo.ObjetoPeriodo import ObjetoPeriodo
+from Modelo.ObjetoUsuario import ObjetoUsuario
+#TODO CLASES PARA MANEJAR LOS DATOS MAS FACILES, AGREGAR A LA SECCION DE ENCABEZADO BASE Y SISTEMA, LA OPCION DE METER ESCUELA Y CURSO
 
 
 def establecerConexion():#usuario,password): #Definida por el momento como una conexion root, luego todas las conexiones deben hacerse a traves de los usuarios con los permisos respectivos.
@@ -18,7 +25,7 @@ def cargarUsuarios():
 
     nuevaConexion = establecerConexion()
     listaUsuarios = []
-    if(not nuevaConexion):
+    if(nuevaConexion.open):
 
         try:
             with nuevaConexion.cursor() as usuarios:
@@ -27,7 +34,8 @@ def cargarUsuarios():
                 usuarios.execute(queryUsuarios)
 
                 for atributos in usuarios:
-                    listaUsuarios += [[atributos[0],atributos[1]]]
+                    nuevoUsuario = ObjetoUsuario(atributos[0],atributos[1])
+                    listaUsuarios += [nuevoUsuario]
 
         except:
             print("Error al cargar los usuarios.")
@@ -41,7 +49,7 @@ def cargarPeriodoExamenes():
 
     nuevaConexion = establecerConexion()
     listaPeriodos = []
-    if(not nuevaConexion):
+    if(nuevaConexion.open):
 
         try:
             with nuevaConexion.cursor() as periodos:
@@ -51,7 +59,9 @@ def cargarPeriodoExamenes():
                 periodos.execute(queryPeriodos)
 
                 for atributos in periodos:
-                    listaPeriodos+= [[atributos[0],atributos[1]]]
+                    nuevoPeriodo = ObjetoPeriodo(atributos[0],atributos[1])
+
+                    listaPeriodos+= [nuevoPeriodo]
 
         except:
             print("Error al cargar los periódos de examen")
@@ -66,7 +76,7 @@ def cargarTipoExamenes():
 
     listaTipos=[]
 
-    if(not nuevaConexion):
+    if(nuevaConexion.open):
 
         try:
             with nuevaConexion.cursor() as  tipoexamenes:
@@ -74,7 +84,8 @@ def cargarTipoExamenes():
                 tipoexamenes.execute(queryTipos)
 
                 for atributos in tipoexamenes:
-                    listaTipos+= [[atributos[0],atributos[1]]]
+                    nuevoTipoExamen = ObjetoTipoExamen(atributos[0],atributos[1])
+                    listaTipos+= [nuevoTipoExamen]
         except:
             print("Error al cargar los periódos de examen")
         finally:
@@ -87,7 +98,7 @@ def cargarTemas():
 
     listaTemas = []
 
-    if (not nuevaConexion):
+    if (nuevaConexion.open):
 
         try:
             with nuevaConexion.cursor() as  temas:
@@ -95,7 +106,8 @@ def cargarTemas():
                 temas.execute(queryTemas)
 
                 for atributos in temas:
-                    listaTemas += [[atributos[0], atributos[1]]]
+                    nuevoTema = ObjetoTema(atributos[0],atributos[1])
+                    listaTemas += [nuevoTema]
         except:
             print("Error al cargar los temas de estudio")
         finally:
@@ -108,14 +120,15 @@ def filtrarSubtemas(idTema):
 
     listaSubtemas = []
 
-    if (not nuevaConexion):
+    if (nuevaConexion.open):
         try:
             with nuevaConexion.cursor() as  subtemas:
                 querySubtemas = "SELECT id, subtema FROM SubTema WHERE idTema = %s"
                 subtemas.execute(querySubtemas,(idTema))
 
                 for atributos in subtemas:
-                    listaSubtemas += [[atributos[0], atributos[1]]]
+                    nuevoSubtema = ObjetoSubtema(atributos[0],atributos[1],idTema)
+                    listaSubtemas += [nuevoSubtema]
         except:
             print("Error al filtrar los subtemas de estudio")
         finally:
@@ -128,14 +141,15 @@ def filtrarItems(idSubtema):
 
     listaItems = []
 
-    if (not nuevaConexion):
+    if (nuevaConexion.open):
         try:
             with nuevaConexion.cursor() as items:
                 queryitems = "SELECT id, descripcion,tipo, puntaje, indiceDiscriminacion FROM Item WHERE idSubtema = %s"
                 items.execute(queryitems, (idSubtema))
 
                 for atributos in items:
-                    listaItems += [[atributos[0], atributos[1],atributos[2],atributos[3],atributos[4]]]
+                    nuevoItem = ObjetoItem(atributos[0], atributos[1],atributos[2],idSubtema,atributos[3],atributos[4])
+                    listaItems += [nuevoItem]
         except:
             print("Error al filtrar los subtemas de estudio")
         finally:
@@ -143,4 +157,20 @@ def filtrarItems(idSubtema):
 
     return listaItems
 
+def agregarEncabezado(objetoEncabezado):
+    nuevaConexion = establecerConexion()
 
+    if(nuevaConexion.open):
+
+        try:
+            with nuevaConexion.cursor() as nuevoEncabezado:
+                insertEncabezado = "INSERT INTO Encabezado (instrucciones,anno,tiempo,idPeriodo,idTipoExamen) VALUES(%s, %s, %s, %s, %s)"
+                nuevoEncabezado.execute(insertEncabezado,(objetoEncabezado.getInstrucciones(),objetoEncabezado.getAnno(),
+                                                          objetoEncabezado.getTiempo(),objetoEncabezado.getIdPeriodo(),
+                                                          objetoEncabezado.getIdTipoExamen()))
+
+        except:
+            print("Error al agregar un nuevo encabezado.")
+
+        finally:
+            nuevaConexion.close()
