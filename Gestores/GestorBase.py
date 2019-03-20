@@ -362,7 +362,7 @@ def eliminarItem(idItem):
             nuevaConexion.close()
 
 #AQUI EMPIEZA EL CRUD DE RESPUESTAS
-def agregarRespuesta(nuevoObjetoRespuesta): #REVISAR
+def agregarRespuesta(nuevoObjetoRespuesta):         #REVISAR
 
     nuevaConexion = establecerConexion()
 
@@ -379,7 +379,7 @@ def agregarRespuesta(nuevoObjetoRespuesta): #REVISAR
         finally:
             nuevaConexion.close()
 
-def modificarRespuesta(objetoModRespuesta): #REVISAR
+def modificarRespuesta(objetoModRespuesta):         #REVISAR
 
     nuevaConexion = establecerConexion()
 
@@ -398,3 +398,52 @@ def modificarRespuesta(objetoModRespuesta): #REVISAR
             nuevaConexion.close()
 
 #AQUI EMPIEZA EL CRUD DE INDICE DE DISCRIMINACION
+def agregarIndice(nuevoObjetoIndice):           #REVISAR
+
+    nuevaConexion = establecerConexion()
+
+    if (nuevaConexion.open):
+        try:
+            with nuevaConexion.cursor() as nuevoIndice:
+
+                insertIndice = "INSERT INTO Item (indiceDiscriminacion) VALUES(%s)"
+                nuevoIndice.execute(insertIndice, (nuevoObjetoIndice))
+                nuevaConexion.commit()
+        except Exception as e:
+            print(e)
+            print("Error al agregar un nuevo indice")
+        finally:
+            nuevaConexion.close()
+
+def modificarIndice(objetoModIndice):         #REVISAR
+
+    nuevaConexion = establecerConexion()
+
+    if (nuevaConexion.open):
+        try:
+            with nuevaConexion.cursor() as indiceModificar:
+
+                modifyIndice = "UPDATE Item SET indiceDiscriminacion = %s WHERE id = %s"
+                indiceModificar.execute(modifyIndice, (objetoModIndice.getIndice()))
+                nuevaConexion.commit()
+        except Exception as e:
+            print(e)
+            print("Error al modificar el indice")
+        finally:
+            nuevaConexion.close()
+
+def eliminarIndice(objetoDelIndice): #REVISAR - Se asigna NULL al campo del indice
+    nuevaConexion = establecerConexion()
+
+    if (nuevaConexion.open):
+        try:
+            with nuevaConexion.cursor() as indiceEliminar:
+
+                deleteIndice = "UPDATE Item SET indiceDiscriminacion = NULL WHERE id = %s"
+                indiceEliminar.execute(deleteIndice, (objetoDelIndice.getIndice()))
+                nuevaConexion.commit()
+        except Exception as e:
+            print(e)
+            print("Error al eliminar el indice")
+        finally:
+            nuevaConexion.close()
