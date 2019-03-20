@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Gestión de Respuestas de Ítems</title>
+        <meta name="description" content="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    </head>
+    <body>
+        <div class="header">
+            <button class="btnBack"><i class="material-icons" style="font-size: 50px;">arrow_back</i></button>
+            <h1> Gestión de Respuestas de Ítems </h1>
+        </div>
+        <div>
+           <form action="crudRespuestasAgregar" method="post">
+              <label>Tema</label>
+                  <select onchange="this.form.submit()" name="selectTemaRespAgregar">
+                      {% for tema in temas %}
+                          {% if tema == temaFiltroRespAgregar %}
+                              <option selected> {{tema}}</option>
+                          {% else %}
+                              <option> {{tema}}</option>
+                          {%endif%}
+                      {% endfor %}
+                  </select><br>
+
+            <label>Subtemas</label>
+            <select name="selectSubAgregar" onchange="this.form.submit()">
+                {% for subtema in subtemasRespAgregar %}
+                    <option> {{subtema}}</option>
+                {% endfor %}
+            </select><br>
+
+            <label>Ítems</label>
+            <select name = "selectRespAgregar">
+               {% for item in itemsFiltro %}
+                   <option> {{item}} </option>
+               {% endfor %}
+            </select><br>
+
+            <label>Respuestas</label>
+            <input type="text" name="Arespuesta1" placeholder="respuesta1">
+            <input type="radio" name="Arespuesta" value="R1"><br>
+            <input type="text" name="Arespuesta2" placeholder="respuesta2">
+            <input type="radio" name="Arespuesta" value="R2"><br>
+            <input type="text" name="Arespuesta3" placeholder="respuesta3">
+            <input type="radio" name="Arespuesta" value="R3"><br>
+            <input type="text" name="Arespuesta4" placeholder="respuesta4">
+            <input type="radio" name="Arespuesta" value="R4"><br>
+            <input name = "buscarItems" class="btnSearch" type="submit" value="Agregar Respuestas">
+            </form>
+
+            <form action="crudRespuestasModificar" method="post">
+              <label>Tema</label>
+                  <select onchange="this.form.submit()" name="selectTemaRespModificar">
+                      {% for tema in temas %}
+                          {% if tema == temaFiltroRespModificar %}
+                              <option selected> {{tema}}</option>
+                          {% else %}
+                              <option> {{tema}}</option>
+                          {%endif%}
+                      {% endfor %}
+                  </select><br>
+
+            <label>Subtemas</label>
+            <select name="selectSubModificar" onchange="this.form.submit()">
+                {% for subtema in subtemasRespModificar %}
+                    <option> {{subtema}}</option>
+                {% endfor %}
+            </select><br>
+
+            <label>Ítems</label>
+            <select name = "selectRespModificar">
+               {% for item in itemsFiltro %}
+                   <option> {{item}} </option>
+               {% endfor %}
+            </select><br>
+
+            <label>Respuestas</label>
+            <input type="text" name="Mrespuesta1" placeholder="respuesta1">
+            <input type="radio" name="Mrespuesta" value="R1"><br>
+            <input type="text" name="Mrespuesta2" placeholder="respuesta2">
+            <input type="radio" name="Mrespuesta" value="R2"><br>
+            <input type="text" name="Mrespuesta3" placeholder="respuesta3">
+            <input type="radio" name="Mrespuesta" value="R3"><br>
+            <input type="text" name="Mrespuesta4" placeholder="respuesta4">
+            <input type="radio" name="Mrespuesta" value="R4"><br>
+            <input name = "buscarItems" class="btnSearch" type="submit" value="Modificar Respuestas">
+            </form>
+        </div>
+        <div class="footer">
+        </div>
+    </body>
+</html>
