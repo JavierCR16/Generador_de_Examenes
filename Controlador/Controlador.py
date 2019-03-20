@@ -1,5 +1,5 @@
 import datetime
-from sympy import preview
+#from sympy import preview
 from Gestores import GestorBase
 from Gestores import GestorCorreo
 from Gestores import GestorEncabezado

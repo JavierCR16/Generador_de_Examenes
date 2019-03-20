@@ -9,10 +9,6 @@ Controller = Controlador()
 def main():
     return render_template('OpcionesPrincipales.html')#TODO Aqui que redireccione a la de login
 
-@app.route('/Encabezado')
-def Encabezado():
-    return render_template('CRUDEncabezado.html')
-
 @app.route('/crudTemasSubtemas', methods=['post'])
 def crudTemasSubtemas():
 
@@ -93,6 +89,7 @@ def crudItemsModificar():
     temaFiltroModificar = ""
     subtemasFiltrados = []
     itemsFiltrados = []
+    objetosItemsFiltrados = []
 
     if(valor_boton == "Modificar Item"):
 
@@ -119,12 +116,11 @@ def crudItemsModificar():
         else:
             subtemaFiltro = request.form.get("selectSubModificar")
             itemsFiltrados = Controller.filtrarItems(subtemaFiltro)
-
-
+            objetosItemsFiltrados = [item .getDescripcion() for item in Controller.filtrarObjetoItems(subtemaFiltro)]
 
     temasExistentes = Controller.obtenerTemas()
     return render_template('CRUDItems.html', temas=temasExistentes, temaFiltroItemModificar=temaFiltroModificar,
-                           subtemasItemModificar=subtemasFiltrados, itemsFiltro = itemsFiltrados)
+                           subtemasItemModificar=subtemasFiltrados, itemsFiltro = itemsFiltrados, objetosItemsFil = objetosItemsFiltrados)
 
 @app.route("/CRUDIndiceDiscriminacion.html")
 def crudIndiceDiscriminacion():

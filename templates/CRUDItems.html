@@ -3,8 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Gestión de Ítems de Examen</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+     <link rel="stylesheet" href="/static/popupWindow.css">
 </head>
 <body>
+
+    <script>
+        function funcion(descripcionesItems) {
+
+            var select = document.getElementById("itemModiEli")
+            var indice = select.selectedIndex
+
+            var popup = document.getElementById("myPopup")
+
+            popup.innerHTML = descripcionesItems[indice]
+            popup.classList.toggle("show");
+
+        }
+    </script>
 
     <form action = "crudItemsAgregar" method="post">
         <label>Temas</label>
@@ -68,11 +84,16 @@
 
         <label>Seleccione un Ítem para Modificar o Eliminar</label>
 
-        <select name = "selectItemModificarEliminar">
+        <select id="itemModiEli" name = "selectItemModificarEliminar">
             {% for item in itemsFiltro %}
-                    <option> {{item}}</option>
-             {% endfor %}
-        </select><br>
+                    <option> {{item}} </option><br>
+            {% endfor %}
+
+        </select><br> <i onclick="funcion3()" class="fa fa-eye" style="font-size:30px"></i>
+
+        <div class="popup" onclick="funcion( {{ objetosItemsFil }} )">Click me!
+            <span class="popuptext" id="myPopup">Popup text...</span>
+        </div>
 
         <label>Selección Única</label>
         <input type =radio name = "tiposItemModificar" value = "S">
