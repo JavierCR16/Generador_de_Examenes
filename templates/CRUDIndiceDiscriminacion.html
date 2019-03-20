@@ -23,7 +23,7 @@
         }
 
         function closeFormModDel() {
-        document.getElementById("modiElilIndice").style.display = "none";
+        document.getElementById("modiEliIndice").style.display = "none";
         }
     </script>
         <div class="header">
@@ -79,6 +79,8 @@
             <form action=" " class="form-containerAddIndice">
                 <h1> </h1> <!--AQUI DEBERIA IR EL ITEM CON SU INFORMACION-->
                 <label>No tiene índice de discriminación asociado</label><br>
+                <label>Ingresar Índice</label>
+                <input type="text" placeholder="Ingresar Índice" name="addIndice"><br>
                 <button type="submit" class="btnAddIndice">Agregar Índice</button>
                 <button type="button" class="btnBack" onclick="closeFormAdd()">Atrás</button>
             </form>
@@ -87,8 +89,8 @@
             <form action=" " class="form-containerAddIndice">
                 <h1> </h1> <!--AQUI DEBERIA IR EL ITEM CON SU INFORMACION-->
                 <label>El índice de discriminación es:</label><br>
-                <label> </label><br> <!--AQUI DEBERIA IR EL INDICE DEL ITEM SELECCIONADO-->
-                <button type="submit" class="btnModifyIndice">Modificar Índice</button>
+                <input type="text" id= "indiceItem" value=" "><br> <!--AQUI EL VALUE DEBERIA TENER EL INDICE DEL ITEM-->
+                <button type="submit" class="btnModifyIndice">Modificar Índice</button> <!--AQUI DEBERIA GUARDARSE EL INDICE DEL ITEM-->
                 <button type="submit" class="btnDeleteIndice">Eliminar Índice</button> <!--AQUI DEBERIA ELIMINAR EL INDICE DEL ITEM SELECCIONADO-->
                 <button type="button" class="btnBack" onclick="closeFormModDel()">Atrás</button>
             </form>

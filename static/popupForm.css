@@ -51,7 +51,7 @@
 }
 
 /* Set a style for the add/modify/delete button */
-.form-containerAddIndice .btnAddIndice, .btnBack {
+.form-containerAddIndice .btnAddIndice, .btnBack, .btnModifyIndice, .btnDeleteIndice{
   background-color: #106caf;
   color: white;
   padding: 10px 10px;
@@ -60,7 +60,8 @@
   opacity: 0.8;
 }
 
+
 /* Add some hover effects to buttons */
-.form-containerAddIndice .btnAddIndice:hover, .btnBack:hover {
+.form-containerAddIndice .btnAddIndice:hover, .btnBack:hover, .btnModifyIndice:hover, .btnDeleteIndice:hover{
   opacity: 1;
 }
