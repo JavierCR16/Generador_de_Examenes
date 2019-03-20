@@ -362,5 +362,39 @@ def eliminarItem(idItem):
             nuevaConexion.close()
 
 #AQUI EMPIEZA EL CRUD DE RESPUESTAS
+def agregarRespuesta(nuevoObjetoRespuesta): #REVISAR
+
+    nuevaConexion = establecerConexion()
+
+    if (nuevaConexion.open):
+        try:
+            with nuevaConexion.cursor() as nuevaRespuesta:
+
+                insertRespuesta = "INSERT INTO Respuestas (idItem, respuesta) VALUES(%s,%s)"
+                nuevaRespuesta.execute(insertRespuesta, (nuevoObjetoRespuesta.getIdItem(), nuevoObjetoRespuesta))
+                nuevaConexion.commit()
+        except Exception as e:
+            print(e)
+            print("Error al agregar una nueva respuesta")
+        finally:
+            nuevaConexion.close()
+
+def modificarRespuesta(objetoModRespuesta): #REVISAR
+
+    nuevaConexion = establecerConexion()
+
+    if (nuevaConexion.open):
+        try:
+            with nuevaConexion.cursor() as respuestaModificar:
+
+                modifyRespuesta = "UPDATE Respuestas SET respuesta = %s WHERE id = %s"
+                respuestaModificar.execute(modifyRespuesta, (objetoModRespuesta.getRespuesta(),
+                                                         objetoModRespuesta.getId()))
+                nuevaConexion.commit()
+        except Exception as e:
+            print(e)
+            print("Error al modificar una respuesta")
+        finally:
+            nuevaConexion.close()
 
 #AQUI EMPIEZA EL CRUD DE INDICE DE DISCRIMINACION

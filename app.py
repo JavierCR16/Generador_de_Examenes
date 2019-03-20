@@ -176,6 +176,19 @@ def ventanaCRUDItems():
 def ventanaCRUDEncabezado():
     return render_template("CRUDEncabezado.html")
 
+@app.route("/CRUDRespuestas.html")
+def ventanaCRUDRespuestas():
+    listaTemas = Controller.obtenerTemas()
+    return render_template("CRUDRespuestas.html", temas = listaTemas)
+
+@app.route("/crudRespuestasAgregar", methods=['post']) ##Revisar
+def crudRespuestasAgregar():
+    return render_template("CRUDRespuestas.html")
+
+@app.route("/crudRespuestasModificar", methods=['post'])  ##Revisar
+def crudRespuestasModificar():
+    return render_template("CRUDRespuestas.html")
+
 if __name__ == '__main__':
 
     app.run()
