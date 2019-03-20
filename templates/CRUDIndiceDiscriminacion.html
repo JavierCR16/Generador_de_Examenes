@@ -9,6 +9,23 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     </head>
     <body>
+    <script>
+        function openFormAdd() {
+        document.getElementById("agregarIndice").style.display = "block";
+        }
+
+        function closeFormAdd() {
+        document.getElementById("agregarIndice").style.display = "none";
+        }
+
+        function openFormModDel() {
+        document.getElementById("modiEliIndice").style.display = "block";
+        }
+
+        function closeFormModDel() {
+        document.getElementById("modiElilIndice").style.display = "none";
+        }
+    </script>
         <div class="header">
             <a href="/"><i class="material-icons" style="font-size: 30px;">arrow_back</i></a>
             <h1> Índice de Discriminación </h1>
@@ -51,11 +68,30 @@
                         <td> {{ item.getTipo() }} </td>
                         <td>{{ item.getPuntaje() }} </td>
                         <td>{{ item.getIndice() }} </td>
-                        <td> </td>
+                        <td> <button class="consult-button" onclick="openFormAdd()"><i class="material-icons" style="font-size: 20px;">info</i> </button></td> <!--DEBERIA CAMBIAR DEPENDIENDO SI SE TIENE O NO UN INDICE-->
+                         <!-- <td> <button class="consult-button" onclick="openFormModDel()"><i class="material-icons" style="font-size: 20px;">info</i> -->
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
+        </div>
+        <div class="form-popupAgregar" id="agregarIndice">
+            <form action=" " class="form-containerAddIndice">
+                <h1> </h1> <!--AQUI DEBERIA IR EL ITEM CON SU INFORMACION-->
+                <label>No tiene índice de discriminación asociado</label><br>
+                <button type="submit" class="btnAddIndice">Agregar Índice</button>
+                <button type="button" class="btnBack" onclick="closeFormAdd()">Atrás</button>
+            </form>
+        </div>
+        <div class="form-popupModEli" id="modiEliIndice">
+            <form action=" " class="form-containerAddIndice">
+                <h1> </h1> <!--AQUI DEBERIA IR EL ITEM CON SU INFORMACION-->
+                <label>El índice de discriminación es:</label><br>
+                <label> </label><br> <!--AQUI DEBERIA IR EL INDICE DEL ITEM SELECCIONADO-->
+                <button type="submit" class="btnModifyIndice">Modificar Índice</button>
+                <button type="submit" class="btnDeleteIndice">Eliminar Índice</button> <!--AQUI DEBERIA ELIMINAR EL INDICE DEL ITEM SELECCIONADO-->
+                <button type="button" class="btnBack" onclick="closeFormModDel()">Atrás</button>
+            </form>
         </div>
         <div class="footer">
         </div>
