@@ -122,10 +122,7 @@ class Controlador:
 
     def previewEncabezado(self):
 
-        LatexConfig = "\\documentclass{exam} \\usepackage[utf8]{inputenc} \\begin{document} \\maketitle "
-
+        #Aqui poner todo lo del objeto
         LatexWords = "\\paragraph{Tecnologico de Costa Rica} \\paragraph{ II Semestre, 2018} "
 
-        LatexEnd = "\\end{document}"
-
-        preview(LatexConfig + LatexWords + LatexEnd, viewer = "file",filename= "test.png")
+        preview(LatexWords , viewer = "file",filename= "Preview.png")
