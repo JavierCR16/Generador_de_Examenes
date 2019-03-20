@@ -128,4 +128,6 @@ class Controlador:
 
         LatexEnd = "\\end{document}"
 
-        preview(LatexConfig + LatexWords + LatexEnd, viewer = "file",filename= "test.png")
+        preview(LatexWords , viewer = "file",filename= "test.png")
+
+Controlador.previewEncabezado(1)
