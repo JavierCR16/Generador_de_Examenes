@@ -1,5 +1,5 @@
 import datetime
-import symPy
+from sympy import preview
 from Gestores import GestorBase
 from Gestores import GestorCorreo
 from Gestores import GestorEncabezado
@@ -119,12 +119,13 @@ class Controlador:
     #Funciones de encabezado
     def insertarNuevoEncabezado(self, nuevoEncabezado):
         GestorBase.agregarEncabezado(nuevoEncabezado)
-    def previewDeEncabezado(self, nuevoEncabezado):
 
-        LatexConfig = " \documentclass{exam} \usepackage[utf8]{inputenc} \begin{document} \maketitle "
+    def previewEncabezado(self):
 
-        LatexWords = "\paragraph{Tecnologico de Costa Rica} \paragraph{ II Semestre, 2018} "
+        LatexConfig = "\\documentclass{exam} \\usepackage[utf8]{inputenc} \\begin{document} \\maketitle "
 
-        LatexEnd = "\end{document}"
+        LatexWords = "\\paragraph{Tecnologico de Costa Rica} \\paragraph{ II Semestre, 2018} "
 
+        LatexEnd = "\\end{document}"
 
+        preview(LatexConfig + LatexWords + LatexEnd, viewer = "file",filename= "test.png")

@@ -1,6 +1,7 @@
 from flask import Flask, render_template,request
 from Controlador.Controlador import Controlador
 
+
 app = Flask(__name__)
 Controller = Controlador()
 
