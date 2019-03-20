@@ -114,8 +114,7 @@
                         <td>{{ item.getTipo() }}</td>
                         <td>{{ item.getPuntaje() }}</td>
                         <td>{{ item.getIndice() }}</td>
-                        <td> <button class="consult-button" onclick="verificarIndiceDiscriminacion(this,{{descripItems}})"><i class="material-icons" style="font-size: 20px;">info</i> </button></td> <!--DEBERIA CAMBIAR DEPENDIENDO SI SE TIENE O NO UN INDICE-->
-                         <!-- <td> <button class="consult-button" onclick="openFormModDel()"><i class="material-icons" style="font-size: 20px;">info</i> -->
+                        <td> <button class="consult-button" onclick="verificarIndiceDiscriminacion(this,{{descripItems}})"><i class="material-icons" style="font-size: 20px;">info</i> </button></td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -124,7 +123,7 @@
 
         <div class="form-popupAgregar" id="agregarIndice">
             <form action="agregarIndiceDiscriminacion" class="form-containerAddIndice" method="post">
-                <h1 id = "infoItemAgregar"> </h1> <!--AQUI DEBERIA IR EL ITEM CON SU INFORMACION-->
+                <h1 id = "infoItemAgregar"> </h1>
                 <label>No tiene índice de discriminación asociado</label><br>
                 <label>Ingresar Índice</label>
 
@@ -139,13 +138,13 @@
 
         <div class="form-popupModEli" id="modiEliIndice">
             <form action="modiEliIndiceDiscriminacion" class="form-containerAddIndice" method="post">
-                <h1 id = "infoItemModificar"> </h1> <!--AQUI DEBERIA IR EL ITEM CON SU INFORMACION-->
+                <h1 id = "infoItemModificar"> </h1>
                 <label>El índice de discriminación es:</label><br>
 
                 <input name = "idItemSecreto" id="idItemSecretoMod" hidden type="text">
-                <input name = "modIndice" type="text" id= "indiceItem"><br> <!--AQUI EL VALUE DEBERIA TENER EL INDICE DEL ITEM-->
-                <button value="modificarIndice"name="accionDiscriMod" type="submit" class="btnModifyIndice">Modificar Índice</button> <!--AQUI DEBERIA GUARDARSE EL INDICE DEL ITEM-->
-                <button value ="eliminarIndice" name = "accionDiscriMod" type="submit" class="btnDeleteIndice">Eliminar Índice</button> <!--AQUI DEBERIA ELIMINAR EL INDICE DEL ITEM SELECCIONADO-->
+                <input name = "modIndice" type="text" id= "indiceItem"><br>
+                <button value="modificarIndice"name="accionDiscriMod" type="submit" class="btnModifyIndice">Modificar Índice</button>
+                <button value ="eliminarIndice" name = "accionDiscriMod" type="submit" class="btnDeleteIndice">Eliminar Índice</button>
                 <button type="button" class="btnBack" onclick="closeFormModDel()">Atrás</button>
             </form>
         </div>

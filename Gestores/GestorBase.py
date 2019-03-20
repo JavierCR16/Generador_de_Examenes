@@ -400,7 +400,7 @@ def modificarRespuesta(objetoModRespuesta):         #REVISAR
 
 #AQUI EMPIEZA EL CRUD DE INDICE DE DISCRIMINACION
 
-def modificarIndice(objetoModIndice):         #REVISAR
+def modificarIndice(objetoModIndice):
 
     nuevaConexion = establecerConexion()
 
@@ -417,7 +417,7 @@ def modificarIndice(objetoModIndice):         #REVISAR
         finally:
             nuevaConexion.close()
 
-def eliminarIndice(idItem): #REVISAR - Se asigna NULL al campo del indice
+def eliminarIndice(idItem):
     nuevaConexion = establecerConexion()
 
     if (nuevaConexion.open):
