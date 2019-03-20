@@ -22,9 +22,9 @@
         <label>Seleccionar Tema</label>
 
         <select name = "selectTema">
-
+            <option>Escoger Tema </option>
             {% for tema in temas %}
-                <option> {{ tema }}</option>
+                <option> {{ tema.getId()}}-{{tema.getTema()}} </option>
             {% endfor %}
 
         </select> <br>
@@ -41,9 +41,9 @@
         <label>Seleccionar Tema</label>
 
         <select name = "selectTemaModEli">
-
+            <option>Escoger Tema </option>
             {% for tema in temas %}
-                <option> {{tema}}</option>
+                <option> {{ tema.getId()}}-{{tema.getTema()}}</option>
             {% endfor %}
 
         </select><br>
@@ -63,12 +63,13 @@
         <div>
             <label>Seleccionar Tema</label>
             <select name = "selectTemaSub" onchange="this.form.submit()">
+                <option>Escoger Tema </option>
                 {% for tema in temas %}
 
-                    {% if tema == temaFiltro %}
-                        <option selected> {{tema}}</option>
+                    {% if (tema.getId()~"-"~tema.getTema()) == temaFiltro %}
+                        <option selected>{{ tema.getId()}}-{{tema.getTema()}}</option>
                     {% else %}
-                        <option> {{tema}}</option>
+                        <option>{{ tema.getId()}}-{{tema.getTema()}}</option>
                     {%endif%}
 
                 {% endfor %}
@@ -78,8 +79,9 @@
         <div>
             <label>Seleccionar Subtema</label>
             <select name = "selectSub">
+                <option>Escoger Subtema </option>
                 {% for subtema in subFiltrados %}
-                    <option> {{subtema}}</option>
+                    <option> {{subtema.getId()}}-{{ subtema.getSubtema()}}</option>
                 {% endfor %}
 
             </select><br>

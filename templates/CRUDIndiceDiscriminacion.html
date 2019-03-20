@@ -7,18 +7,59 @@
         <title>Índice de Discriminación</title>
         <meta name="description" content="">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    </head>
-    <body>
-    <script>
-        function openFormAdd() {
-        document.getElementById("agregarIndice").style.display = "block";
+        <link rel="stylesheet" href="/static/popupForm.css">
+        <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+        <script>
+        $(document).ready(function() {
+
+            openFormAdd();
+            closeFormAdd();
+            openFormModDel();
+            closeFormModDel();
+            verificarIndiceDiscriminacion();
+
+
+        } );
+
+        function verificarIndiceDiscriminacion(botonClickeado,descripItems){
+            var indice = $(botonClickeado).closest('tr').index();
+            console.log("IndicE: "+indice);
+            valorDiscriminacion = $("#tablaDiscriminacion tr").eq(indice+1).find('td').eq(3).text();
+            descripcion = descripItems[indice];
+            identificador = $("#tablaDiscriminacion tr").eq(indice+1).find('td').eq(0).text()
+
+            idItem = identificador.split("/Item")[1] ;
+
+            if(valorDiscriminacion === "None" || valorDiscriminacion === ""){
+                openFormAdd(indice,descripcion,idItem)
+            }
+            else
+                openFormModDel(indice,descripcion,valorDiscriminacion,idItem)
+
+        }
+
+        function openFormAdd(indice,descripcion,idItem) {
+
+            var tagDesc = document.getElementById("infoItemAgregar");
+            tagDesc.innerHTML = descripcion;
+
+            $('#idItemSecretoAdd').val(idItem);
+
+            document.getElementById("agregarIndice").style.display = "block";
         }
 
         function closeFormAdd() {
         document.getElementById("agregarIndice").style.display = "none";
         }
 
-        function openFormModDel() {
+        function openFormModDel(indice,descripcion,indiceDisc,idItem) {
+
+            var tagDesc = document.getElementById("infoItemModificar");
+            tagDesc.innerHTML = descripcion;
+
+            $('#indiceItem').val(indiceDisc);
+            $('#idItemSecretoMod').val(idItem);
+
         document.getElementById("modiEliIndice").style.display = "block";
         }
 
@@ -26,6 +67,10 @@
         document.getElementById("modiEliIndice").style.display = "none";
         }
     </script>
+
+    </head>
+    <body>
+
         <div class="header">
             <a href="/"><i class="material-icons" style="font-size: 30px;">arrow_back</i></a>
             <h1> Índice de Discriminación </h1>
@@ -34,23 +79,24 @@
            <form action="BuscarSubtemasItems" method="post">
               <label>Tema:</label>
                   <select onchange="this.form.submit()" name="selectBuscarTemaIndDis">
+                      <option>Escoger Tema</option>
                       {% for tema in temas %}
-                          {% if tema == temaFiltroItemIndice %}
-                              <option selected> {{tema}}</option>
+                          {% if (tema.getId()~"-"~tema.getTema()) == temaFiltroItemIndice %}
+                              <option selected> {{ tema.getId()}}-{{tema.getTema()}}</option>
                           {% else %}
-                              <option> {{tema}}</option>
+                              <option> {{ tema.getId()}}-{{tema.getTema()}}</option>
                           {%endif%}
                       {% endfor %}
                   </select>
             <label>Subtema:</label>
             <select name="subtemaIndice">
                 {% for subtema in subtemasItemIndice %}
-                    <option> {{subtema}}</option>
+                    <option> {{ subtema.getId()}}-{{subtema.getSubtema()}}</option>
                 {% endfor %}
             </select>
             <input name = "buscarItems" class="btnSearch" type="submit" value="Buscar">
             </form>
-            <table class="TablaIndice">
+            <table id= "tablaDiscriminacion" class="TablaIndice">
                 <thead>
                    <tr>
                         <td>Identificador</td>
@@ -64,34 +110,42 @@
                 {% for item in itemsFiltroIndice %}
                     <tr>
 
-                        <td> {{item.getIdLargo()}}/Item {{ item.getId() }} </td>
-                        <td> {{ item.getTipo() }} </td>
-                        <td>{{ item.getPuntaje() }} </td>
-                        <td>{{ item.getIndice() }} </td>
-                        <td> <button class="consult-button" onclick="openFormAdd()"><i class="material-icons" style="font-size: 20px;">info</i> </button></td> <!--DEBERIA CAMBIAR DEPENDIENDO SI SE TIENE O NO UN INDICE-->
+                        <td>{{item.getIdLargo()}}/Item{{ item.getId() }}</td>
+                        <td>{{ item.getTipo() }}</td>
+                        <td>{{ item.getPuntaje() }}</td>
+                        <td>{{ item.getIndice() }}</td>
+                        <td> <button class="consult-button" onclick="verificarIndiceDiscriminacion(this,{{descripItems}})"><i class="material-icons" style="font-size: 20px;">info</i> </button></td> <!--DEBERIA CAMBIAR DEPENDIENDO SI SE TIENE O NO UN INDICE-->
                          <!-- <td> <button class="consult-button" onclick="openFormModDel()"><i class="material-icons" style="font-size: 20px;">info</i> -->
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
         </div>
+
         <div class="form-popupAgregar" id="agregarIndice">
-            <form action=" " class="form-containerAddIndice">
-                <h1> </h1> <!--AQUI DEBERIA IR EL ITEM CON SU INFORMACION-->
+            <form action="agregarIndiceDiscriminacion" class="form-containerAddIndice" method="post">
+                <h1 id = "infoItemAgregar"> </h1> <!--AQUI DEBERIA IR EL ITEM CON SU INFORMACION-->
                 <label>No tiene índice de discriminación asociado</label><br>
                 <label>Ingresar Índice</label>
+
+                <input name = "idItemSecreto" id="idItemSecretoAdd" hidden type="text">
+
                 <input type="text" placeholder="Ingresar Índice" name="addIndice"><br>
-                <button type="submit" class="btnAddIndice">Agregar Índice</button>
-                <button type="button" class="btnBack" onclick="closeFormAdd()">Atrás</button>
+                <button  type="submit" class="btnAddIndice">Agregar Índice</button>
+                <button  type="button" class="btnBack" onclick="closeFormAdd()">Atrás</button>
             </form>
         </div>
+
+
         <div class="form-popupModEli" id="modiEliIndice">
-            <form action=" " class="form-containerAddIndice">
-                <h1> </h1> <!--AQUI DEBERIA IR EL ITEM CON SU INFORMACION-->
+            <form action="modiEliIndiceDiscriminacion" class="form-containerAddIndice" method="post">
+                <h1 id = "infoItemModificar"> </h1> <!--AQUI DEBERIA IR EL ITEM CON SU INFORMACION-->
                 <label>El índice de discriminación es:</label><br>
-                <input type="text" id= "indiceItem" value=" "><br> <!--AQUI EL VALUE DEBERIA TENER EL INDICE DEL ITEM-->
-                <button type="submit" class="btnModifyIndice">Modificar Índice</button> <!--AQUI DEBERIA GUARDARSE EL INDICE DEL ITEM-->
-                <button type="submit" class="btnDeleteIndice">Eliminar Índice</button> <!--AQUI DEBERIA ELIMINAR EL INDICE DEL ITEM SELECCIONADO-->
+
+                <input name = "idItemSecreto" id="idItemSecretoMod" hidden type="text">
+                <input name = "modIndice" type="text" id= "indiceItem"><br> <!--AQUI EL VALUE DEBERIA TENER EL INDICE DEL ITEM-->
+                <button value="modificarIndice"name="accionDiscriMod" type="submit" class="btnModifyIndice">Modificar Índice</button> <!--AQUI DEBERIA GUARDARSE EL INDICE DEL ITEM-->
+                <button value ="eliminarIndice" name = "accionDiscriMod" type="submit" class="btnDeleteIndice">Eliminar Índice</button> <!--AQUI DEBERIA ELIMINAR EL INDICE DEL ITEM SELECCIONADO-->
                 <button type="button" class="btnBack" onclick="closeFormModDel()">Atrás</button>
             </form>
         </div>

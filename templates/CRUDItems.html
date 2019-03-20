@@ -12,12 +12,16 @@
         function funcion(descripcionesItems) {
 
             var select = document.getElementById("itemModiEli")
-            var indice = select.selectedIndex
 
-            var popup = document.getElementById("myPopup")
 
-            popup.innerHTML = descripcionesItems[indice]
-            popup.classList.toggle("show");
+            if(select !== undefined) {
+                var indice = select.selectedIndex
+
+                var popup = document.getElementById("myPopup")
+
+                popup.innerHTML = descripcionesItems[indice]
+                popup.classList.toggle("show");
+            }
 
         }
     </script>
@@ -25,21 +29,24 @@
     <form action = "crudItemsAgregar" method="post">
         <label>Temas</label>
         <select onchange="this.form.submit()" name = "selectTemaItemAgregar">
+
+            <option>Escoger Tema </option>
             {% for tema in temas %}
 
-                    {% if tema == temaFiltroItemAgregar %}
-                        <option selected> {{tema}}</option>
+                    {% if (tema.getId()~"-"~tema.getTema()) == temaFiltroItemAgregar %}
+                        <option selected> {{tema.getId()}}-{{tema.getTema()}}</option>
                     {% else %}
-                        <option> {{tema}}</option>
+                        <option> {{tema.getId()}}-{{tema.getTema()}}</option>
                     {%endif%}
 
-                {% endfor %}
+            {% endfor %}
         </select> <br>
 
         <label>Subtemas</label>
         <select name = "selectSubAgregar">
+             <option>Escoger Subtema </option>
              {% for subtema in subtemasItemAgregar %}
-                    <option> {{subtema}}</option>
+                    <option> {{subtema.getId()}}-{{subtema.getSubtema()}}</option>
              {% endfor %}
         </select> <br>
 
@@ -64,21 +71,23 @@
     <form action = "crudItemsModificar" method="post">
          <label>Temas</label>
         <select  onchange="this.form.submit()" name = "selectTemaItemModificar">
+            <option>Escoger Tema </option>
             {% for tema in temas %}
 
-                    {% if tema == temaFiltroItemModificar %}
-                        <option selected> {{tema}}</option>
-                    {% else %}
-                        <option> {{tema}}</option>
-                    {%endif%}
+                {% if (tema.getId()~"-"~tema.getTema()) == temaFiltroItemModificar %}
+                    <option selected> {{tema.getId()}}-{{tema.getTema()}}</option>
+                {% else %}
+                    <option> {{tema.getId()}}-{{tema.getTema()}} </option>
+                {%endif%}
 
-                {% endfor %}
+            {% endfor %}
         </select> <br>
 
         <label>Subtemas</label>
         <select name = "selectSubModificar" onchange="this.form.submit()">
+             <option>Escoger Subtema </option>
              {% for subtema in subtemasItemModificar %}
-                    <option> {{subtema}}</option>
+                    <option> {{subtema.getId()}}-{{subtema.getSubtema()}}</option>
              {% endfor %}
         </select> <br>
 
@@ -86,14 +95,14 @@
 
         <select id="itemModiEli" name = "selectItemModificarEliminar">
             {% for item in itemsFiltro %}
-                    <option> {{item}} </option><br>
+                    <option> {{ item.getIdLargo() }}/Item{{ item.getId( )}} </option><br>
             {% endfor %}
 
-        </select><br> <i onclick="funcion3()" class="fa fa-eye" style="font-size:30px"></i>
-
-        <div class="popup" onclick="funcion( {{ objetosItemsFil }} )">Click me!
+        </select> <div class="popup">
+            <i onclick="funcion( {{ descripItems }} )" class="fa fa-eye " style="font-size:30px"></i>
             <span class="popuptext" id="myPopup">Popup text...</span>
-        </div>
+        </div><br>
+
 
         <label>Selección Única</label>
         <input type =radio name = "tiposItemModificar" value = "S">

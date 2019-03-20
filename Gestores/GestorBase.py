@@ -9,6 +9,7 @@ from Modelo.ObjetoUsuario import ObjetoUsuario
 #TODO AGREGAR FUNCIONES PARA CARGAR TODOS LOS ENCABEZADOS(PLANTILLAS) Y QUE ESTOS SEAN PREVISUALIZADOS POR EL USUARIO.
 #TODO EN UN FUTURO, QUE LE PUEDA CAMBIAR EL TEMA ASOCIADO A UN SUBTEMA,AHORITA SI SE EQUIVOCA DI QUE LO BORRE.
 #TODO EN UN FUTURO, QUE LE PUEDA CAMBIAR EL SUBTEMA ASOCIADO A UN ITEM,AHORITA SI SE EQUIVOCA DI QUE LO BORRE.
+#TODO INTENTAR MANEJAR LAS VARIABLES A TRAVES DE LA SESION
 
 def establecerConexion():#usuario,password): #Definida por el momento como una conexion root, luego todas las conexiones deben hacerse a traves de los usuarios con los permisos respectivos.
 
@@ -398,22 +399,6 @@ def modificarRespuesta(objetoModRespuesta):         #REVISAR
             nuevaConexion.close()
 
 #AQUI EMPIEZA EL CRUD DE INDICE DE DISCRIMINACION
-def agregarIndice(nuevoObjetoIndice):           #REVISAR
-
-    nuevaConexion = establecerConexion()
-
-    if (nuevaConexion.open):
-        try:
-            with nuevaConexion.cursor() as nuevoIndice:
-
-                insertIndice = "INSERT INTO Item (indiceDiscriminacion) VALUES(%s)"
-                nuevoIndice.execute(insertIndice, (nuevoObjetoIndice))
-                nuevaConexion.commit()
-        except Exception as e:
-            print(e)
-            print("Error al agregar un nuevo indice")
-        finally:
-            nuevaConexion.close()
 
 def modificarIndice(objetoModIndice):         #REVISAR
 
@@ -423,8 +408,8 @@ def modificarIndice(objetoModIndice):         #REVISAR
         try:
             with nuevaConexion.cursor() as indiceModificar:
 
-                modifyIndice = "UPDATE Item SET indiceDiscriminacion = %s WHERE id = %s"
-                indiceModificar.execute(modifyIndice, (objetoModIndice.getIndice()))
+                modifyIndice = "UPDATE Item SET indiceDiscriminacion = %s WHERE idItem = %s"
+                indiceModificar.execute(modifyIndice, (objetoModIndice.getIndice(), objetoModIndice.getId()))
                 nuevaConexion.commit()
         except Exception as e:
             print(e)
@@ -432,15 +417,15 @@ def modificarIndice(objetoModIndice):         #REVISAR
         finally:
             nuevaConexion.close()
 
-def eliminarIndice(objetoDelIndice): #REVISAR - Se asigna NULL al campo del indice
+def eliminarIndice(idItem): #REVISAR - Se asigna NULL al campo del indice
     nuevaConexion = establecerConexion()
 
     if (nuevaConexion.open):
         try:
             with nuevaConexion.cursor() as indiceEliminar:
 
-                deleteIndice = "UPDATE Item SET indiceDiscriminacion = NULL WHERE id = %s"
-                indiceEliminar.execute(deleteIndice, (objetoDelIndice.getIndice()))
+                deleteIndice = "UPDATE Item SET indiceDiscriminacion = NULL WHERE idItem = %s"
+                indiceEliminar.execute(deleteIndice, (idItem))
                 nuevaConexion.commit()
         except Exception as e:
             print(e)

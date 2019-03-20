@@ -24,9 +24,23 @@ class Controlador:
         pass
 
     def obtenerTemas(self):
-        listaTemas = GestorBase.cargarTemas()
-        listaTemas = [str(tema.getId())+"-"+tema.getTema() for tema in listaTemas]
-        return ["Escoger Tema"]+listaTemas
+        return GestorBase.cargarTemas()
+
+    def filtrarSubtemas(self, temaFiltro):
+        return GestorBase.filtrarSubtemas(temaFiltro.split("-")[0])
+
+    def filtrarItems(self, subtemaSeleccionado):
+
+        idSubtema = subtemaSeleccionado.split("-")[0]
+        listaItems = GestorBase.filtrarItems(idSubtema)
+
+        return listaItems
+
+    def obtenerTExamen(self):
+        return GestorBase.cargarTipoExamenes()
+
+    def obtenerPeriodos(self):
+        return GestorBase.cargarPeriodoExamenes()
 
     def insertarNuevoTema(self,temaNuevo):
 
@@ -47,12 +61,6 @@ class Controlador:
     def eliminarTema(self,temaSeleccionado):
 
         GestorBase.eliminarTema(temaSeleccionado.split("-")[0])
-
-    def filtrarSubtemas(self,temaFiltro):
-        listaSubtemas = GestorBase.filtrarSubtemas(temaFiltro.split("-")[0])
-        listaSubtemas = [str(subtema.getId()) + "-" + subtema.getSubtema() for subtema in listaSubtemas]
-
-        return ["Escoger Subtema"]+ listaSubtemas
 
     def modificarSubtema(self,subtemaSeleccionado, nuevoNombreSub):
         idSubtema = subtemaSeleccionado.split("-")[0]
@@ -81,22 +89,7 @@ class Controlador:
 
         GestorBase.eliminarItem(idItem)
 
-    def filtrarItems(self, subtemaSeleccionado):
-
-        idSubtema = subtemaSeleccionado.split("-")[0]
-        listaItems = GestorBase.filtrarItems(idSubtema)
-        listaItems = [item.getIdLargo()+"/Item"+str(item.getId()) for item in listaItems]
-        return listaItems
-
-    def filtrarObjetoItems(self,subtemaSeleccionado):
-
-        idSubtema = subtemaSeleccionado.split("-")[0]
-
-        return GestorBase.filtrarItems(idSubtema)
-
-
     def modificarItem(self,itemModificarSeleccionado,tipoItem, descripcionModificar,puntajeModificar): #TODO VALIDAR LA DESCRIPCION QUE TENGA BUEN FORMATO LATEX
-
 
         idItem = itemModificarSeleccionado.split("/Item")[1]
 
@@ -116,6 +109,18 @@ class Controlador:
 
         GestorBase.modificarItem(informacionItem)
 
+
+    #Funciones Indice Discriminacion
+    def agregarIndice(self,idItem, nuevoIndice):
+        objetoItem = ObjetoItem(idItem,None,None,None,None,None,nuevoIndice)
+
+        GestorBase.modificarIndice(objetoItem)
+
+    def eliminarIndice(self,idItem):
+
+        GestorBase.eliminarIndice(idItem)
+
+
     #Funciones de encabezado
     def insertarNuevoEncabezado(self, nuevoEncabezado):
         GestorBase.agregarEncabezado(nuevoEncabezado)
@@ -126,14 +131,3 @@ class Controlador:
         LatexWords = "\\paragraph{Tecnologico de Costa Rica} \\paragraph{ II Semestre, 2018} "
 
         preview(LatexWords , viewer = "file",filename= "Preview.png")
-
-    def obtenerTExamen(self):
-
-        Tipos = GestorBase.cargarTipoExamenes()
-
-        return Tipos
-
-    def obtenerPeriodos(self):
-
-        Periodos = GestorBase.cargarPeriodoExamenes()
-        return Periodos

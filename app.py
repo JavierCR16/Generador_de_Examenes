@@ -9,6 +9,11 @@ Controller = Controlador()
 def main():
     return render_template('OpcionesPrincipales.html')#TODO Aqui que redireccione a la de login
 
+@app.route("/CRUDTemasSubtemas.html")
+def ventanaCRUDTemasSubtemas():
+    listaTemas = Controller.obtenerTemas()
+    return render_template("CRUDTemasSubtemas.html", temas = listaTemas)
+
 @app.route('/crudTemasSubtemas', methods=['post'])
 def crudTemasSubtemas():
 
@@ -56,6 +61,12 @@ def crudTemasSubtemas():
     return render_template('CRUDTemasSubtemas.html',temas = temasExistentes, temaFiltro = temaAFiltrar,
                            subFiltrados = subtemasFiltrados)
 
+@app.route("/CRUDItems.html")
+def ventanaCRUDItems():
+    listaTemas = Controller.obtenerTemas()
+
+    return render_template("CRUDItems.html", temas = listaTemas)
+
 @app.route('/crudItemsAgregar', methods = ['post'])
 def crudItemsAgregar():
 
@@ -89,7 +100,7 @@ def crudItemsModificar():
     temaFiltroModificar = ""
     subtemasFiltrados = []
     itemsFiltrados = []
-    objetosItemsFiltrados = []
+    descripcionesItems = []
 
     if(valor_boton == "Modificar Item"):
 
@@ -116,11 +127,11 @@ def crudItemsModificar():
         else:
             subtemaFiltro = request.form.get("selectSubModificar")
             itemsFiltrados = Controller.filtrarItems(subtemaFiltro)
-            objetosItemsFiltrados = [item .getDescripcion() for item in Controller.filtrarObjetoItems(subtemaFiltro)]
+            descripcionesItems = [item.getDescripcion() for item in itemsFiltrados]
 
     temasExistentes = Controller.obtenerTemas()
     return render_template('CRUDItems.html', temas=temasExistentes, temaFiltroItemModificar=temaFiltroModificar,
-                           subtemasItemModificar=subtemasFiltrados, itemsFiltro = itemsFiltrados, objetosItemsFil = objetosItemsFiltrados)
+                           subtemasItemModificar=subtemasFiltrados, itemsFiltro = itemsFiltrados, descripItems = descripcionesItems)
 
 @app.route("/CRUDIndiceDiscriminacion.html")
 def crudIndiceDiscriminacion():
@@ -135,23 +146,52 @@ def buscarSubtemasItems():
     temaFiltroIndice = ""
     subtemasFiltrados = []
     itemsIndiceFiltrados = []
+    descripcionesItems = []
 
     if(valor_boton == "Buscar"):
-        subtemaFiltro = request.form.get("subtemaIndice")
+        subtemaFiltroIndice = request.form.get("subtemaIndice")
 
-        itemsIndiceFiltrados = Controller.filtrarObjetoItems(subtemaFiltro)
+        itemsIndiceFiltrados = Controller.filtrarItems(subtemaFiltroIndice)
+
+        descripcionesItems = [item.getDescripcion() for item in itemsIndiceFiltrados]
 
     else:
         temaFiltroIndice = request.form.get("selectBuscarTemaIndDis")
         subtemasFiltrados = Controller.filtrarSubtemas(temaFiltroIndice)
 
-
-
-
     listaTemas = Controller.obtenerTemas()
 
     return render_template("CRUDIndiceDiscriminacion.html", temas = listaTemas, subtemasItemIndice = subtemasFiltrados,
-                           temaFiltroItemIndice = temaFiltroIndice, itemsFiltroIndice = itemsIndiceFiltrados)
+                           temaFiltroItemIndice = temaFiltroIndice,itemsFiltroIndice = itemsIndiceFiltrados,
+                           descripItems = descripcionesItems)
+
+@app.route("/agregarIndiceDiscriminacion", methods=['post'])
+def agregarIndiceDiscriminacion(): #TODO, ACTUALIZAR TABLA SIN QUE SE REFRESQUE LA PAGINA
+    nuevoIndice = request.form.get("addIndice")
+    idItemModificar = request.form.get("idItemSecreto")
+
+    print("PICHA" + str(idItemModificar))
+
+    Controller.agregarIndice(idItemModificar,nuevoIndice)
+
+    temasExistentes = Controller.obtenerTemas()
+    return render_template("CRUDIndiceDiscriminacion.html", temas = temasExistentes)
+
+@app.route("/modiEliIndiceDiscriminacion", methods=['post'])
+def modEliIndiceDiscriminacion(): #TODO, ACTUALIZAR TABLA SIN QUE SE REFRESQUE LA PAGINA
+
+    nuevoIndice = request.form.get("modIndice")
+    idItemModificar = request.form.get("idItemSecreto")
+    valor_boton = request.form.get("accionDiscriMod")
+
+    if(valor_boton == "modificarIndice"):
+        Controller.agregarIndice(idItemModificar,nuevoIndice)
+
+    else:
+        Controller.eliminarIndice(idItemModificar)
+
+    temasExistentes = Controller.obtenerTemas()
+    return render_template("CRUDIndiceDiscriminacion.html", temas = temasExistentes)
 
 
 @app.route("/ConstruirExamen.html")
@@ -159,18 +199,6 @@ def buscarSubtemasItems():
 def construirExamen():
 
     return render_template("ConstruirExamen.html")
-
-@app.route("/CRUDTemasSubtemas.html")
-def ventanaCRUDTemasSubtemas():
-    listaTemas = Controller.obtenerTemas()
-    return render_template("CRUDTemasSubtemas.html", temas = listaTemas)
-
-
-@app.route("/CRUDItems.html")
-def ventanaCRUDItems():
-    listaTemas = Controller.obtenerTemas()
-
-    return render_template("CRUDItems.html", temas = listaTemas)
 
 @app.route("/CRUDEncabezado.html")
 def ventanaCRUDEncabezado():
