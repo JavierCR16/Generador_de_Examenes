@@ -126,3 +126,14 @@ class Controlador:
         LatexWords = "\\paragraph{Tecnologico de Costa Rica} \\paragraph{ II Semestre, 2018} "
 
         preview(LatexWords , viewer = "file",filename= "Preview.png")
+
+    def obtenerTExamen(self):
+
+        Tipos = GestorBase.cargarTipoExamenes()
+
+        return Tipos
+
+    def obtenerPeriodos(self):
+
+        Periodos = GestorBase.cargarPeriodoExamenes()
+        return Periodos

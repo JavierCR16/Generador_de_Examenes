@@ -4,7 +4,7 @@
 
     <meta charset="UTF-8">
     <title>Encabezado</title>
-    <link rel="stylesheet" type="text/css" href="../static/Encabezado_style.css">
+    <link rel="stylesheet" type="text/css" href="">
 </head>
 <body>
 
@@ -20,9 +20,9 @@
         <br>
         <label>Periodo:</label>
         <select>
-            <option value="1"> I Semestre</option>
-            <option value="2"> II Semestre</option>
-            <option value="3"> Verano</option>
+            {% for periodo in periodos  %}
+                <option>{{periodo.getDescPeriodo()}}  </option>
+            {% endfor %}
         </select>
         <br>
         <label>Año:</label>
@@ -33,10 +33,9 @@
         <br>
         <label>Tipo</label>
         <select>
-            <option value="1"> I Parcial</option>
-            <option value="2"> II Parcial</option>
-            <option value="3"> III Parcial</option>
-            <option value="4"> Extraordinario</option>
+            {% for tipo in tiposExamen  %}
+                <option>{{tipo.getDescTipo()}}  </option>
+            {% endfor %}
         </select>
 
     </div>
