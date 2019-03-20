@@ -174,7 +174,10 @@ def ventanaCRUDItems():
 
 @app.route("/CRUDEncabezado.html")
 def ventanaCRUDEncabezado():
-    return render_template("CRUDEncabezado.html")
+
+    Periodos = Controller.obtenerPeriodos()
+    Tipos = Controller.obtenerTExamen()
+    return render_template("CRUDEncabezado.html", tiposExamen = Tipos, periodos = Periodos)
 
 @app.route("/CRUDRespuestas.html")
 def ventanaCRUDRespuestas():
