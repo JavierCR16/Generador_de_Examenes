@@ -5,12 +5,15 @@ from Modelo.ObjetoTema import ObjetoTema
 from Modelo.ObjetoTipoExamen import ObjetoTipoExamen
 from Modelo.ObjetoPeriodo import ObjetoPeriodo
 from Modelo.ObjetoUsuario import ObjetoUsuario
-#TODO AGREGAR A LA SECCION DE ENCABEZADO BASE Y SISTEMA, LA OPCION DE METER ESCUELA Y CURSO.
+from Modelo.ObjetoRespuesta import ObjetoRespuesta
+#TODO AGREGAR A LA SECCION DE ENCABEZADO (BASE Y SISTEMA), LA OPCION DE METER ESCUELA Y CURSO.
 #TODO AGREGAR FUNCIONES PARA CARGAR TODOS LOS ENCABEZADOS(PLANTILLAS) Y QUE ESTOS SEAN PREVISUALIZADOS POR EL USUARIO.
 #TODO EN UN FUTURO, QUE LE PUEDA CAMBIAR EL TEMA ASOCIADO A UN SUBTEMA,AHORITA SI SE EQUIVOCA DI QUE LO BORRE.
 #TODO EN UN FUTURO, QUE LE PUEDA CAMBIAR EL SUBTEMA ASOCIADO A UN ITEM,AHORITA SI SE EQUIVOCA DI QUE LO BORRE.
 #TODO INTENTAR MANEJAR LAS VARIABLES A TRAVES DE LA SESION
+#TODO ACOMODAR UN POCO EL CODIGO
 
+#FUNCIONES DE CONEXION Y QUERIES
 def establecerConexion():#usuario,password): #Definida por el momento como una conexion root, luego todas las conexiones deben hacerse a traves de los usuarios con los permisos respectivos.
 
     try:
@@ -178,9 +181,30 @@ def filtrarItems(idSubtema):
         finally:
             nuevaConexion.close()
 
-    return listaItems
+    return listaItems\
 
+def filtrarItemsSeleccion(idSubtema):
+    nuevaConexion = establecerConexion()
+    listaItemsSeleccion = []
 
+    if(nuevaConexion.open):
+
+        try:
+            with nuevaConexion.cursor() as itemsSelect:
+
+                queryItems = "SELECT idItem,id, descripcion,tipo, puntaje, indiceDiscriminacion FROM Item WHERE idSubtema = %s AND tipo = 'S' "
+
+                itemsSelect.execute(queryItems,(idSubtema))
+
+                for atributos in itemsSelect:
+                    listaItemsSeleccion+= [ObjetoItem(atributos[0],atributos[1],
+                                                      atributos[2],atributos[3],idSubtema,atributos[4],atributos[5])]
+
+        except:
+            print("Error al filtrar los ítems de selección única")
+        finally:
+            nuevaConexion.close()
+    return listaItemsSeleccion
 #AQUI EMPIEZA EL CRUD DE ENCABEZADO, VER TODO´S
 def agregarEncabezado(objetoEncabezado):
     nuevaConexion = establecerConexion()
@@ -363,24 +387,54 @@ def eliminarItem(idItem):
             nuevaConexion.close()
 
 #AQUI EMPIEZA EL CRUD DE RESPUESTAS
-def agregarRespuesta(nuevoObjetoRespuesta):         #REVISAR
+def agregarRespuestas(objetoRespuesta):         #REVISAR
 
     nuevaConexion = establecerConexion()
-
+    cont = 1
     if (nuevaConexion.open):
         try:
             with nuevaConexion.cursor() as nuevaRespuesta:
+                for newResp in objetoRespuesta.getRespuestas():
+                    insertRespuesta = "INSERT INTO Respuestas (idItem, respuesta,respuestaCorrecta) VALUES(%s,%s,%s)"
+                    nuevaRespuesta.execute(insertRespuesta, (objetoRespuesta.getIdItem(), newResp,"S")) if str(cont) == objetoRespuesta.getRespuestaCorrecta() else nuevaRespuesta.execute(insertRespuesta, (objetoRespuesta.getIdItem(), newResp,"N"))
 
-                insertRespuesta = "INSERT INTO Respuestas (idItem, respuesta) VALUES(%s,%s)"
-                nuevaRespuesta.execute(insertRespuesta, (nuevoObjetoRespuesta.getIdItem(), nuevoObjetoRespuesta))
-                nuevaConexion.commit()
+                    nuevaConexion.commit()
+                    cont+=1
         except Exception as e:
             print(e)
             print("Error al agregar una nueva respuesta")
         finally:
             nuevaConexion.close()
 
-def modificarRespuesta(objetoModRespuesta):         #REVISAR
+def filtrarRespuestasViejas(idItem):
+    nuevaConexion = establecerConexion()
+    objetoRespuesta = ObjetoRespuesta(idItem,None,None)
+    if (nuevaConexion.open):
+
+        try:
+            with nuevaConexion.cursor() as respViejas:
+
+                queryRespuestas = "SELECT respuesta,respuestaCorrecta FROM Respuestas WHERE idItem = %s"
+
+                respViejas.execute(queryRespuestas,(idItem))
+                listaRespuestas =[]
+                contador =1
+                for atributos in respViejas:
+                    if(atributos[1] == "S"):
+                        objetoRespuesta.respCorrecta = contador
+                    contador+= 1
+
+                    listaRespuestas+= [atributos[0]]
+                objetoRespuesta.respuestas = listaRespuestas
+
+        except:
+            print("Error al obtener las respuestas del item")
+        finally:
+            nuevaConexion.close()
+
+    return objetoRespuesta
+
+def modificarRespuestas(objetoModRespuesta):         #REVISAR
 
     nuevaConexion = establecerConexion()
 
@@ -397,6 +451,7 @@ def modificarRespuesta(objetoModRespuesta):         #REVISAR
             print("Error al modificar una respuesta")
         finally:
             nuevaConexion.close()
+
 
 #AQUI EMPIEZA EL CRUD DE INDICE DE DISCRIMINACION
 

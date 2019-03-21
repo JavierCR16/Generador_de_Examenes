@@ -17,6 +17,7 @@ from Modelo.ObjetoTipoExamen import ObjetoTipoExamen
 from Modelo.ObjetoPeriodo import ObjetoPeriodo
 from Modelo.ObjetoUsuario import ObjetoUsuario
 from Modelo.ObjetoEncabezado import ObjetoEncabezado
+from Modelo.ObjetoRespuesta import ObjetoRespuesta
 
 class Controlador:
 
@@ -35,6 +36,12 @@ class Controlador:
         listaItems = GestorBase.filtrarItems(idSubtema)
 
         return listaItems
+
+    def filtrarItemsSeleccion(self,subtemaRespuestas):
+
+        idSubtema = subtemaRespuestas.split("-")[0]
+
+        return GestorBase.filtrarItemsSeleccion(idSubtema)
 
     def obtenerTExamen(self):
         return GestorBase.cargarTipoExamenes()
@@ -120,7 +127,6 @@ class Controlador:
 
         GestorBase.eliminarIndice(idItem)
 
-
     #Funciones de encabezado
     def insertarNuevoEncabezado(self, nuevoEncabezado):
         GestorBase.agregarEncabezado(nuevoEncabezado)
@@ -131,3 +137,25 @@ class Controlador:
         LatexWords = "\\paragraph{Tecnologico de Costa Rica} \\paragraph{ II Semestre, 2018} "
 
         preview(LatexWords , viewer = "file",filename= "Preview.png")
+
+    #Funciones Gestion Respuestas
+    def agregarRespuestas(self,itemSeleccionado, listaRespuestas, respCorrecta):
+        idItem = itemSeleccionado.split("/Item")[1]
+
+        objetoRespuesta = ObjetoRespuesta(idItem,listaRespuestas,respCorrecta)
+
+        GestorBase.agregarRespuestas(objetoRespuesta)
+
+    def obtenerRespuestasViejas(self,itemSeleccionado):
+
+        idItem = itemSeleccionado.split("/Item")[1]
+
+        return GestorBase.filtrarRespuestasViejas(idItem)
+
+    def modificarRespuestas(self,itemSeleccionado,listaRespuestas,respCorrecta):
+
+        idItem = itemSeleccionado.split("/Item")[1]
+
+        objetoRespuesta = ObjetoRespuesta(idItem, listaRespuestas, respCorrecta)
+
+        GestorBase.modificarRespuestas(objetoRespuesta)

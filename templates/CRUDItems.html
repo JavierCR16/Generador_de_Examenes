@@ -4,25 +4,23 @@
     <meta charset="UTF-8">
     <title>Gestión de Ítems de Examen</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-     <link rel="stylesheet" href="/static/popupWindow.css">
+     <link rel="stylesheet" href="/static/popupDescripcion.css">
 </head>
 <body>
 
     <script>
-        function funcion(descripcionesItems) {
+        function desplegarDescripcion(descripcionesItems) {
 
-            var select = document.getElementById("itemModiEli")
-
+            var select = document.getElementById("itemModiEli");
 
             if(select !== undefined) {
-                var indice = select.selectedIndex
+                var indice = select.selectedIndex;
 
-                var popup = document.getElementById("myPopup")
+                var popup = document.getElementById("myPopup");
 
-                popup.innerHTML = descripcionesItems[indice]
+                popup.innerHTML = descripcionesItems[indice]; //.getPuntaje();
                 popup.classList.toggle("show");
             }
-
         }
     </script>
 
@@ -44,7 +42,7 @@
 
         <label>Subtemas</label>
         <select name = "selectSubAgregar">
-             <option>Escoger Subtema </option>
+             <option>Escoger Subtema</option>
              {% for subtema in subtemasItemAgregar %}
                     <option> {{subtema.getId()}}-{{subtema.getSubtema()}}</option>
              {% endfor %}
@@ -71,7 +69,7 @@
     <form action = "crudItemsModificar" method="post">
          <label>Temas</label>
         <select  onchange="this.form.submit()" name = "selectTemaItemModificar">
-            <option>Escoger Tema </option>
+            <option>Escoger Tema</option>
             {% for tema in temas %}
 
                 {% if (tema.getId()~"-"~tema.getTema()) == temaFiltroItemModificar %}
@@ -84,8 +82,9 @@
         </select> <br>
 
         <label>Subtemas</label>
+
         <select name = "selectSubModificar" onchange="this.form.submit()">
-             <option>Escoger Subtema </option>
+             <option>Escoger Subtema</option>
              {% for subtema in subtemasItemModificar %}
                     <option> {{subtema.getId()}}-{{subtema.getSubtema()}}</option>
              {% endfor %}
@@ -99,7 +98,7 @@
             {% endfor %}
 
         </select> <div class="popup">
-            <i onclick="funcion( {{ descripItems }} )" class="fa fa-eye " style="font-size:30px"></i>
+        <i onclick="desplegarDescripcion( {{ descripItems }} )" class="fa fa-eye " style="font-size:30px"> </i>
             <span class="popuptext" id="myPopup">Popup text...</span>
         </div><br>
 

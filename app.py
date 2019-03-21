@@ -193,7 +193,6 @@ def modEliIndiceDiscriminacion(): #TODO, ACTUALIZAR TABLA SIN QUE SE REFRESQUE L
     temasExistentes = Controller.obtenerTemas()
     return render_template("CRUDIndiceDiscriminacion.html", temas = temasExistentes)
 
-
 @app.route("/ConstruirExamen.html")
 
 def construirExamen():
@@ -214,11 +213,82 @@ def ventanaCRUDRespuestas():
 
 @app.route("/crudRespuestasAgregar", methods=['post']) ##Revisar
 def crudRespuestasAgregar():
-    return render_template("CRUDRespuestas.html")
+
+    valor_boton = request.form.get("respuestasAdd")
+
+    temaFiltroRespuestas = ""
+    subtemasFiltrados = []
+    itemsFiltrados = []
+    descripcionesItems = []
+
+    if(valor_boton == "Agregar Respuestas"):
+        itemSeleccionado = request.form.get("selectItemRespAgregar")
+        respCorrecta = request.form.get("Arespuesta")
+        respuestas = [request.form.get("Arespuesta1"),request.form.get("Arespuesta2"),request.form.get("Arespuesta3")
+                      ,request.form.get("Arespuesta4")]
+
+        Controller.agregarRespuestas(itemSeleccionado,respuestas,respCorrecta)
+
+    else:
+        if (request.form.get("selectSubAgregarResp") == None or request.form.get(
+                "selectSubAgregarResp") == "Escoger Subtema"):
+
+            temaFiltroRespuestas = request.form.get("selectTemaRespAgregar")
+            subtemasFiltrados = Controller.filtrarSubtemas(temaFiltroRespuestas)
+
+        else:
+            subtemaFiltro = request.form.get("selectSubAgregarResp")
+            itemsFiltrados = Controller.filtrarItemsSeleccion(subtemaFiltro)
+            descripcionesItems = [item.getDescripcion() for item in itemsFiltrados]
+
+    listaTemas = Controller.obtenerTemas()
+    return render_template("CRUDRespuestas.html",temas = listaTemas, subtemasAgregarResp = subtemasFiltrados,itemsAgregarResp = itemsFiltrados,
+                           descripItemsAgregar = descripcionesItems, temaFiltroRespAgregar = temaFiltroRespuestas)
 
 @app.route("/crudRespuestasModificar", methods=['post'])  ##Revisar
 def crudRespuestasModificar():
-    return render_template("CRUDRespuestas.html")
+    valor_boton = request.form.get("respuestasMod")
+
+    temaFiltroRespuestas = ""
+    subtemasFiltrados = []
+    itemsFiltrados = []
+    descripcionesItems = []
+    objetoRespuesta = ""
+
+    if (valor_boton == "respuestasMod"):
+
+        itemSeleccionado = request.form.get("selectItemRespModificar")
+        respCorrecta = request.form.get("Mrespuesta")
+        respuestas = [request.form.get("Mrespuesta1"), request.form.get("Mrespuesta2"), request.form.get("Mrespuesta3")
+            , request.form.get("Mrespuesta4")]
+
+        Controller.modificarRespuestas(itemSeleccionado,respCorrecta,respuestas)
+
+    else:
+        if (request.form.get("selectTemaRespModificar") =="Escoger Tema" and
+        request.form.get("selectSubModificarResp") == "Escoger Subtema"):
+
+            itemSeleccionado = request.form.get("selectItemRespModificar")
+
+            objetoRespuesta = Controller.obtenerRespuestasViejas(itemSeleccionado)
+
+        elif(request.form.get("selectSubModificarResp") == None or request.form.get(
+                "selectSubModificarResp") == "Escoger Subtema"):
+
+            temaFiltroRespuestas = request.form.get("selectTemaRespModificar")
+            subtemasFiltrados = Controller.filtrarSubtemas(temaFiltroRespuestas)
+
+        else:
+            subtemaFiltro = request.form.get("selectSubModificarResp")
+            itemsFiltrados = Controller.filtrarItemsSeleccion(subtemaFiltro)
+            descripcionesItems = [item.getDescripcion() for item in itemsFiltrados]
+
+    listaTemas = Controller.obtenerTemas()
+
+    return render_template("CRUDRespuestas.html", temas=listaTemas, subtemasModificarResp=subtemasFiltrados,
+                           itemsModificarResp=itemsFiltrados,
+                           descripItemsModificar=descripcionesItems, temaFiltroRespModificar=temaFiltroRespuestas,respViejas = objetoRespuesta)
+
 
 if __name__ == '__main__':
 

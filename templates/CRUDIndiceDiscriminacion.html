@@ -90,6 +90,7 @@
                   </select>
             <label>Subtema:</label>
             <select name="subtemaIndice">
+                <option>Escoger Subtema</option>
                 {% for subtema in subtemasItemIndice %}
                     <option> {{ subtema.getId()}}-{{subtema.getSubtema()}}</option>
                 {% endfor %}

@@ -7,8 +7,42 @@
         <title>Gestión de Respuestas de Ítems</title>
         <meta name="description" content="">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="/static/popupDescripcion.css">
     </head>
     <body>
+
+    <script>
+        function desplegarDescripcion(descripcionesItems, modo) {
+
+            var selectRespAgre = document.getElementById("selectItemRespAgregar");
+            var selectRespMod = document.getElementById("selectItemRespModificar");
+
+            if(modo === 1){
+                if(selectRespAgre !== undefined) {
+                    var indiceAgregar = selectRespAgre.selectedIndex;
+
+                    var popupAgregar = document.getElementById("myPopupRespAgregar");
+
+                    popupAgregar.innerHTML = descripcionesItems[indiceAgregar];
+                    popupAgregar.classList.toggle("show");
+                }
+            }
+            else{
+                if(selectRespMod !== undefined) {
+                    var indiceModificar = selectRespMod.selectedIndex;
+
+                    var popupModificar = document.getElementById("myPopupRespModificar");
+
+                    popupModificar.innerHTML = descripcionesItems[indiceModificar];
+                    popupModificar.classList.toggle("show");
+                }
+            }
+
+
+        }
+    </script>
+
         <div class="header">
             <a href="ConstruirExamen.html"><i class="material-icons" style="font-size: 30px;">arrow_back</i></a>
             <h1> Gestión de Respuestas de Ítems </h1>
@@ -17,77 +51,104 @@
            <form action="crudRespuestasAgregar" method="post">
               <label>Tema</label>
                   <select onchange="this.form.submit()" name="selectTemaRespAgregar">
+                      <option>Escoger Tema</option>
                       {% for tema in temas %}
-                          {% if tema == temaFiltroRespAgregar %}
-                              <option selected> {{tema}}</option>
+                          {% if (tema.getId()~"-"~tema.getTema()) == temaFiltroRespAgregar %}
+                              <option selected> {{ tema.getId()}}-{{tema.getTema()}}</option>
                           {% else %}
-                              <option> {{tema}}</option>
+                              <option> {{ tema.getId()}}-{{tema.getTema()}} </option>
                           {%endif%}
                       {% endfor %}
                   </select><br>
 
             <label>Subtemas</label>
-            <select name="selectSubAgregar" onchange="this.form.submit()">
-                {% for subtema in subtemasRespAgregar %}
-                    <option> {{subtema}}</option>
+
+            <select name="selectSubAgregarResp" onchange="this.form.submit()">
+                <option>Escoger Subtema</option>
+
+                {% for subtema in subtemasAgregarResp %}
+                    <option> {{ subtema.getId()}}-{{subtema.getSubtema()}}</option>
                 {% endfor %}
             </select><br>
 
             <label>Ítems</label>
-            <select name = "selectRespAgregar">
-               {% for item in itemsFiltro %}
-                   <option> {{item}} </option>
+            <select id = "selectItemRespAgregar" name = "selectItemRespAgregar">
+               {% for item in itemsAgregarResp %}
+                   <option> {{ item.getIdLargo() }}/Item{{ item.getId( )}} </option>
                {% endfor %}
             </select><br>
 
+                <div class="popup">
+                     <i onclick="desplegarDescripcion( {{ descripItemsAgregar }},1 )" class="fa fa-eye " style="font-size:30px"></i>
+                     <span class="popuptext" id="myPopupRespAgregar">Popup text...</span>
+                </div><br>
+
             <label>Respuestas</label>
             <input type="text" name="Arespuesta1" placeholder="respuesta1">
-            <input type="radio" name="Arespuesta" value="R1" checked><br>
+            <input type="radio" name="Arespuesta" value="1" checked><br>
             <input type="text" name="Arespuesta2" placeholder="respuesta2">
-            <input type="radio" name="Arespuesta" value="R2"><br>
+            <input type="radio" name="Arespuesta" value="2"><br>
             <input type="text" name="Arespuesta3" placeholder="respuesta3">
-            <input type="radio" name="Arespuesta" value="R3"><br>
+            <input type="radio" name="Arespuesta" value="3"><br>
             <input type="text" name="Arespuesta4" placeholder="respuesta4">
-            <input type="radio" name="Arespuesta" value="R4"><br>
-            <input name = "buscarItems" class="btnSearch" type="submit" value="Agregar Respuestas">
+            <input type="radio" name="Arespuesta" value="4"><br>
+            <input name = "respuestasAdd" class="btnSearch" type="submit" value="Agregar Respuestas">
             </form>
 
             <form action="crudRespuestasModificar" method="post">
               <label>Tema</label>
                   <select onchange="this.form.submit()" name="selectTemaRespModificar">
+                      <option>Escoger Tema</option>
                       {% for tema in temas %}
-                          {% if tema == temaFiltroRespModificar %}
-                              <option selected> {{tema}}</option>
+                          {% if (tema.getId()~"-"~tema.getTema()) == temaFiltroRespModificar %}
+                              <option selected> {{tema.getId()}}-{{tema.getTema()}}</option>
                           {% else %}
-                              <option> {{tema}}</option>
+                              <option> {{tema.getId()}}-{{tema.getTema()}}</option>
                           {%endif%}
                       {% endfor %}
                   </select><br>
 
             <label>Subtemas</label>
-            <select name="selectSubModificar" onchange="this.form.submit()">
-                {% for subtema in subtemasRespModificar %}
-                    <option> {{subtema}}</option>
+
+            <select name="selectSubModificarResp" onchange="this.form.submit()">
+                <option>Escoger Subtema</option>
+                {% for subtema in subtemasModificarResp %}
+                    <option> {{subtema.getId()}}-{{subtema.getSubtema()}}</option>
                 {% endfor %}
             </select><br>
 
             <label>Ítems</label>
-            <select name = "selectRespModificar">
-               {% for item in itemsFiltro %}
-                   <option> {{item}} </option>
+            <select onchange="this.form.submit()" id = "selectItemRespModificar" name = "selectItemRespModificar">
+                <option>Seleccionar Ítem</option>
+               {% for item in itemsModificarResp %}
+                   <option> {{ item.getIdLargo() }}/Item{{ item.getId( )}} </option>
                {% endfor %}
-            </select><br>
+            </select><br></select>
+
+                <div class="popup">
+                     <i onclick="desplegarDescripcion( {{ descripItemsModificar }},2)" class="fa fa-eye" style="font-size:30px"></i>
+                     <span class="popuptext" id="myPopupRespModificar">Popup text...</span>
+                </div><br>
 
             <label>Respuestas</label>
-            <input type="text" name="Mrespuesta1" placeholder="respuesta1">
-            <input type="radio" name="Mrespuesta" value="R1"><br>
-            <input type="text" name="Mrespuesta2" placeholder="respuesta2">
-            <input type="radio" name="Mrespuesta" value="R2"><br>
-            <input type="text" name="Mrespuesta3" placeholder="respuesta3">
-            <input type="radio" name="Mrespuesta" value="R3"><br>
-            <input type="text" name="Mrespuesta4" placeholder="respuesta4">
-            <input type="radio" name="Mrespuesta" value="R4"><br>
-            <input name = "buscarItems" class="btnSearch" type="submit" value="Modificar Respuestas">
+                {% if respViejas != "" and respViejas is defined and respViejas.getRespuestas() != [] %}
+                    {% for i in range(4) %}
+                        {% set iTemp = i + 1%}
+                        <input  value = "{{respViejas.getRespuestas()[i]}}" type="text" name="Mrespuesta{{ iTemp }}" placeholder="respuesta{{ iTemp }}">
+
+                        {% if iTemp == respViejas.getRespuestaCorrecta() %}
+                            <input checked type="radio" name="Mrespuesta" value="{{iTemp}}"><br>
+
+                        {% else %}
+                            <input type="radio" name="Mrespuesta" value="{{iTemp}}"><br>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+                <input name = "respuestasMod" class="btnSearch" type="submit" value="Modificar Respuestas">
+
+                {% endif %}
             </form>
         </div>
         <div class="footer">
