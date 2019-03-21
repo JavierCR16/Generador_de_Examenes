@@ -3,14 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <title>Opciones Principales</title>
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300" rel="stylesheet">
 </head>
-<body>
+<body style = "background-image: url(../static/bk.jpg); background-size: 100%;">
+  <div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="CRUDIndiceDiscriminacion.html">Índice de Discriminación</a>
+    <a href="ConstruirExamen.html">Construir Examen</a>
+    <a href="CompartirExamenes.html"> Compartir Exámenes</a>
+  </div>
+  <div>
 
-<a href="CRUDIndiceDiscriminacion.html">Índice de Discriminación</a>
-<a href="ConstruirExamen.html">Construir Examen</a>
-<a href="CompartirExamenes.html"> Compartir Exámenes</a>
+  </div>
+
+  <div style = "border: 0px solid white; margin-top: 15%; height: 200px; weight: 110%">
+      <button id= "titulo" onclick="openNav()">Generador de Exámenes</button>
+  </div>
+
+  <!-- background: rgba(122, 122, 122, 0.4); -->
+  <div style = "margin-top: 10%; width: 100%; height: 20%; background-color: rgb(0, 0, 0, 0.3);">
+    <img style = "width: 40%; height: 30%;" src="../static/TECB.png" alt="Tecnológico de Costa Rica">
+  </div>
 
 
+  <script type="text/javascript">
+    function openNav() {
+      document.getElementById("mySidenav").style.width = "100%";
+    }
+
+    function closeNav() {
+      document.getElementById("mySidenav").style.width = "0";
+    }
+  </script>
 
 </body>
 </html>

@@ -3,20 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Gestión de Temas y Subtemas</title>
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300" rel="stylesheet">
 </head>
 <body>
 
-<label>Agregar Temas</label>
+  <div id="header">
+    <h1>Agregar Temas</h1>
+  </div>
 <br>
 
 <form method="post" action="crudTemasSubtemas" name="formTemasSubtemas" >
-    <div>
+    <div class = "divG">
         <label>Nuevo Tema </label>
         <input type = text name = "temaNuevo"> <br>
         <input type = submit name = "accioncrudtemassubtemas" value = "Agregar Tema">
     </div>
 
-    <div style ="margin-left: 100px">
+    <div class = "divG">
         <label>Agregar Subtemas </label> <br>
 
         <label>Seleccionar Tema</label>
@@ -36,7 +40,7 @@
     </div>
 
 
-    <div style ="margin-left: 150px">
+    <div class = "divG">
         <label>Modificar y Eliminar Temas</label><br>
         <label>Seleccionar Tema</label>
 
@@ -56,7 +60,7 @@
         <input type = submit name = "accioncrudtemassubtemas" value = "Eliminar Tema">
     </div>
 
-    <div style ="margin-left: 300px">
+    <div class = "divG">
 
         <label>Modificar Subtemas</label><br>
 
@@ -98,5 +102,10 @@
     </div>
 
 </form>
+
+<div id="footer">
+  <img style = "background-color: rgb(0, 0, 0, 0.7); width: 30%; height: 20%;" src="../static/TECB.png" alt="Tecnológico de Costa Rica">
+</div>
+
 </body>
 </html>
