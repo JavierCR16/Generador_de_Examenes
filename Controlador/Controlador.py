@@ -136,7 +136,7 @@ class Controlador:
         #Aqui poner todo lo del objeto
         LatexWords = "\\paragraph{Tecnologico de Costa Rica} \\paragraph{ II Semestre, 2018} "
 
-        preview(LatexWords , viewer = "file",filename= "Preview.png")
+        preview(LatexWords , viewer = "file",filename= "static/Preview.png")
 
     #Funciones Gestion Respuestas
     def agregarRespuestas(self,itemSeleccionado, listaRespuestas, respCorrecta):

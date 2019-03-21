@@ -200,7 +200,7 @@ def construirExamen():
 
     return render_template("ConstruirExamen.html")
 
-@app.route("/CRUDEncabezado.html")
+@app.route("/CRUDEncabezado.html", methods = ['post'])
 def ventanaCRUDEncabezado():
 
     Periodos = Controller.obtenerPeriodos()
