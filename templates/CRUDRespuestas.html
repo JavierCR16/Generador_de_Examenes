@@ -120,13 +120,18 @@
             <label>Ítems</label>
             <select onchange="this.form.submit()" id = "selectItemRespModificar" name = "selectItemRespModificar">
                 <option>Seleccionar Ítem</option>
+                {% if itemSelectMod != "" %}
+                    <option selected> {{ itemSelectMod }}
+                {% endif %}
+
                {% for item in itemsModificarResp %}
-                   <option> {{ item.getIdLargo() }}/Item{{ item.getId( )}} </option>
+                   <option> {{ item.getIdLargo() }}/Item{{ item.getId()}} </option>
+
                {% endfor %}
             </select><br></select>
 
                 <div class="popup">
-                     <i onclick="desplegarDescripcion( {{ descripItemsModificar }},2)" class="fa fa-eye" style="font-size:30px"></i>
+                     <i onclick="desplegarDescripcion( {{ session['descripItemsModificar'] }},2)" class="fa fa-eye" style="font-size:30px"></i>
                      <span class="popuptext" id="myPopupRespModificar">Popup text...</span>
                 </div><br>
 

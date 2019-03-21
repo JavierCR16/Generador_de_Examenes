@@ -434,7 +434,28 @@ def filtrarRespuestasViejas(idItem):
 
     return objetoRespuesta
 
-def modificarRespuestas(objetoModRespuesta):         #REVISAR
+def obtenerIdFilaRespuestas(idItem):
+    nuevaConexion = establecerConexion()
+    idExtraido = ""
+    if(nuevaConexion.open):
+
+        try:
+            with nuevaConexion.cursor() as idExtraer:
+                queryID = "SELECT id from Respuestas WHERE idItem = %s LIMIT 1"
+                idExtraer.execute(queryID,(idItem))
+
+                for atributos in idExtraer:
+                    idExtraido = atributos[0]
+        except:
+            print("Error al extraer el id")
+        finally:
+            nuevaConexion.close()
+
+    return idExtraido
+
+def modificarRespuestas(objetoModRespuesta):
+    idFila = obtenerIdFilaRespuestas(objetoModRespuesta.getIdItem())
+    ids = [idFila+i for i in range(0,4)]
 
     nuevaConexion = establecerConexion()
 
@@ -442,10 +463,17 @@ def modificarRespuestas(objetoModRespuesta):         #REVISAR
         try:
             with nuevaConexion.cursor() as respuestaModificar:
 
-                modifyRespuesta = "UPDATE Respuestas SET respuesta = %s WHERE id = %s"
-                respuestaModificar.execute(modifyRespuesta, (objetoModRespuesta.getRespuesta(),
-                                                         objetoModRespuesta.getId()))
-                nuevaConexion.commit()
+                contador = 1
+                index = 0
+                for modResp in objetoModRespuesta.getRespuestas():
+
+                    modifyRespuesta = "UPDATE Respuestas SET respuesta = %s, respuestaCorrecta = %s WHERE id = %s"
+                    respuestaModificar.execute(modifyRespuesta, (modResp,"S",
+                                                             ids[index])) if str(contador) == objetoModRespuesta.getRespuestaCorrecta() else respuestaModificar.execute(modifyRespuesta, (modResp,"N",
+                                                             ids[index]))
+                    contador+=1
+                    index+=1
+                    nuevaConexion.commit()
         except Exception as e:
             print(e)
             print("Error al modificar una respuesta")

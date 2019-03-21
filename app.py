@@ -1,8 +1,9 @@
-from flask import Flask, render_template,request
+from flask import Flask, render_template,request,session
 from Controlador.Controlador import Controlador
 
 
 app = Flask(__name__)
+app.secret_key = "super secret key"
 Controller = Controlador()
 
 @app.route('/')
@@ -238,7 +239,7 @@ def crudRespuestasAgregar():
 
         else:
             subtemaFiltro = request.form.get("selectSubAgregarResp")
-            itemsFiltrados = Controller.filtrarItemsSeleccion(subtemaFiltro)
+            itemsFiltrados = Controller.filtrarItemsSeleccion(subtemaFiltro) #TODO Y que no tengan respuestas
             descripcionesItems = [item.getDescripcion() for item in itemsFiltrados]
 
     listaTemas = Controller.obtenerTemas()
@@ -250,27 +251,28 @@ def crudRespuestasModificar():
     valor_boton = request.form.get("respuestasMod")
 
     temaFiltroRespuestas = ""
+    itemRespuestasMod = ""
     subtemasFiltrados = []
     itemsFiltrados = []
     descripcionesItems = []
     objetoRespuesta = ""
 
-    if (valor_boton == "respuestasMod"):
+    if (valor_boton == "Modificar Respuestas"):
 
         itemSeleccionado = request.form.get("selectItemRespModificar")
         respCorrecta = request.form.get("Mrespuesta")
         respuestas = [request.form.get("Mrespuesta1"), request.form.get("Mrespuesta2"), request.form.get("Mrespuesta3")
             , request.form.get("Mrespuesta4")]
 
-        Controller.modificarRespuestas(itemSeleccionado,respCorrecta,respuestas)
+        Controller.modificarRespuestas(itemSeleccionado,respuestas,respCorrecta)
 
     else:
         if (request.form.get("selectTemaRespModificar") =="Escoger Tema" and
         request.form.get("selectSubModificarResp") == "Escoger Subtema"):
 
-            itemSeleccionado = request.form.get("selectItemRespModificar")
+            itemRespuestasMod = request.form.get("selectItemRespModificar")
 
-            objetoRespuesta = Controller.obtenerRespuestasViejas(itemSeleccionado)
+            objetoRespuesta = Controller.obtenerRespuestasViejas(itemRespuestasMod)
 
         elif(request.form.get("selectSubModificarResp") == None or request.form.get(
                 "selectSubModificarResp") == "Escoger Subtema"):
@@ -282,12 +284,15 @@ def crudRespuestasModificar():
             subtemaFiltro = request.form.get("selectSubModificarResp")
             itemsFiltrados = Controller.filtrarItemsSeleccion(subtemaFiltro)
             descripcionesItems = [item.getDescripcion() for item in itemsFiltrados]
+            descripcionesItems.insert(0,"")
+            session['descripItemsModificar'] = descripcionesItems
 
     listaTemas = Controller.obtenerTemas()
 
     return render_template("CRUDRespuestas.html", temas=listaTemas, subtemasModificarResp=subtemasFiltrados,
                            itemsModificarResp=itemsFiltrados,
-                           descripItemsModificar=descripcionesItems, temaFiltroRespModificar=temaFiltroRespuestas,respViejas = objetoRespuesta)
+                           descripItemsModificar=descripcionesItems, temaFiltroRespModificar=temaFiltroRespuestas,respViejas = objetoRespuesta,
+                           itemSelectMod = itemRespuestasMod)
 
 
 if __name__ == '__main__':
