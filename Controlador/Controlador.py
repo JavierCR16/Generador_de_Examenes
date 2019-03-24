@@ -128,15 +128,20 @@ class Controlador:
         GestorBase.eliminarIndice(idItem)
 
     #Funciones de encabezado
-    def insertarNuevoEncabezado(self, nuevoEncabezado):
+    def insertarNuevoEncabezado(self,instrucciones ,periodo,año,tiempo,tipo):
+        periodoiId = periodo.split('-')[0]
+        tipoId= tipo.split('-')[0]
+        nuevoEncabezado=ObjetoEncabezado(instrucciones,periodoiId,año,tiempo,tipoId)
+
         GestorBase.agregarEncabezado(nuevoEncabezado)
 
-    def previewEncabezado(self):
+    def generarPreview(self,instrucciones ,periodo,año,tiempo,tipo):
+        periodoiId = periodo.split('-')[1]
+        tipoId = tipo.split('-')[1]
 
-        #Aqui poner todo lo del objeto
-        LatexWords = "\\paragraph{Tecnologico de Costa Rica} \\paragraph{ II Semestre, 2018} "
+        nuevoEncabezado = ObjetoEncabezado(instrucciones, periodoiId, año, tiempo, tipoId)
+        GestorEncabezado.previewEncabezado(nuevoEncabezado)
 
-        preview(LatexWords , viewer = "file",filename= "static/Preview.png")
 
     #Funciones Gestion Respuestas
     def agregarRespuestas(self,itemSeleccionado, listaRespuestas, respCorrecta):

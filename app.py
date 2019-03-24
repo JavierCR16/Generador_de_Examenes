@@ -200,12 +200,33 @@ def construirExamen():
 
     return render_template("ConstruirExamen.html")
 
-@app.route("/CRUDEncabezado.html", methods = ['post'])
+@app.route("/CRUDEncabezado.html")
 def ventanaCRUDEncabezado():
 
     Periodos = Controller.obtenerPeriodos()
     Tipos = Controller.obtenerTExamen()
     return render_template("CRUDEncabezado.html", tiposExamen = Tipos, periodos = Periodos)
+
+@app.route("/crudEncabezado",methods= ['post'])
+def crudEncabezado():
+
+    instrucciones = request.form.get("txtInstrucciones")
+    periodo = request.form.get("selectPeriodo")
+    anno = request.form.get("inputAño")
+    tiempo = request.form.get("inputTiempo")
+    tipo = request.form.get("selectTipo")
+
+    if (opcionBoton == "PreviewEncabezado"):
+        Controller.generarPreview(instrucciones,periodo,anno,tiempo,tipo)
+    else:
+        Controller.insertarNuevoEncabezado(instrucciones,periodo,anno,tiempo,tipo)
+
+
+
+    Periodos = Controller.obtenerPeriodos()
+    Tipos = Controller.obtenerTExamen()
+
+    return render_template("CRUDEncabezado.html",tiposExamen = Tipos, periodos = Periodos)
 
 @app.route("/CRUDRespuestas.html")
 def ventanaCRUDRespuestas():

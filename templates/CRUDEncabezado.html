@@ -6,12 +6,20 @@
     <title>Encabezado</title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="">
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
 </head>
 <body>
+    <script>
+
+    function funcion() {
+        var div = docu.getElementById("previsualizationModal")
+        div.showModal()
+    }
+
+    </script>
     <form method="post" action="CRUDEncabezado" name=" formEncabezado">
     <div id="header"  >
         <a href="ConstruirExamen.html"><i class="material-icons" style="font-size: 30px;">arrow_back</i></a>
@@ -27,28 +35,26 @@
         <label>Periodo:</label>
         <select>
             {% for periodo in periodos  %}
-                <option>{{periodo.getDescPeriodo()}}  </option>
+                <option>{{ periodo.getId() }}-{{periodo.getDescPeriodo()}}  </option>
             {% endfor %}
         </select>
         <br>
-        <label>Año:</label>
-        <input type = "date">
+        <label>Fecha:</label>
+        <input type = "date" name ="inputAño">
         <br>
         <label>Tiempo</label>
-        <input type= "time">
+        <input type= "time" name = inputTiempo>
         <br>
         <label>Tipo</label>
-        <select>
+        <select name = selectTipo>
             {% for tipo in tiposExamen  %}
-                <option>{{tipo.getDescTipo()}}  </option>
+                <option>{{ tipo.getId() }}-{{tipo.getDescTipo()}}  </option>
             {% endfor %}
         </select>
 
     </div>
 
-    <div id="imagen1">
-        <img src="" alt="Previsualización" style="border-color: black">
-    </div>
+
     <div id="Bottom">
 
     </div>
@@ -73,24 +79,11 @@
 </div>
 
     <div id = Botones>
-    <button type="button" data-toggle="modal" data-target="#previsualizationModal" id="botonPreview">Preview</button>
+    <button type="submit" data-toggle="modal" data-target="#previsualizationModal" id="botonPreview" name="AccionEncabezado" value="PreviewEncabezado">Preview</button>
         <!--<button type="button" data-toggle="modal" data-target="#previsualizationModal"  >Launch modal</button> -->
-    <button type="button" class="btn btn-primary" id = "botonGuardar">Guardar</button>
+    <button type="submit" class="btn btn-primary" id = "botonGuardar" name="AccionEncabezado" value="GuardarEncabezado" >Guardar</button>
     </div>
 
-    <script>
-
-        $(document).ready(function(){
-        $("botonPreview").click(function(){
-            var comment = $.trim($("#txtInstrucciones").val());
-            if(comment != ""){
-                // Show alert dialog if value is not blank
-                alert(comment);
-            }
-        });
-
-    });
-    </script>
     </form>
 
     <div id="footer">
