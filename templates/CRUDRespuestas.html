@@ -8,43 +8,15 @@
         <meta name="description" content="">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <link rel="stylesheet" href="/static/popupDescripcion.css">
         <link rel="stylesheet" type="text/css" href="../static/style.css">
         <link href="https://fonts.googleapis.com/css?family=Montserrat:300" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/static/solicitudes.js"></script>
     </head>
     <body>
-
-    <script>
-        function desplegarDescripcion(descripcionesItems, modo) {
-
-            var selectRespAgre = document.getElementById("selectItemRespAgregar");
-            var selectRespMod = document.getElementById("selectItemRespModificar");
-
-            if(modo === 1){
-                if(selectRespAgre !== undefined) {
-                    var indiceAgregar = selectRespAgre.selectedIndex;
-
-                    var popupAgregar = document.getElementById("myPopupRespAgregar");
-
-                    popupAgregar.innerHTML = descripcionesItems[indiceAgregar];
-                    popupAgregar.classList.toggle("show");
-                }
-            }
-            else{
-                if(selectRespMod !== undefined) {
-                    var indiceModificar = selectRespMod.selectedIndex;
-
-                    var popupModificar = document.getElementById("myPopupRespModificar");
-
-                    popupModificar.innerHTML = descripcionesItems[indiceModificar];
-                    popupModificar.classList.toggle("show");
-                }
-            }
-
-
-        }
-    </script>
-
         <div class="header">
             <a href="ConstruirExamen.html"><i class="material-icons" style="font-size: 30px;">arrow_back</i></a>
             <h1> Gestión de Respuestas de Ítems </h1>
@@ -52,40 +24,30 @@
         <div>
            <form action="crudRespuestasAgregar" method="post">
               <label>Tema</label>
-                  <select onchange="this.form.submit()" name="selectTemaRespAgregar">
+                  <select onchange="obtenerSubtemas(this,'selectSubAgregarResp')" name="selectTemaRespAgregar">
                       <option>Escoger Tema</option>
+
                       {% for tema in temas %}
-                          {% if (tema.getId()~"-"~tema.getTema()) == temaFiltroRespAgregar %}
-                              <option selected> {{ tema.getId()}}-{{tema.getTema()}}</option>
-                          {% else %}
-                              <option> {{ tema.getId()}}-{{tema.getTema()}} </option>
-                          {%endif%}
+                          <option> {{ tema.getId()}}-{{tema.getTema()}} </option>
                       {% endfor %}
+
                   </select><br>
 
             <label>Subtemas</label>
 
-            <select name="selectSubAgregarResp" onchange="this.form.submit()">
-                <option>Escoger Subtema</option>
+            <select id = "selectSubAgregarResp" name="selectSubAgregarResp" onchange="obtenerItems(this,'selectItemRespAgregar','despDescAddResp')">
 
-                {% for subtema in subtemasAgregarResp %}
-                    <option> {{ subtema.getId()}}-{{subtema.getSubtema()}}</option>
-                {% endfor %}
             </select><br>
 
             <label>Ítems</label>
+
             <select id = "selectItemRespAgregar" name = "selectItemRespAgregar">
-               {% for item in itemsAgregarResp %}
-                   <option> {{ item.getIdLargo() }}/Item{{ item.getId( )}} </option>
-               {% endfor %}
+
             </select><br>
 
-                <div class="popup">
-                     <i onclick="desplegarDescripcion( {{ descripItemsAgregar }},1 )" class="fa fa-eye " style="font-size:30px"></i>
-                     <span class="popuptext" id="myPopupRespAgregar">Popup text...</span>
-                </div><br>
+        <i id="despDescAddResp" class="fa fa-eye"></i> <br>
 
-            <label>Respuestas</label>
+            <h1>Respuestas</h1>
             <input type="text" name="Arespuesta1" placeholder="respuesta1">
             <input type="radio" name="Arespuesta" value="1" checked><br>
             <input type="text" name="Arespuesta2" placeholder="respuesta2">
@@ -99,67 +61,74 @@
 
             <form action="crudRespuestasModificar" method="post">
               <label>Tema</label>
-                  <select onchange="this.form.submit()" name="selectTemaRespModificar">
+                  <select onchange="obtenerSubtemas(this,'selectSubModificarResp')" name="selectTemaRespModificar">
                       <option>Escoger Tema</option>
+
                       {% for tema in temas %}
-                          {% if (tema.getId()~"-"~tema.getTema()) == temaFiltroRespModificar %}
-                              <option selected> {{tema.getId()}}-{{tema.getTema()}}</option>
-                          {% else %}
-                              <option> {{tema.getId()}}-{{tema.getTema()}}</option>
-                          {%endif%}
+                          <option> {{tema.getId()}}-{{tema.getTema()}}</option>
                       {% endfor %}
+
                   </select><br>
 
             <label>Subtemas</label>
 
-            <select name="selectSubModificarResp" onchange="this.form.submit()">
-                <option>Escoger Subtema</option>
-                {% for subtema in subtemasModificarResp %}
-                    <option> {{subtema.getId()}}-{{subtema.getSubtema()}}</option>
-                {% endfor %}
+            <select id="selectSubModificarResp" name="selectSubModificarResp" onchange="obtenerItems(this,'selectItemRespModificar',
+            'despDescModResp')">
+
             </select><br>
 
             <label>Ítems</label>
-            <select onchange="this.form.submit()" id = "selectItemRespModificar" name = "selectItemRespModificar">
-                <option>Seleccionar Ítem</option>
-                {% if itemSelectMod != "" %}
-                    <option selected> {{ itemSelectMod }}
-                {% endif %}
+            <select onchange="cargarRespuestasModificar(this)" id = "selectItemRespModificar" name = "selectItemRespModificar">
 
-               {% for item in itemsModificarResp %}
-                   <option> {{ item.getIdLargo() }}/Item{{ item.getId()}} </option>
-
-               {% endfor %}
             </select><br></select>
 
-                <div class="popup">
-                     <i onclick="desplegarDescripcion( {{ session['descripItemsModificar'] }},2)" class="fa fa-eye" style="font-size:30px"></i>
-                     <span class="popuptext" id="myPopupRespModificar">Popup text...</span>
-                </div><br>
+            <i id="despDescModResp" class="fa fa-eye"></i> <br>><br>
 
-            <label>Respuestas</label>
-                {% if respViejas != "" and respViejas is defined and respViejas.getRespuestas() != [] %}
-                    {% for i in range(4) %}
-                        {% set iTemp = i + 1%}
-                        <input  value = "{{respViejas.getRespuestas()[i]}}" type="text" name="Mrespuesta{{ iTemp }}" placeholder="respuesta{{ iTemp }}">
+                <div id="respuestasModificar" hidden>
+                    <h1>Respuestas</h1>
+                    <input id ="Mrespuesta1" type="text" name="Mrespuesta1" placeholder="respuesta1">
 
-                        {% if iTemp == respViejas.getRespuestaCorrecta() %}
-                            <input checked type="radio" name="Mrespuesta" value="{{iTemp}}"><br>
+                    <input type="radio" name="Mrespuesta" value="1"><br>
 
-                        {% else %}
-                            <input type="radio" name="Mrespuesta" value="{{iTemp}}"><br>
+                    <input id ="Mrespuesta2" type="text" name="Mrespuesta2" placeholder="respuesta2">
 
-                        {% endif %}
+                    <input type="radio" name="Mrespuesta" value="2"><br>
 
-                    {% endfor %}
+                    <input id ="Mrespuesta3" type="text" name="Mrespuesta3" placeholder="respuesta3">
 
-                <input name = "respuestasMod" class="btnSearch" type="submit" value="Modificar Respuestas">
+                    <input type="radio" name="Mrespuesta" value="3"><br>
 
-                {% endif %}
+                    <input id ="Mrespuesta4" type="text" name="Mrespuesta4" placeholder="respuesta4">
+
+                    <input type="radio" name="Mrespuesta" value="4"><br>
+
+                    <input name = "respuestasMod" class="btnSearch" type="submit" value="Modificar Respuestas">
+                </div>
             </form>
         </div>
         <div id="footer">
           <img style = "background-color: rgb(0, 0, 0, 0.7); width: 30%; height: 20%;" src="../static/TECB.png" alt="Tecnológico de Costa Rica">
         </div>
+
+    <!-- Modal -->
+<div class="modal fade" id="modalItem" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Descripción</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id="descripcionModal" class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
     </body>
 </html>

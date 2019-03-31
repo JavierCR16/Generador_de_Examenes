@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" type="text/css" href="../static/style.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/solicitudes.js"></script>
 </head>
 <body>
 
@@ -32,15 +34,12 @@
             {% for tema in temas %}
                 <option> {{ tema.getId()}}-{{tema.getTema()}} </option>
             {% endfor %}
-
         </select> <br>
 
         <label> Nuevo Subtema </label> <br>
         <input type = text name = "subtemaNuevo"><br>
         <input type = submit value = "Agregar Subtema" name = "accioncrudtemassubtemas">
-
     </div>
-
 
     <div class = "divG">
         <label>Modificar y Eliminar Temas</label><br>
@@ -68,27 +67,19 @@
 
         <div>
             <label>Seleccionar Tema</label>
-            <select name = "selectTemaSub" onchange="this.form.submit()">
+            <select  name = "selectTemaSub" onchange="obtenerSubtemas(this,'selectSubModificar')">
+
                 <option>Escoger Tema </option>
                 {% for tema in temas %}
-
-                    {% if (tema.getId()~"-"~tema.getTema()) == temaFiltro %}
-                        <option selected>{{ tema.getId()}}-{{tema.getTema()}}</option>
-                    {% else %}
-                        <option>{{ tema.getId()}}-{{tema.getTema()}}</option>
-                    {%endif%}
-
+                    <option>{{ tema.getId()}}-{{tema.getTema()}}</option>
                 {% endfor %}
+
             </select>
         </div>
 
         <div>
             <label>Seleccionar Subtema</label>
-            <select name = "selectSub">
-                <option>Escoger Subtema </option>
-                {% for subtema in subFiltrados %}
-                    <option> {{subtema.getId()}}-{{ subtema.getSubtema()}}</option>
-                {% endfor %}
+            <select id = "selectSubModificar" name = "selectSub">
 
             </select><br>
         </div>

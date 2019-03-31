@@ -32,11 +32,11 @@ def obtenerInformacionItem(idItem):
 
         try:
             with nuevaConexion.cursor() as infoItem:
-                queryItem = "SELECT id, descripcion, puntaje FROM Item WHERE idItem = %s"
+                queryItem = "SELECT id, descripcion, tipo,puntaje FROM Item WHERE idItem = %s"
                 infoItem.execute(queryItem,(idItem))
 
                 for atributos in infoItem:
-                    objetoItem = ObjetoItem(idItem,atributos[0],atributos[1],None, None,atributos[2],None)
+                    objetoItem = ObjetoItem(idItem,atributos[0],atributos[1],atributos[2], None,atributos[3],None)
 
         except:
             print("Error al obtener la informacion del item")
@@ -205,6 +205,7 @@ def filtrarItemsSeleccion(idSubtema):
         finally:
             nuevaConexion.close()
     return listaItemsSeleccion
+
 #AQUI EMPIEZA EL CRUD DE ENCABEZADO, VER TODO´S
 def agregarEncabezado(objetoEncabezado):
     nuevaConexion = establecerConexion()
@@ -421,7 +422,7 @@ def filtrarRespuestasViejas(idItem):
                 contador =1
                 for atributos in respViejas:
                     if(atributos[1] == "S"):
-                        objetoRespuesta.respCorrecta = contador
+                        objetoRespuesta.respCorrecta = str(contador)
                     contador+= 1
 
                     listaRespuestas+= [atributos[0]]

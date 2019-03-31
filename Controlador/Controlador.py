@@ -10,6 +10,7 @@ from Gestores import GestorLaTeX
 from Gestores import GestorPDF
 from Gestores import GestorRespuestas
 from Gestores import GestorTemasSubtemas
+from Gestores import GestorJSON
 from Modelo.ObjetoItem import ObjetoItem
 from Modelo.ObjetoSubtema import ObjetoSubtema
 from Modelo.ObjetoTema import ObjetoTema
@@ -36,6 +37,12 @@ class Controlador:
         listaItems = GestorBase.filtrarItems(idSubtema)
 
         return listaItems
+
+    def obtenerItemByID(self,itemSeleccionado):
+
+        idItem = itemSeleccionado.split("/Item")[1]
+
+        return GestorBase.obtenerInformacionItem(idItem)
 
     def filtrarItemsSeleccion(self,subtemaRespuestas):
 
@@ -159,3 +166,18 @@ class Controlador:
         objetoRespuesta = ObjetoRespuesta(idItem, listaRespuestas, respCorrecta)
 
         GestorBase.modificarRespuestas(objetoRespuesta)
+
+    #Funciones JSON
+
+    def convertirSubtemasJson(self,listaSubtemas):
+
+        return GestorJSON.convertirListaAJSON(listaSubtemas)
+
+    def convertirItemsJson(self,listaItems):
+
+        return GestorJSON.convertirListaAJSON(listaItems)
+
+    def convertirJson(self,objetoSimple):
+
+        return GestorJSON.convertirJsonSingleObject(objetoSimple)
+
