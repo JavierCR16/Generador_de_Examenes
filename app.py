@@ -210,7 +210,8 @@ def ventanaCRUDEncabezado():
 @app.route("/crudEncabezado",methods= ['post'])
 def crudEncabezado():
 
-    instrucciones = request.form.get("txtInstrucciones")
+    opcionBoton = request.form.get("AccionEncabezado")
+    instrucciones = str(request.form.get("txtInstrucciones"))
     periodo = request.form.get("selectPeriodo")
     anno = request.form.get("inputAño")
     tiempo = request.form.get("inputTiempo")
@@ -221,12 +222,11 @@ def crudEncabezado():
     else:
         Controller.insertarNuevoEncabezado(instrucciones,periodo,anno,tiempo,tipo)
 
-
-
     Periodos = Controller.obtenerPeriodos()
     Tipos = Controller.obtenerTExamen()
 
-    return render_template("CRUDEncabezado.html",tiposExamen = Tipos, periodos = Periodos)
+    return render_template("CRUDEncabezado.html", tiposExamen=Tipos, periodos=Periodos)
+
 
 @app.route("/CRUDRespuestas.html")
 def ventanaCRUDRespuestas():

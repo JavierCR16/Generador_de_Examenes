@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <title>Encabezado</title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -12,77 +11,71 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
 </head>
 <body>
-    <script>
 
-    function funcion() {
-        var div = docu.getElementById("previsualizationModal")
-        div.showModal()
-    }
+    <form method="post" action="crudEncabezado" name="formEncabezado">
+        <div id="header"  >
+            <a href="ConstruirExamen.html"><i class="material-icons" style="font-size: 30px;">arrow_back</i></a>
+            <h1> Configuración de encabezado</h1>
+        </div>
 
-    </script>
-    <form method="post" action="CRUDEncabezado" name=" formEncabezado">
-    <div id="header"  >
-        <a href="ConstruirExamen.html"><i class="material-icons" style="font-size: 30px;">arrow_back</i></a>
-        <h1> Configuración de encabezado</h1>
-    </div>
+        <div style=".." >
+            <h2>Instrucciones de examen</h2>
+            <!-- Agregar instrucciones -->
 
-    <div id="Izquierda">
-        <label>Instrucciónes de examen</label>
-        <!-- Agregar instrucciones -->
-        <br>
-        <textarea rows="6" id="txtInstrucciones" > Aqui van las instrucciones del examen</textarea>
-        <br>
-        <label>Periodo:</label>
-        <select>
-            {% for periodo in periodos  %}
-                <option>{{ periodo.getId() }}-{{periodo.getDescPeriodo()}}  </option>
-            {% endfor %}
-        </select>
-        <br>
-        <label>Fecha:</label>
-        <input type = "date" name ="inputAño">
-        <br>
-        <label>Tiempo</label>
-        <input type= "time" name = inputTiempo>
-        <br>
-        <label>Tipo</label>
-        <select name = selectTipo>
-            {% for tipo in tiposExamen  %}
-                <option>{{ tipo.getId() }}-{{tipo.getDescTipo()}}  </option>
-            {% endfor %}
-        </select>
+            <textarea rows="6" name="txtInstrucciones"> Aqui van las instrucciones del examen</textarea>
 
-    </div>
+            <h3>Periodo:</h3>
+            <select name="selectPeriodo">
+                {% for periodo in periodos  %}
+                    <option>{{ periodo.getId() }}-{{periodo.getDescPeriodo()}}  </option>
+                {% endfor %}
+            </select>
+
+            <h3>Fecha:</h3>
+            <input type = "date" name ="inputAño">
+
+            <h3>Tiempo</h3>
+            <input type= "time" name = inputTiempo>
+
+            <h3>Tipo</h3>
+            <select name = selectTipo>
+                {% for tipo in tiposExamen  %}
+                    <option>{{ tipo.getId() }}-{{tipo.getDescTipo()}}  </option>
+                {% endfor %}
+            </select>
+
+        </div>
 
 
-    <div id="Bottom">
+        <div id="Bottom">
 
-    </div>
-            <div class="modal fade" id="previsualizationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog" role="document">
+        </div>
+        <div class="modal fade" id="previsualizationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                      <img src="static/Preview.png" alt="Previzualización" style="border-color: black">
-                  </div>
-            <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <img src="/static/prueba.png" alt="Previsualización" style="border-color: black">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    <div id = Botones>
-    <button type="submit" data-toggle="modal" data-target="#previsualizationModal" id="botonPreview" name="AccionEncabezado" value="PreviewEncabezado">Preview</button>
-        <!--<button type="button" data-toggle="modal" data-target="#previsualizationModal"  >Launch modal</button> -->
-    <button type="submit" class="btn btn-primary" id = "botonGuardar" name="AccionEncabezado" value="GuardarEncabezado" >Guardar</button>
-    </div>
+        <div id = Botones>
+
+            <button type="submit" class=" btn btn-primary" data-toggle="modal" data-target="#previsualizationModal" id="botonPreview" name="AccionEncabezado" value="PreviewEncabezado">Preview</button>
+            <!--<button type="button" data-toggle="modal" data-target="#previsualizationModal"  >Launch modal</button> -->
+            <button type="submit" class="btn btn-primary" id = "botonGuardar" name="AccionEncabezado" value="GuardarEncabezado" >Guardar</button>
+        </div>
 
     </form>
 

@@ -131,7 +131,8 @@ class Controlador:
     def insertarNuevoEncabezado(self,instrucciones ,periodo,año,tiempo,tipo):
         periodoiId = periodo.split('-')[0]
         tipoId= tipo.split('-')[0]
-        nuevoEncabezado=ObjetoEncabezado(instrucciones,periodoiId,año,tiempo,tipoId)
+        #Dejar Fecha completa o solo año
+        nuevoEncabezado=ObjetoEncabezado(instrucciones,año,tiempo,periodoiId,tipoId)
 
         GestorBase.agregarEncabezado(nuevoEncabezado)
 
@@ -139,7 +140,7 @@ class Controlador:
         periodoiId = periodo.split('-')[1]
         tipoId = tipo.split('-')[1]
 
-        nuevoEncabezado = ObjetoEncabezado(instrucciones, periodoiId, año, tiempo, tipoId)
+        nuevoEncabezado = ObjetoEncabezado(instrucciones, año, tiempo,periodoiId, tipoId)
         GestorEncabezado.previewEncabezado(nuevoEncabezado)
 
 
