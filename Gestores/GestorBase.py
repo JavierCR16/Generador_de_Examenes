@@ -6,14 +6,12 @@ from Modelo.ObjetoTipoExamen import ObjetoTipoExamen
 from Modelo.ObjetoPeriodo import ObjetoPeriodo
 from Modelo.ObjetoUsuario import ObjetoUsuario
 from Modelo.ObjetoRespuesta import ObjetoRespuesta
-
 #TODO AGREGAR A LA SECCION DE ENCABEZADO (BASE Y SISTEMA), LA OPCION DE METER ESCUELA Y CURSO.
 #TODO AGREGAR FUNCIONES PARA CARGAR TODOS LOS ENCABEZADOS(PLANTILLAS) Y QUE ESTOS SEAN PREVISUALIZADOS POR EL USUARIO.
 #TODO EN UN FUTURO, QUE LE PUEDA CAMBIAR EL TEMA ASOCIADO A UN SUBTEMA,AHORITA SI SE EQUIVOCA DI QUE LO BORRE.
 #TODO EN UN FUTURO, QUE LE PUEDA CAMBIAR EL SUBTEMA ASOCIADO A UN ITEM,AHORITA SI SE EQUIVOCA DI QUE LO BORRE.
-#TODO POR EJEMPLO EN AGREGAR ITEMS, TEMAS, SUBTEMAS, PODER AGREGAR VARIOS DE UN SOLO Y EN ITEMS LA POSIBILIDAD DE METER LAS RESPUESTAS DE UN SOLO
-#TODO Intentar usar pylatex para el encabezado
-#TODO Hacer la seccion de preview de plantillas y modificacion en el html de encabezado
+#TODO INTENTAR MANEJAR LAS VARIABLES A TRAVES DE LA SESION
+#TODO ACOMODAR UN POCO EL CODIGO
 
 #FUNCIONES DE CONEXION Y QUERIES
 def establecerConexion():#usuario,password): #Definida por el momento como una conexion root, luego todas las conexiones deben hacerse a traves de los usuarios con los permisos respectivos.
@@ -34,11 +32,11 @@ def obtenerInformacionItem(idItem):
 
         try:
             with nuevaConexion.cursor() as infoItem:
-                queryItem = "SELECT id, descripcion, tipo,puntaje FROM Item WHERE idItem = %s"
+                queryItem = "SELECT id, descripcion, puntaje FROM Item WHERE idItem = %s"
                 infoItem.execute(queryItem,(idItem))
 
                 for atributos in infoItem:
-                    objetoItem = ObjetoItem(idItem,atributos[0],atributos[1],atributos[2], None,atributos[3],None)
+                    objetoItem = ObjetoItem(idItem,atributos[0],atributos[1],None, None,atributos[2],None)
 
         except:
             print("Error al obtener la informacion del item")
@@ -207,6 +205,25 @@ def filtrarItemsSeleccion(idSubtema):
         finally:
             nuevaConexion.close()
     return listaItemsSeleccion
+#AQUI EMPIEZA EL CRUD DE ENCABEZADO, VER TODO´S
+def agregarEncabezado(objetoEncabezado):
+    nuevaConexion = establecerConexion()
+
+    if(nuevaConexion.open):
+
+        try:
+            with nuevaConexion.cursor() as nuevoEncabezado:
+                insertEncabezado = "INSERT INTO Encabezado (instrucciones,anno,tiempo,idPeriodo,idTipoExamen) VALUES(%s, %s, %s, %s, %s)"
+                nuevoEncabezado.execute(insertEncabezado,(objetoEncabezado.getInstrucciones(),objetoEncabezado.getAnno(),
+                                                          objetoEncabezado.getTiempo(),objetoEncabezado.getIdPeriodo(),
+                                                          objetoEncabezado.getIdTipoExamen()))
+                nuevaConexion.commit()
+        except:
+            print("Error al agregar un nuevo encabezado.")
+
+        finally:
+            nuevaConexion.close()
+
 
 #AQUI EMPIEZA EL CRUD TEMAS SUBTEMAS
 def agregarTema(nuevoTemaIngresado):
@@ -404,7 +421,7 @@ def filtrarRespuestasViejas(idItem):
                 contador =1
                 for atributos in respViejas:
                     if(atributos[1] == "S"):
-                        objetoRespuesta.respCorrecta = str(contador)
+                        objetoRespuesta.respCorrecta = contador
                     contador+= 1
 
                     listaRespuestas+= [atributos[0]]
@@ -499,22 +516,4 @@ def eliminarIndice(idItem):
         finally:
             nuevaConexion.close()
 
-#AQUI EMPIEZA EL CRUD DE ENCABEZADO
-def agregarEncabezado(objetoEncabezado):
-    nuevaConexion = establecerConexion()
-
-    if(nuevaConexion.open):
-
-        try:
-            with nuevaConexion.cursor() as nuevoEncabezado:
-                insertEncabezado = "INSERT INTO Encabezado (curso,escuela,instrucciones,anno,tiempo,idPeriodo,idTipoExamen) VALUES(%a,%s,%s, %s, %s, %s, %s)"
-                nuevoEncabezado.execute(insertEncabezado,(objetoEncabezado.getCurso(),objetoEncabezado.getEscuela(),
-                                                          objetoEncabezado.getInstrucciones(),objetoEncabezado.getAnno(),
-                                                          objetoEncabezado.getTiempo(),objetoEncabezado.getIdPeriodo(),
-                                                          objetoEncabezado.getIdTipoExamen()))
-                nuevaConexion.commit()
-        except:
-            print("Error al agregar un nuevo encabezado.")
-
-        finally:
-            nuevaConexion.close()
+#AQUI EMPIEZA EL SUGERIR-VERIFICAR EDICIONES
