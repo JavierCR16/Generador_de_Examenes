@@ -2,7 +2,7 @@ import datetime
 #from sympy import preview
 from Gestores import GestorBase
 from Gestores import GestorCorreo
-#rom Gestores import GestorEncabezado
+from Gestores import GestorEncabezado
 from Gestores import GestorExamenes
 from Gestores import GestorIndiceDiscriminacion
 from Gestores import GestorItems
