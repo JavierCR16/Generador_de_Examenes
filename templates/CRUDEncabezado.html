@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Encabezado</title>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="../static/style.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/solicitudes.js"></script>
 </head>
 <body>
 
@@ -22,23 +23,23 @@
             <h2>Instrucciones de examen</h2>
             <!-- Agregar instrucciones -->
 
-            <textarea rows="6" name="txtInstrucciones"> Aqui van las instrucciones del examen</textarea>
+            <textarea rows="6" id="instruccionesEncabezado" name="txtInstrucciones" placeholder="INSTRUCCIONES:"> </textarea>
 
             <h3>Periodo:</h3>
-            <select name="selectPeriodo">
+            <select id="selectPeriodo" name="selectPeriodo">
                 {% for periodo in periodos  %}
                     <option>{{ periodo.getId() }}-{{periodo.getDescPeriodo()}}  </option>
                 {% endfor %}
             </select>
 
             <h3>Fecha:</h3>
-            <input type = "date" name ="inputAño">
+            <input id="fechaEncabezado" type = "date" name ="inputAño">
 
             <h3>Tiempo</h3>
-            <input type= "time" name = inputTiempo>
+            <input id = "tiempoEncabezado" type= "time" name = inputTiempo>
 
             <h3>Tipo</h3>
-            <select name = selectTipo>
+            <select id ="selectTipo" name = selectTipo>
                 {% for tipo in tiposExamen  %}
                     <option>{{ tipo.getId() }}-{{tipo.getDescTipo()}}  </option>
                 {% endfor %}
@@ -50,30 +51,11 @@
         <div id="Bottom">
 
         </div>
-        <div class="modal fade" id="previsualizationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <img src="/static/prueba.png" alt="Previsualización" style="border-color: black">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <div id = Botones>
 
-            <button type="submit" class=" btn btn-primary" data-toggle="modal" data-target="#previsualizationModal" id="botonPreview" name="AccionEncabezado" value="PreviewEncabezado">Preview</button>
-            <!--<button type="button" data-toggle="modal" data-target="#previsualizationModal"  >Launch modal</button> -->
+            <button onclick="previewEncabezado()" type="button" id="botonPreview" value="PreviewEncabezado">Preview</button>
+
             <button type="submit" class="btn btn-primary" id = "botonGuardar" name="AccionEncabezado" value="GuardarEncabezado" >Guardar</button>
         </div>
 
@@ -82,5 +64,25 @@
     <div id="footer">
       <img style = "background-color: rgb(0, 0, 0, 0.7); width: 30%; height: 20%;" src="../static/TECB.png" alt="Tecnológico de Costa Rica">
     </div>
+
+<div class="modal fade" id="previsualizationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Previsualización de Encabezado</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div id = "previewEncabezadoModal" class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 </body>
 </html>

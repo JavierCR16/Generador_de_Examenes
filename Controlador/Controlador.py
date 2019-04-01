@@ -143,11 +143,12 @@ class Controlador:
 
         GestorBase.agregarEncabezado(nuevoEncabezado)
 
-    def generarPreview(self,instrucciones ,periodo,año,tiempo,tipo):
-        periodoiId = periodo.split('-')[1]
-        tipoId = tipo.split('-')[1]
+    def generarPreview(self,curso,escuela,instrucciones ,periodo,fecha,tiempo,tipo):
+        periodo= periodo.split('-')[1]
+        tipo = tipo.split('-')[1]
+        fecha = fecha.split("-")[0]
 
-        nuevoEncabezado = ObjetoEncabezado(instrucciones, año, tiempo,periodoiId, tipoId)
+        nuevoEncabezado = ObjetoEncabezado(curso,escuela,instrucciones, fecha, tiempo,periodo, tipo)
         GestorEncabezado.previewEncabezado(nuevoEncabezado)
 
 

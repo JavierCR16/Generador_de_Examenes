@@ -198,18 +198,9 @@ def crudRespuestasModificar():
             , request.form.get("Mrespuesta4")]
 
     Controller.modificarRespuestas(itemSeleccionado,respuestas,respCorrecta)
-
-
-
     listaTemas = Controller.obtenerTemas()
 
     return render_template("CRUDRespuestas.html", temas=listaTemas)
-
-@app.route("/ConstruirExamen.html")
-
-def construirExamen():
-
-    return render_template("ConstruirExamen.html")
 
 @app.route("/CRUDEncabezado.html")
 def ventanaCRUDEncabezado():
@@ -218,26 +209,36 @@ def ventanaCRUDEncabezado():
     Tipos = Controller.obtenerTExamen()
     return render_template("CRUDEncabezado.html", tiposExamen = Tipos, periodos = Periodos)
 
-@app.route("/crudEncabezado",methods= ['post'])
-def crudEncabezado():
+@app.route("/previewEncabezado",methods= ['post'])
+def previewEncabezado():
 
-    opcionBoton = request.form.get("AccionEncabezado")
-    instrucciones = str(request.form.get("txtInstrucciones"))
-    periodo = request.form.get("selectPeriodo")
-    anno = request.form.get("inputAño")
-    tiempo = request.form.get("inputTiempo")
-    tipo = request.form.get("selectTipo")
+    infoPreview = request.get_json()
 
-    if (opcionBoton == "PreviewEncabezado"):
-        Controller.generarPreview(instrucciones,periodo,anno,tiempo,tipo)
-    else:
-        Controller.insertarNuevoEncabezado(instrucciones,periodo,anno,tiempo,tipo)
+    curso = infoPreview["curso"]
+    escuela = infoPreview["escuela"]
+    periodo = infoPreview["periodo"]
+    fecha = infoPreview["fecha"]
+    tiempo = infoPreview["tiempo"]
+    tipo = infoPreview["tipo"]
+    instrucciones = infoPreview["instrucciones"]
 
-    Periodos = Controller.obtenerPeriodos()
-    Tipos = Controller.obtenerTExamen()
+    Controller.generarPreview(curso,escuela,instrucciones,periodo,fecha,tiempo,tipo)
 
-    return render_template("CRUDEncabezado.html", tiposExamen=Tipos, periodos=Periodos)
+    return jsonify(status = "success")
+    #else:
+        #Controller.insertarNuevoEncabezado(instrucciones,periodo,anno,tiempo,tipo)
 
+    #Periodos = Controller.obtenerPeriodos()
+    #Tipos = Controller.obtenerTExamen()
+
+    #return render_template("CRUDEncabezado.html", tiposExamen=Tipos, periodos=Periodos)
+
+#@app.route("guardarEncabezado")
+
+@app.route("/ConstruirExamen.html")
+def construirExamen():
+
+    return render_template("ConstruirExamen.html")
 
 if __name__ == '__main__':
 

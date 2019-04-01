@@ -133,6 +133,32 @@ function procesarAjaxRespuestasViejas(itemSeleccionado){
     })
 }
 
+function procesarAjaxEncabezado(curso,escuela,periodo,fecha,tiempo,tipo,instrucciones){
+    $.ajax({
+
+        url: "/previewEncabezado",
+        type: 'post',
+        data:JSON.stringify({curso:curso,escuela:escuela,periodo:periodo,fecha:fecha,tiempo:tiempo,tipo:tipo,
+        instrucciones:instrucciones}),
+        contentType: 'application/json;charset=UTF-8',
+        dataType: "json",
+
+        success: function (datos) {
+            var bodyModalPreview = $("#previewEncabezadoModal");
+            bodyModalPreview.find('img').remove();
+
+            //TODO Cambiar nombre de imagen de forma dinamica por si hay varios usuarios conectados haciendo previews.
+            bodyModalPreview.append("<img class=\"img-responsive\" src=\"/static/preview.png\" alt=\"Previsualización\"  style=\"border-color: black;width: 100%\">");
+
+            var modalPreview = $("#previsualizationModal");
+
+            modalPreview.modal({
+                show:true
+            });
+        }
+    })
+}
+
 function obtenerSubtemas(selectEscogido, idObjHTML){
 
     var temaEscogido = selectEscogido.options[selectEscogido.selectedIndex].text;
@@ -243,3 +269,22 @@ function desplegarDescripcion(descripcionesItems,selectItem) {
             }
         }
 
+function previewEncabezado() {
+
+    var curso = "Probabilidades";  //LUEGO INCLUIR UN SELECT CON CURSOS
+    var escuela = "Escuela de Matemáticas";  //LUEGO INCLUIR UN SELECT CON ESCUELAS
+
+    var periodoDOM = document.getElementById("selectPeriodo")
+    var periodo = periodoDOM.options[periodoDOM.selectedIndex].text;
+
+    var fecha = $("#fechaEncabezado").val();
+    var tiempo = $("#tiempoEncabezado").val();
+
+    var tipoDOM = document.getElementById("selectTipo");
+    var tipo = tipoDOM.options[tipoDOM.selectedIndex].text;
+
+    var instrucciones = $("#instruccionesEncabezado").val();
+
+    procesarAjaxEncabezado(curso, escuela, periodo, fecha, tiempo,tipo, instrucciones);
+
+}

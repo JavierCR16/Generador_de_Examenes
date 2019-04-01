@@ -6,12 +6,13 @@ from Modelo.ObjetoTipoExamen import ObjetoTipoExamen
 from Modelo.ObjetoPeriodo import ObjetoPeriodo
 from Modelo.ObjetoUsuario import ObjetoUsuario
 from Modelo.ObjetoRespuesta import ObjetoRespuesta
+
 #TODO AGREGAR A LA SECCION DE ENCABEZADO (BASE Y SISTEMA), LA OPCION DE METER ESCUELA Y CURSO.
 #TODO AGREGAR FUNCIONES PARA CARGAR TODOS LOS ENCABEZADOS(PLANTILLAS) Y QUE ESTOS SEAN PREVISUALIZADOS POR EL USUARIO.
 #TODO EN UN FUTURO, QUE LE PUEDA CAMBIAR EL TEMA ASOCIADO A UN SUBTEMA,AHORITA SI SE EQUIVOCA DI QUE LO BORRE.
 #TODO EN UN FUTURO, QUE LE PUEDA CAMBIAR EL SUBTEMA ASOCIADO A UN ITEM,AHORITA SI SE EQUIVOCA DI QUE LO BORRE.
-#TODO INTENTAR MANEJAR LAS VARIABLES A TRAVES DE LA SESION
-#TODO ACOMODAR UN POCO EL CODIGO
+#TODO POR EJEMPLO EN AGREGAR ITEMS, TEMAS, SUBTEMAS, PODER AGREGAR VARIOS DE UN SOLO Y EN ITEMS LA POSIBILIDAD DE METER LAS RESPUESTAS DE UN SOLO
+
 
 #FUNCIONES DE CONEXION Y QUERIES
 def establecerConexion():#usuario,password): #Definida por el momento como una conexion root, luego todas las conexiones deben hacerse a traves de los usuarios con los permisos respectivos.
@@ -205,26 +206,6 @@ def filtrarItemsSeleccion(idSubtema):
         finally:
             nuevaConexion.close()
     return listaItemsSeleccion
-
-#AQUI EMPIEZA EL CRUD DE ENCABEZADO, VER TODO´S
-def agregarEncabezado(objetoEncabezado):
-    nuevaConexion = establecerConexion()
-
-    if(nuevaConexion.open):
-
-        try:
-            with nuevaConexion.cursor() as nuevoEncabezado:
-                insertEncabezado = "INSERT INTO Encabezado (instrucciones,anno,tiempo,idPeriodo,idTipoExamen) VALUES(%s, %s, %s, %s, %s)"
-                nuevoEncabezado.execute(insertEncabezado,(objetoEncabezado.getInstrucciones(),objetoEncabezado.getAnno(),
-                                                          objetoEncabezado.getTiempo(),objetoEncabezado.getIdPeriodo(),
-                                                          objetoEncabezado.getIdTipoExamen()))
-                nuevaConexion.commit()
-        except:
-            print("Error al agregar un nuevo encabezado.")
-
-        finally:
-            nuevaConexion.close()
-
 
 #AQUI EMPIEZA EL CRUD TEMAS SUBTEMAS
 def agregarTema(nuevoTemaIngresado):
@@ -514,5 +495,24 @@ def eliminarIndice(idItem):
         except Exception as e:
             print(e)
             print("Error al eliminar el indice")
+        finally:
+            nuevaConexion.close()
+
+#AQUI EMPIEZA EL CRUD DE ENCABEZADO, VER TODO´S
+def agregarEncabezado(objetoEncabezado):
+    nuevaConexion = establecerConexion()
+
+    if(nuevaConexion.open):
+
+        try:
+            with nuevaConexion.cursor() as nuevoEncabezado:
+                insertEncabezado = "INSERT INTO Encabezado (instrucciones,anno,tiempo,idPeriodo,idTipoExamen) VALUES(%s, %s, %s, %s, %s)"
+                nuevoEncabezado.execute(insertEncabezado,(objetoEncabezado.getInstrucciones(),objetoEncabezado.getAnno(),
+                                                          objetoEncabezado.getTiempo(),objetoEncabezado.getIdPeriodo(),
+                                                          objetoEncabezado.getIdTipoExamen()))
+                nuevaConexion.commit()
+        except:
+            print("Error al agregar un nuevo encabezado.")
+
         finally:
             nuevaConexion.close()
