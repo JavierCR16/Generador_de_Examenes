@@ -21,12 +21,12 @@ function procesarAjaxSubtemas(tema,idObjHTML){
     })
 }
 
-function procesarAjaxItems(subtema,idObjSelect,idPopDescripcion){
+function procesarAjaxItems(subtema,tipoFiltrado,idObjSelect,idPopDescripcion){
     $.ajax({
 
         url: "/filtrarItems",
         type: 'post',
-        data:JSON.stringify({informacionSubtema:subtema}),
+        data:JSON.stringify({informacionSubtema:subtema,tipo:tipoFiltrado}),
         contentType: 'application/json;charset=UTF-8',
         dataType: "json",
 
@@ -166,11 +166,11 @@ function obtenerSubtemas(selectEscogido, idObjHTML){
     procesarAjaxSubtemas(temaEscogido, idObjHTML)
 }
 
-function obtenerItems(selectEscogido, idObjSelect,idPopDescripcion){
+function obtenerItems(selectEscogido,tipoFiltrado ,idObjSelect,idPopDescripcion){
 
     var subtemaEscogido = selectEscogido.options[selectEscogido.selectedIndex].text;
 
-    procesarAjaxItems(subtemaEscogido,idObjSelect,idPopDescripcion)
+    procesarAjaxItems(subtemaEscogido,tipoFiltrado,idObjSelect,idPopDescripcion)
 
 }
 

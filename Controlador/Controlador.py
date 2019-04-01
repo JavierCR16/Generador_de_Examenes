@@ -25,67 +25,67 @@ class Controlador:
     def __init__(self):
         pass
 
-    def obtenerTemas(self):
-        return GestorBase.cargarTemas()
+    def obtenerTemas(self,usuario,contrasenna):
+        return GestorBase.cargarTemas(usuario,contrasenna)
 
-    def filtrarSubtemas(self, temaFiltro):
-        return GestorBase.filtrarSubtemas(temaFiltro.split("-")[0])
+    def filtrarSubtemas(self, temaFiltro,usuario,contrasenna):
+        return GestorBase.filtrarSubtemas(temaFiltro.split("-")[0],usuario,contrasenna)
 
-    def filtrarItems(self, subtemaSeleccionado):
+    def filtrarItems(self, subtemaSeleccionado,tipoFiltrado,usuario,contrasenna):
 
         idSubtema = subtemaSeleccionado.split("-")[0]
-        listaItems = GestorBase.filtrarItems(idSubtema)
+        listaItems = GestorBase.filtrarItems(idSubtema,tipoFiltrado,usuario,contrasenna)
 
         return listaItems
 
-    def obtenerItemByID(self,itemSeleccionado):
+    def obtenerItemByID(self,itemSeleccionado,usuario,contrasenna):
 
         idItem = itemSeleccionado.split("/Item")[1]
 
-        return GestorBase.obtenerInformacionItem(idItem)
+        return GestorBase.obtenerInformacionItem(idItem,usuario,contrasenna)
 
-    def filtrarItemsSeleccion(self,subtemaRespuestas):
+    def filtrarItemsSeleccion(self,subtemaRespuestas,usuario,contrasenna):
 
         idSubtema = subtemaRespuestas.split("-")[0]
 
-        return GestorBase.filtrarItemsSeleccion(idSubtema)
+        return GestorBase.filtrarItemsSeleccion(idSubtema,usuario,contrasenna)
 
-    def obtenerTExamen(self):
-        return GestorBase.cargarTipoExamenes()
+    def obtenerTExamen(self,usuario,contrasenna):
+        return GestorBase.cargarTipoExamenes(usuario,contrasenna)
 
-    def obtenerPeriodos(self):
-        return GestorBase.cargarPeriodoExamenes()
+    def obtenerPeriodos(self,usuario,contrasenna):
+        return GestorBase.cargarPeriodoExamenes(usuario,contrasenna)
 
-    def insertarNuevoTema(self,temaNuevo):
+    def insertarNuevoTema(self,temaNuevo,usuario,contrasenna):
 
-        GestorBase.agregarTema(temaNuevo)
+        GestorBase.agregarTema(temaNuevo,usuario,contrasenna)
 
-    def insertarNuevoSubtema(self,subtemaNuevo,temaSeleccionado):
+    def insertarNuevoSubtema(self,subtemaNuevo,temaSeleccionado,usuario,contrasenna):
 
         idTema =temaSeleccionado.split("-")[0]
 
-        GestorBase.agregarSubtema(ObjetoSubtema(None,subtemaNuevo,idTema))
+        GestorBase.agregarSubtema(ObjetoSubtema(None,subtemaNuevo,idTema),usuario,contrasenna)
 
-    def modificarTema(self,nuevoNombreTema,temaSeleccionado):
+    def modificarTema(self,nuevoNombreTema,temaSeleccionado,usuario,contrasenna):
 
         idTema = temaSeleccionado.split("-")[0]
 
-        GestorBase.modificarTema(ObjetoTema(idTema,nuevoNombreTema))
+        GestorBase.modificarTema(ObjetoTema(idTema,nuevoNombreTema),usuario,contrasenna)
 
-    def eliminarTema(self,temaSeleccionado):
+    def eliminarTema(self,temaSeleccionado,usuario,contrasenna):
 
-        GestorBase.eliminarTema(temaSeleccionado.split("-")[0])
+        GestorBase.eliminarTema(temaSeleccionado.split("-")[0],usuario,contrasenna)
 
-    def modificarSubtema(self,subtemaSeleccionado, nuevoNombreSub):
+    def modificarSubtema(self,subtemaSeleccionado, nuevoNombreSub,usuario,contrasenna):
         idSubtema = subtemaSeleccionado.split("-")[0]
 
-        GestorBase.modificarSubtema(ObjetoSubtema(idSubtema,nuevoNombreSub,None))
+        GestorBase.modificarSubtema(ObjetoSubtema(idSubtema,nuevoNombreSub,None),usuario,contrasenna)
 
-    def eliminarSubtema(self,subAEliminar):
+    def eliminarSubtema(self,subAEliminar,usuario,contrasenna):
         idSubtema = subAEliminar.split("-")[0]
-        GestorBase.eliminarSubtema(idSubtema)
+        GestorBase.eliminarSubtema(idSubtema,usuario,contrasenna)
 
-    def agregarItem(self,descripcion,tipo,subtemaSeleccionado,puntaje): #TODO VALIDAR LA DESCRIPCION QUE TENGA BUEN FORMATO LATEX
+    def agregarItem(self,descripcion,tipo,subtemaSeleccionado,puntaje,usuario,contrasenna): #TODO VALIDAR LA DESCRIPCION QUE TENGA BUEN FORMATO LATEX
         fechaActual =datetime.datetime.now()
 
         annoCreacion = fechaActual.year
@@ -95,19 +95,19 @@ class Controlador:
 
         idSubtema = subtemaSeleccionado.split("-")[0]
 
-        GestorBase.agregarItem(ObjetoItem(None,idItem,descripcion,tipo,idSubtema,puntaje,None))
+        GestorBase.agregarItem(ObjetoItem(None,idItem,descripcion,tipo,idSubtema,puntaje,None),usuario,contrasenna)
 
-    def eliminarItem(self,itemSeleccionado):
+    def eliminarItem(self,itemSeleccionado,usuario,contrasenna):
 
         idItem = itemSeleccionado.split("/Item")[1]
 
-        GestorBase.eliminarItem(idItem)
+        GestorBase.eliminarItem(idItem,usuario,contrasenna)
 
-    def modificarItem(self,itemModificarSeleccionado,tipoItem, descripcionModificar,puntajeModificar): #TODO VALIDAR LA DESCRIPCION QUE TENGA BUEN FORMATO LATEX
+    def modificarItem(self,itemModificarSeleccionado,tipoItem, descripcionModificar,puntajeModificar,usuario,contrasenna): #TODO VALIDAR LA DESCRIPCION QUE TENGA BUEN FORMATO LATEX
 
         idItem = itemModificarSeleccionado.split("/Item")[1]
 
-        informacionItem = GestorBase.obtenerInformacionItem(idItem)
+        informacionItem = GestorBase.obtenerInformacionItem(idItem,usuario,contrasenna)
 
         listaidLargo = informacionItem.idLargo.split("-")
 
@@ -121,28 +121,35 @@ class Controlador:
 
         informacionItem.puntaje = puntajeModificar if puntajeModificar != "" else informacionItem.puntaje
 
-        GestorBase.modificarItem(informacionItem)
+        GestorBase.modificarItem(informacionItem,usuario,contrasenna)
+
+    def comprobarConexion(self,user,contra):
+        return GestorBase.establecerConexion(user,contra)
+
+    def cerrarConexion(self,objetoConexion):
+
+        GestorBase.cerrarConexion(objetoConexion)
 
 
     #Funciones Indice Discriminacion
-    def agregarIndice(self,idItem, nuevoIndice):
+    def agregarIndice(self,idItem, nuevoIndice,usuario,contrasenna):
         objetoItem = ObjetoItem(idItem,None,None,None,None,None,nuevoIndice)
 
-        GestorBase.modificarIndice(objetoItem)
+        GestorBase.modificarIndice(objetoItem,usuario,contrasenna)
 
-    def eliminarIndice(self,idItem):
+    def eliminarIndice(self,idItem,usuario,contrasenna):
 
-        GestorBase.eliminarIndice(idItem)
+        GestorBase.eliminarIndice(idItem,usuario,contrasenna)
 
     #Funciones de encabezado
-    def insertarNuevoEncabezado(self,curso,escuela,instrucciones ,periodo,fecha,tiempo,tipo):
+    def insertarNuevoEncabezado(self,curso,escuela,instrucciones ,periodo,fecha,tiempo,tipo,usuario,contrasenna):
         periodoId = periodo.split('-')[0]
         tipoId= tipo.split('-')[0]
         anno = fecha.split('-')[0]
 
         nuevoEncabezado=ObjetoEncabezado(curso,escuela,instrucciones,anno,tiempo,periodoId,tipoId)
 
-        GestorBase.agregarEncabezado(nuevoEncabezado)
+        GestorBase.agregarEncabezado(nuevoEncabezado,usuario,contrasenna)
 
     def generarPreview(self,curso,escuela,instrucciones ,periodo,fecha,tiempo,tipo):
         periodo= periodo.split('-')[1]
@@ -154,26 +161,26 @@ class Controlador:
 
 
     #Funciones Gestion Respuestas
-    def agregarRespuestas(self,itemSeleccionado, listaRespuestas, respCorrecta):
+    def agregarRespuestas(self,itemSeleccionado, listaRespuestas, respCorrecta,usuario,contrasenna):
         idItem = itemSeleccionado.split("/Item")[1]
 
         objetoRespuesta = ObjetoRespuesta(idItem,listaRespuestas,respCorrecta)
 
-        GestorBase.agregarRespuestas(objetoRespuesta)
+        GestorBase.agregarRespuestas(objetoRespuesta,usuario,contrasenna)
 
-    def obtenerRespuestasViejas(self,itemSeleccionado):
+    def obtenerRespuestasViejas(self,itemSeleccionado,usuario,contrasenna):
 
         idItem = itemSeleccionado.split("/Item")[1]
 
-        return GestorBase.filtrarRespuestasViejas(idItem)
+        return GestorBase.filtrarRespuestasViejas(idItem,usuario,contrasenna)
 
-    def modificarRespuestas(self,itemSeleccionado,listaRespuestas,respCorrecta):
+    def modificarRespuestas(self,itemSeleccionado,listaRespuestas,respCorrecta,usuario,contrasenna):
 
         idItem = itemSeleccionado.split("/Item")[1]
 
         objetoRespuesta = ObjetoRespuesta(idItem, listaRespuestas, respCorrecta)
 
-        GestorBase.modificarRespuestas(objetoRespuesta)
+        GestorBase.modificarRespuestas(objetoRespuesta,usuario,contrasenna)
 
     #Funciones JSON
 

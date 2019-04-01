@@ -11,13 +11,13 @@
     <link rel="stylesheet" type="text/css" href="../static/style.css">
 </head>
 <body>
-    <form id="LogInForm">
+    <form action="login" method="post" id="LogInForm">
         <div class="LogIn">
-            <input class="inputs" type="email" placeholder="Email: "/>
+            <input name ="correo" class="inputs" type="email" placeholder="Email: "/>
             </br>
-            <input class="inputs" type="password" placeholder="Password: " />
+            <input name="contrasenna" class="inputs" type="password" placeholder="Password: " />
             </br>
-            <button style="margin-left: 70%;" class= "buttons"> Log In </button>
+            <button type="submit" style="margin-left: 70%;" class= "buttons"> Log In </button>
         </div>
     </form>
 

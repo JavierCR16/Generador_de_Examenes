@@ -1,21 +1,37 @@
 from flask import Flask, render_template,request,session,jsonify
 from Controlador.Controlador import Controlador
-import random
-
 
 app = Flask(__name__)
 app.secret_key = "super secret key"
 Controller = Controlador()
 
+
 @app.route('/')
 def main():
-    session['nepe'] = random.random()
-    return render_template('OpcionesPrincipales.html')#TODO Aqui que redireccione a la de login
+
+    return render_template('LogIn.html')
+
+@app.route('/login',methods=['post'])
+def login():
+    user = request.form.get("correo")
+    contrasenna = request.form.get("contrasenna")
+    conexion = Controller.comprobarConexion(user,contrasenna)
+
+    if(conexion!= False):
+        session['user'] = user
+        session['contrasenna'] = contrasenna
+
+        Controller.cerrarConexion(conexion)
+
+        return render_template('OpcionesPrincipales.html')
+
+    return render_template('LogIn.html')
+
 
 #CRUD TEMAS SUBTEMAS
 @app.route("/CRUDTemasSubtemas.html")
 def ventanaCRUDTemasSubtemas():
-    listaTemas = Controller.obtenerTemas()
+    listaTemas = Controller.obtenerTemas(session['user'],session['contrasenna'])
 
     return render_template("CRUDTemasSubtemas.html", temas = listaTemas)
 
@@ -25,43 +41,43 @@ def crudTemasSubtemas():
     valor_boton = request.form.get("accioncrudtemassubtemas")
 
     if(valor_boton == "Agregar Tema"):
-        Controller.insertarNuevoTema(request.form.get("temaNuevo"))
+        Controller.insertarNuevoTema(request.form.get("temaNuevo"),session['user'],session['contrasenna'])
 
     elif(valor_boton == "Agregar Subtema"):
 
         nuevoSubtema = request.form.get("subtemaNuevo")
         temaSeleccionado = request.form.get("selectTema")
 
-        Controller.insertarNuevoSubtema(nuevoSubtema,temaSeleccionado)
+        Controller.insertarNuevoSubtema(nuevoSubtema,temaSeleccionado,session['user'],session['contrasenna'])
 
     elif(valor_boton == "Modificar Tema"):
          nuevoTemaMod = request.form.get("nuevoModificarTema")
          temaSeleccionado = request.form.get("selectTemaModEli")
 
-         Controller.modificarTema(nuevoTemaMod,temaSeleccionado)
+         Controller.modificarTema(nuevoTemaMod,temaSeleccionado,session['user'],session['contrasenna'])
 
     elif(valor_boton == "Eliminar Tema"):
         temaAEliminar = request.form.get("selectTemaModEli")
-        Controller.eliminarTema(temaAEliminar)
+        Controller.eliminarTema(temaAEliminar,session['user'],session['contrasenna'])
 
     elif (valor_boton == "Modificar Subtema"):
         nuevoSubMod = request.form.get("nuevoModificarSubtema")
         subtemaSeleccionado = request.form.get("selectSub")
 
-        Controller.modificarSubtema(subtemaSeleccionado,nuevoSubMod)
+        Controller.modificarSubtema(subtemaSeleccionado,nuevoSubMod,session['user'],session['contrasenna'])
 
     elif (valor_boton == "Eliminar Subtema"):
         subAEliminar = request.form.get("selectSub")
-        Controller.eliminarSubtema(subAEliminar)
+        Controller.eliminarSubtema(subAEliminar,session['user'],session['contrasenna'])
 
-    temasExistentes = Controller.obtenerTemas()
+    temasExistentes = Controller.obtenerTemas(session['user'],session['contrasenna'])
 
     return render_template('CRUDTemasSubtemas.html',temas = temasExistentes)
 
 @app.route('/filtrarSubtemas', methods=["post"])
 def filtrarSubtemas():
     tema = request.get_json()
-    subtemas = Controller.filtrarSubtemas(tema['informacion'])
+    subtemas = Controller.filtrarSubtemas(tema['informacion'],session['user'],session['contrasenna'])
     return jsonify({"subtemas":Controller.convertirSubtemasJson(subtemas)})
 
 #CRUD INDICE DISCRIMINACION
@@ -75,18 +91,17 @@ def cambioIndiceDiscriminacion():
     idSubtemaFiltro = datosItem['idSubtema']
 
     if(valorBoton == "agregarIndiceBoton" or valorBoton == "modificarIndiceBoton" ):
-        Controller.agregarIndice(idItemModificar, nuevoIndice)
+        Controller.agregarIndice(idItemModificar, nuevoIndice,session['user'],session['contrasenna'])
     else:
-        Controller.eliminarIndice(idItemModificar)
+        Controller.eliminarIndice(idItemModificar,session['user'],session['contrasenna'])
 
-    itemsActualizados = Controller.filtrarItems(idSubtemaFiltro)
+    itemsActualizados = Controller.filtrarItems(idSubtemaFiltro,session['user'],session['contrasenna'])
 
     return jsonify({'items':Controller.convertirItemsJson(itemsActualizados)})
 
 @app.route("/CRUDIndiceDiscriminacion.html")
 def crudIndiceDiscriminacion():
-    print("VALOR: "+str(session['nepe']))
-    listaTemas = Controller.obtenerTemas()
+    listaTemas = Controller.obtenerTemas(session['user'],session['contrasenna'])
     return render_template("CRUDIndiceDiscriminacion.html", temas = listaTemas)
 
 @app.route("/BuscarSubtemasItems", methods=['post'])
@@ -94,11 +109,11 @@ def buscarSubtemasItems():
 
     subtemaFiltroIndice = request.form.get("subtemaIndice")
 
-    itemsIndiceFiltrados = Controller.filtrarItems(subtemaFiltroIndice)
+    itemsIndiceFiltrados = Controller.filtrarItems(subtemaFiltroIndice,session['user'],session['contrasenna'])
 
     descripcionesItems = [item.getDescripcion() for item in itemsIndiceFiltrados]
 
-    listaTemas = Controller.obtenerTemas()
+    listaTemas = Controller.obtenerTemas(session['user'],session['contrasenna'])
 
     return render_template("CRUDIndiceDiscriminacion.html", temas = listaTemas, itemsFiltroIndice = itemsIndiceFiltrados,
                            descripItems = descripcionesItems)
@@ -106,7 +121,7 @@ def buscarSubtemasItems():
 #CRUD ITEMS
 @app.route("/CRUDItems.html")
 def ventanaCRUDItems():
-    listaTemas = Controller.obtenerTemas()
+    listaTemas = Controller.obtenerTemas(session['user'],session['contrasenna'])
 
     return render_template("CRUDItems.html", temas = listaTemas)
 
@@ -118,20 +133,25 @@ def crudItemsAgregar():
     subtemaSeleccionado = request.form.get("selectSubAgregar")
     puntaje = request.form.get("puntajeAgregar")
 
-    Controller.agregarItem(descripcion,tipo,subtemaSeleccionado,puntaje)
+    Controller.agregarItem(descripcion,tipo,subtemaSeleccionado,puntaje,session['user'],session['contrasenna'])
 
-    temasExistentes = Controller.obtenerTemas()
+    temasExistentes = Controller.obtenerTemas(session['user'],session['contrasenna'])
 
     return render_template('CRUDItems.html', temas = temasExistentes)
 
 @app.route('/filtrarItems', methods = ['post'])
 def filtrarItems():
     filtroItems = request.get_json()
+
+    tipoFiltrado = filtroItems['tipo'] #total, usuario
+
     subtemaFiltro = filtroItems['informacionSubtema']
-    listaItems = Controller.filtrarItems(subtemaFiltro)
+
+    listaItems = Controller.filtrarItems(subtemaFiltro,tipoFiltrado,session['user'],session['contrasenna'])
     descripcionesItems = [item.getDescripcion() for item in listaItems]
 
     return jsonify({'items':Controller.convertirItemsJson(listaItems), 'descripcionItems':Controller.convertirJson(descripcionesItems)})
+
 
 @app.route('/crudItemsModificar', methods = ['post'])
 def crudItemsModificar():
@@ -145,13 +165,13 @@ def crudItemsModificar():
         descripcionModificar = request.form.get("descripcionItemModificar")
         puntajeModificar = request.form.get("puntajeModificar")
 
-        Controller.modificarItem(itemModificar, tipoItemModificar, descripcionModificar,puntajeModificar)
+        Controller.modificarItem(itemModificar, tipoItemModificar, descripcionModificar,puntajeModificar,session['user'],session['contrasenna'])
 
     else:
         itemEliminar = request.form.get("selectItemModificarEliminar")
-        Controller.eliminarItem(itemEliminar)
+        Controller.eliminarItem(itemEliminar,session['user'],session['contrasenna'])
 
-    temasExistentes = Controller.obtenerTemas()
+    temasExistentes = Controller.obtenerTemas(session['user'],session['contrasenna'])
 
     return render_template('CRUDItems.html', temas=temasExistentes)
 
@@ -160,14 +180,14 @@ def extraerInformacionItem():
     infoJson = request.get_json()
     idItem = infoJson['item']
 
-    informacionItem = Controller.obtenerItemByID(idItem)
+    informacionItem = Controller.obtenerItemByID(idItem,session['user'],session['contrasenna'])
 
     return jsonify({'informacionItem':informacionItem.__dict__})
 
 #CRUD RESPUESTAS
 @app.route("/CRUDRespuestas.html")
 def ventanaCRUDRespuestas():
-    listaTemas = Controller.obtenerTemas()
+    listaTemas = Controller.obtenerTemas(session['user'],session['contrasenna'])
     return render_template("CRUDRespuestas.html", temas = listaTemas)
 
 @app.route("/crudRespuestasAgregar", methods=['post']) ##Revisar
@@ -178,16 +198,16 @@ def crudRespuestasAgregar():
     respuestas = [request.form.get("Arespuesta1"),request.form.get("Arespuesta2"),request.form.get("Arespuesta3")
                       ,request.form.get("Arespuesta4")]
 
-    Controller.agregarRespuestas(itemSeleccionado,respuestas,respCorrecta)
+    Controller.agregarRespuestas(itemSeleccionado,respuestas,respCorrecta,session['user'],session['contrasenna'])
 
-    listaTemas = Controller.obtenerTemas()
+    listaTemas = Controller.obtenerTemas(session['user'],session['contrasenna'])
     return render_template("CRUDRespuestas.html",temas = listaTemas)
 
 @app.route("/extraerRespuestasItem", methods = ['post'])
 def extraerRespuestasItem():
 
     infoJson = request.get_json()
-    objetoRespuesta = Controller.obtenerRespuestasViejas(infoJson["item"])
+    objetoRespuesta = Controller.obtenerRespuestasViejas(infoJson["item"],session['user'],session['contrasenna'])
 
     return jsonify({'informacionItem':objetoRespuesta.__dict__})
 
@@ -199,16 +219,16 @@ def crudRespuestasModificar():
     respuestas = [request.form.get("Mrespuesta1"), request.form.get("Mrespuesta2"), request.form.get("Mrespuesta3")
             , request.form.get("Mrespuesta4")]
 
-    Controller.modificarRespuestas(itemSeleccionado,respuestas,respCorrecta)
-    listaTemas = Controller.obtenerTemas()
+    Controller.modificarRespuestas(itemSeleccionado,respuestas,respCorrecta,session['user'],session['contrasenna'])
+    listaTemas = Controller.obtenerTemas(session['user'],session['contrasenna'])
 
     return render_template("CRUDRespuestas.html", temas=listaTemas)
 
 @app.route("/CRUDEncabezado.html")
 def ventanaCRUDEncabezado():
 
-    Periodos = Controller.obtenerPeriodos()
-    Tipos = Controller.obtenerTExamen()
+    Periodos = Controller.obtenerPeriodos(session['user'],session['contrasenna'])
+    Tipos = Controller.obtenerTExamen(session['user'],session['contrasenna'])
     return render_template("CRUDEncabezado.html", tiposExamen = Tipos, periodos = Periodos)
 
 @app.route("/previewEncabezado",methods= ['post'])
@@ -239,10 +259,10 @@ def guardarEncabezado():
     tiempo = request.form.get("inputTiempo")
     tipo = request.form.get("selectTipo")
 
-    Controller.insertarNuevoEncabezado(curso,escuela,instrucciones, periodo, fecha, tiempo, tipo)
+    Controller.insertarNuevoEncabezado(curso,escuela,instrucciones, periodo, fecha, tiempo, tipo,session['user'],session['contrasenna'])
 
-    Periodos = Controller.obtenerPeriodos()
-    Tipos = Controller.obtenerTExamen()
+    Periodos = Controller.obtenerPeriodos(session['user'],session['contrasenna'])
+    Tipos = Controller.obtenerTExamen(session['user'],session['contrasenna'])
 
     return render_template("CRUDEncabezado.html", tiposExamen=Tipos, periodos=Periodos)
 

@@ -12,21 +12,22 @@ from Modelo.ObjetoRespuesta import ObjetoRespuesta
 #TODO EN UN FUTURO, QUE LE PUEDA CAMBIAR EL SUBTEMA ASOCIADO A UN ITEM,AHORITA SI SE EQUIVOCA DI QUE LO BORRE.
 #TODO INTENTAR MANEJAR LAS VARIABLES A TRAVES DE LA SESION
 #TODO ACOMODAR UN POCO EL CODIGO
+#TODO VER SI HAY UNA MEJOR MANERA PARA MANEJAR LOS USUARIOS Y HACER QUE EL ACCESO AL CONTROLADOR SEA SINCRONIZADO..
 
 #FUNCIONES DE CONEXION Y QUERIES
-def establecerConexion():#usuario,password): #Definida por el momento como una conexion root, luego todas las conexiones deben hacerse a traves de los usuarios con los permisos respectivos.
+def establecerConexion(usuario,password):#usuario,password):
 
     try:
-        return pymysql.connect(host = '127.0.0.1', user = 'root', password = 'mySQLexamenes16', db = 'db_exam_it1')
+        return pymysql.connect(host = '127.0.0.1', user = usuario, password = password, db = 'db_exam_it1')
     except Exception as e:
 
-        print("Error de Conexión")
+        print("Error de Conexión ",e)
 
         return False
 
-def obtenerInformacionItem(idItem):
+def obtenerInformacionItem(idItem,usuario,contrasenna):
 
-    nuevaConexion = establecerConexion()
+    nuevaConexion = establecerConexion(usuario,contrasenna)
     objetoItem = ""
     if(nuevaConexion.open):
 
@@ -47,9 +48,9 @@ def obtenerInformacionItem(idItem):
 def cerrarConexion(objetoConexion):
     objetoConexion.close()
 
-def cargarUsuarios():
+def cargarUsuarios(usuario,contrasenna):
 
-    nuevaConexion = establecerConexion()
+    nuevaConexion = establecerConexion(usuario,contrasenna)
     listaUsuarios = []
     if(nuevaConexion.open):
 
@@ -71,9 +72,9 @@ def cargarUsuarios():
 
     return listaUsuarios
 
-def cargarPeriodoExamenes():
+def cargarPeriodoExamenes(usuario,contrasenna):
 
-    nuevaConexion = establecerConexion()
+    nuevaConexion = establecerConexion(usuario,contrasenna)
     listaPeriodos = []
     if(nuevaConexion.open):
 
@@ -97,8 +98,8 @@ def cargarPeriodoExamenes():
 
     return listaPeriodos
 
-def cargarTipoExamenes():
-    nuevaConexion = establecerConexion()
+def cargarTipoExamenes(usuario,contrasenna):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
 
     listaTipos=[]
 
@@ -119,8 +120,8 @@ def cargarTipoExamenes():
 
     return listaTipos
 
-def cargarTemas():
-    nuevaConexion = establecerConexion()
+def cargarTemas(usuario,contrasenna):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
 
     listaTemas = []
 
@@ -141,8 +142,8 @@ def cargarTemas():
 
     return listaTemas
 
-def filtrarSubtemas(idTema):
-    nuevaConexion = establecerConexion()
+def filtrarSubtemas(idTema,usuario,contrasenna):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
 
     listaSubtemas = []
 
@@ -162,16 +163,19 @@ def filtrarSubtemas(idTema):
 
     return listaSubtemas
 
-def filtrarItems(idSubtema):
-    nuevaConexion = establecerConexion()
+def filtrarItems(idSubtema,tipoFiltrado,usuario,contrasenna):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
 
     listaItems = []
 
     if (nuevaConexion.open):
         try:
             with nuevaConexion.cursor() as items:
-                queryitems = "SELECT idItem,id, descripcion,tipo, puntaje, indiceDiscriminacion FROM Item WHERE idSubtema = %s"
-                items.execute(queryitems, (idSubtema))
+                queryitemsTotal = "SELECT idItem,id, descripcion,tipo, puntaje, indiceDiscriminacion FROM Item WHERE idSubtema = %s"
+                queryitemsUser = "SELECT idItem,id, descripcion,tipo, puntaje, indiceDiscriminacion FROM Item WHERE idSubtema = %s AND" \
+                                 " usuarioCreador = %s"
+
+                items.execute(queryitemsTotal, (idSubtema)) if tipoFiltrado == "total" else items.execute(queryitemsUser, (idSubtema,usuario))
 
                 for atributos in items:
                     nuevoItem = ObjetoItem(atributos[0], atributos[1],atributos[2],atributos[3],idSubtema,atributos[4],atributos[5])
@@ -181,10 +185,10 @@ def filtrarItems(idSubtema):
         finally:
             nuevaConexion.close()
 
-    return listaItems\
+    return listaItems
 
-def filtrarItemsSeleccion(idSubtema):
-    nuevaConexion = establecerConexion()
+def filtrarItemsSeleccion(idSubtema,usuario,contrasenna):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
     listaItemsSeleccion = []
 
     if(nuevaConexion.open):
@@ -205,16 +209,18 @@ def filtrarItemsSeleccion(idSubtema):
         finally:
             nuevaConexion.close()
     return listaItemsSeleccion
-#AQUI EMPIEZA EL CRUD DE ENCABEZADO, VER TODO´S
-def agregarEncabezado(objetoEncabezado):
-    nuevaConexion = establecerConexion()
+
+#AQUI EMPIEZA EL CRUD DE ENCABEZADO
+def agregarEncabezado(objetoEncabezado,usuario,contrasenna):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
 
     if(nuevaConexion.open):
 
         try:
             with nuevaConexion.cursor() as nuevoEncabezado:
-                insertEncabezado = "INSERT INTO Encabezado (instrucciones,anno,tiempo,idPeriodo,idTipoExamen) VALUES(%s, %s, %s, %s, %s)"
-                nuevoEncabezado.execute(insertEncabezado,(objetoEncabezado.getInstrucciones(),objetoEncabezado.getAnno(),
+                insertEncabezado = "INSERT INTO Encabezado (curso,escuela,instrucciones,anno,tiempo,idPeriodo,idTipoExamen) VALUES(%s, %s, %s, %s, %s)"
+                nuevoEncabezado.execute(insertEncabezado,(objetoEncabezado.getCurso(),objetoEncabezado.getEscuela(),
+                                                          objetoEncabezado.getInstrucciones(),objetoEncabezado.getAnno(),
                                                           objetoEncabezado.getTiempo(),objetoEncabezado.getIdPeriodo(),
                                                           objetoEncabezado.getIdTipoExamen()))
                 nuevaConexion.commit()
@@ -226,8 +232,8 @@ def agregarEncabezado(objetoEncabezado):
 
 
 #AQUI EMPIEZA EL CRUD TEMAS SUBTEMAS
-def agregarTema(nuevoTemaIngresado):
-    nuevaConexion = establecerConexion()
+def agregarTema(nuevoTemaIngresado,usuario,contrasenna):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
 
     if(nuevaConexion.open):
         try:
@@ -242,9 +248,9 @@ def agregarTema(nuevoTemaIngresado):
         finally:
             nuevaConexion.close()
 
-def agregarSubtema(nuevoObjetoSubtema):
+def agregarSubtema(nuevoObjetoSubtema,usuario,contrasenna):
 
-    nuevaConexion = establecerConexion()
+    nuevaConexion = establecerConexion(usuario,contrasenna)
 
     if(nuevaConexion.open):
         try:
@@ -258,9 +264,9 @@ def agregarSubtema(nuevoObjetoSubtema):
         finally:
             nuevaConexion.close()
 
-def modificarTema(objetoModTema):
+def modificarTema(objetoModTema,usuario,contrasenna):
 
-    nuevaConexion = establecerConexion()
+    nuevaConexion = establecerConexion(usuario,contrasenna)
 
     if(nuevaConexion.open):
 
@@ -277,8 +283,8 @@ def modificarTema(objetoModTema):
         finally:
             nuevaConexion.close()
 
-def eliminarTema(idTema):
-    nuevaConexion = establecerConexion()
+def eliminarTema(idTema,usuario,contrasenna):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
 
     if (nuevaConexion.open):
 
@@ -294,9 +300,9 @@ def eliminarTema(idTema):
         finally:
             nuevaConexion.close()
 
-def modificarSubtema(objetoModSubtema):
+def modificarSubtema(objetoModSubtema,usuario,contrasenna):
 
-    nuevaConexion = establecerConexion()
+    nuevaConexion = establecerConexion(usuario,contrasenna)
 
     if (nuevaConexion.open):
 
@@ -311,9 +317,9 @@ def modificarSubtema(objetoModSubtema):
         finally:
             nuevaConexion.close()
 
-def eliminarSubtema(idSubtema):
+def eliminarSubtema(idSubtema,usuario,contrasenna):
 
-    nuevaConexion = establecerConexion()
+    nuevaConexion = establecerConexion(usuario,contrasenna)
 
     if(nuevaConexion.open):
 
@@ -329,17 +335,18 @@ def eliminarSubtema(idSubtema):
 
 
 #AQUI EMPIEZA EL CRUD DE ITEMS
-def agregarItem(nuevoObjetoItem):
+def agregarItem(nuevoObjetoItem,usuario,contrasenna):
 
-    nuevaConexion = establecerConexion()
+    nuevaConexion = establecerConexion(usuario,contrasenna)
 
     if(nuevaConexion.open):
         try:
             with nuevaConexion.cursor() as nuevoItem:
 
-                insertItem = "INSERT INTO Item (id, descripcion,tipo,idSubtema,puntaje) VALUES(%s,%s,%s,%s,%s)"
+                insertItem = "INSERT INTO Item (id, descripcion,tipo,idSubtema,puntaje,usuarioCreador) VALUES(%s,%s,%s,%s,%s,%s)"
                 nuevoItem.execute(insertItem,(nuevoObjetoItem.getIdLargo(),nuevoObjetoItem.getDescripcion(),
-                                  nuevoObjetoItem.getTipo(),nuevoObjetoItem.getIdSubtema(),nuevoObjetoItem.getPuntaje()))
+                                  nuevoObjetoItem.getTipo(),nuevoObjetoItem.getIdSubtema(),nuevoObjetoItem.getPuntaje(),usuario
+                                              ))
                 nuevaConexion.commit()
         except Exception as e:
             print(e)
@@ -347,9 +354,9 @@ def agregarItem(nuevoObjetoItem):
         finally:
             nuevaConexion.close()
 
-def modificarItem(objetoModItem):
+def modificarItem(objetoModItem,usuario,contrasenna):
 
-    nuevaConexion = establecerConexion()
+    nuevaConexion = establecerConexion(usuario,contrasenna)
 
     if(nuevaConexion.open):
         try:
@@ -368,8 +375,8 @@ def modificarItem(objetoModItem):
         finally:
             nuevaConexion.close()
 
-def eliminarItem(idItem):
-    nuevaConexion = establecerConexion()
+def eliminarItem(idItem,usuario,contrasenna):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
 
     if (nuevaConexion.open):
         try:
@@ -387,9 +394,9 @@ def eliminarItem(idItem):
             nuevaConexion.close()
 
 #AQUI EMPIEZA EL CRUD DE RESPUESTAS
-def agregarRespuestas(objetoRespuesta):         #REVISAR
+def agregarRespuestas(objetoRespuesta,usuario,contrasenna):         #REVISAR
 
-    nuevaConexion = establecerConexion()
+    nuevaConexion = establecerConexion(usuario,contrasenna)
     cont = 1
     if (nuevaConexion.open):
         try:
@@ -406,8 +413,8 @@ def agregarRespuestas(objetoRespuesta):         #REVISAR
         finally:
             nuevaConexion.close()
 
-def filtrarRespuestasViejas(idItem):
-    nuevaConexion = establecerConexion()
+def filtrarRespuestasViejas(idItem,usuario,contrasenna):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
     objetoRespuesta = ObjetoRespuesta(idItem,None,None)
     if (nuevaConexion.open):
 
@@ -434,8 +441,8 @@ def filtrarRespuestasViejas(idItem):
 
     return objetoRespuesta
 
-def obtenerIdFilaRespuestas(idItem):
-    nuevaConexion = establecerConexion()
+def obtenerIdFilaRespuestas(idItem,usuario,contrasenna):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
     idExtraido = ""
     if(nuevaConexion.open):
 
@@ -453,11 +460,11 @@ def obtenerIdFilaRespuestas(idItem):
 
     return idExtraido
 
-def modificarRespuestas(objetoModRespuesta):
-    idFila = obtenerIdFilaRespuestas(objetoModRespuesta.getIdItem())
+def modificarRespuestas(objetoModRespuesta,usuario,contrasenna):
+    idFila = obtenerIdFilaRespuestas(objetoModRespuesta.getIdItem(),usuario,contrasenna)
     ids = [idFila+i for i in range(0,4)]
 
-    nuevaConexion = establecerConexion()
+    nuevaConexion = establecerConexion(usuario,contrasenna)
 
     if (nuevaConexion.open):
         try:
@@ -483,9 +490,9 @@ def modificarRespuestas(objetoModRespuesta):
 
 #AQUI EMPIEZA EL CRUD DE INDICE DE DISCRIMINACION
 
-def modificarIndice(objetoModIndice):
+def modificarIndice(objetoModIndice,usuario,contrasenna):
 
-    nuevaConexion = establecerConexion()
+    nuevaConexion = establecerConexion(usuario,contrasenna)
 
     if (nuevaConexion.open):
         try:
@@ -500,8 +507,8 @@ def modificarIndice(objetoModIndice):
         finally:
             nuevaConexion.close()
 
-def eliminarIndice(idItem):
-    nuevaConexion = establecerConexion()
+def eliminarIndice(idItem,usuario,contrasenna):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
 
     if (nuevaConexion.open):
         try:
