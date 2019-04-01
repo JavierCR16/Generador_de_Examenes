@@ -1,5 +1,6 @@
 from flask import Flask, render_template,request,session,jsonify
 from Controlador.Controlador import Controlador
+import random
 
 
 app = Flask(__name__)
@@ -8,6 +9,7 @@ Controller = Controlador()
 
 @app.route('/')
 def main():
+    session['nepe'] = random.random()
     return render_template('OpcionesPrincipales.html')#TODO Aqui que redireccione a la de login
 
 #CRUD TEMAS SUBTEMAS
@@ -83,7 +85,7 @@ def cambioIndiceDiscriminacion():
 
 @app.route("/CRUDIndiceDiscriminacion.html")
 def crudIndiceDiscriminacion():
-
+    print("VALOR: "+str(session['nepe']))
     listaTemas = Controller.obtenerTemas()
     return render_template("CRUDIndiceDiscriminacion.html", temas = listaTemas)
 
@@ -251,4 +253,4 @@ def construirExamen():
 
 if __name__ == '__main__':
 
-    app.run()
+    app.run(host = '0.0.0.0')
