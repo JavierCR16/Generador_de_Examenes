@@ -12,7 +12,8 @@ from Modelo.ObjetoRespuesta import ObjetoRespuesta
 #TODO EN UN FUTURO, QUE LE PUEDA CAMBIAR EL TEMA ASOCIADO A UN SUBTEMA,AHORITA SI SE EQUIVOCA DI QUE LO BORRE.
 #TODO EN UN FUTURO, QUE LE PUEDA CAMBIAR EL SUBTEMA ASOCIADO A UN ITEM,AHORITA SI SE EQUIVOCA DI QUE LO BORRE.
 #TODO POR EJEMPLO EN AGREGAR ITEMS, TEMAS, SUBTEMAS, PODER AGREGAR VARIOS DE UN SOLO Y EN ITEMS LA POSIBILIDAD DE METER LAS RESPUESTAS DE UN SOLO
-
+#TODO Intentar usar pylatex para el encabezado
+#TODO Hacer la seccion de preview de plantillas y modificacion en el html de encabezado
 
 #FUNCIONES DE CONEXION Y QUERIES
 def establecerConexion():#usuario,password): #Definida por el momento como una conexion root, luego todas las conexiones deben hacerse a traves de los usuarios con los permisos respectivos.
@@ -498,7 +499,7 @@ def eliminarIndice(idItem):
         finally:
             nuevaConexion.close()
 
-#AQUI EMPIEZA EL CRUD DE ENCABEZADO, VER TODO´S
+#AQUI EMPIEZA EL CRUD DE ENCABEZADO
 def agregarEncabezado(objetoEncabezado):
     nuevaConexion = establecerConexion()
 
@@ -506,8 +507,9 @@ def agregarEncabezado(objetoEncabezado):
 
         try:
             with nuevaConexion.cursor() as nuevoEncabezado:
-                insertEncabezado = "INSERT INTO Encabezado (instrucciones,anno,tiempo,idPeriodo,idTipoExamen) VALUES(%s, %s, %s, %s, %s)"
-                nuevoEncabezado.execute(insertEncabezado,(objetoEncabezado.getInstrucciones(),objetoEncabezado.getAnno(),
+                insertEncabezado = "INSERT INTO Encabezado (curso,escuela,instrucciones,anno,tiempo,idPeriodo,idTipoExamen) VALUES(%a,%s,%s, %s, %s, %s, %s)"
+                nuevoEncabezado.execute(insertEncabezado,(objetoEncabezado.getCurso(),objetoEncabezado.getEscuela(),
+                                                          objetoEncabezado.getInstrucciones(),objetoEncabezado.getAnno(),
                                                           objetoEncabezado.getTiempo(),objetoEncabezado.getIdPeriodo(),
                                                           objetoEncabezado.getIdTipoExamen()))
                 nuevaConexion.commit()

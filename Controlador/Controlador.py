@@ -135,11 +135,12 @@ class Controlador:
         GestorBase.eliminarIndice(idItem)
 
     #Funciones de encabezado
-    def insertarNuevoEncabezado(self,instrucciones ,periodo,año,tiempo,tipo):
-        periodoiId = periodo.split('-')[0]
+    def insertarNuevoEncabezado(self,curso,escuela,instrucciones ,periodo,fecha,tiempo,tipo):
+        periodoId = periodo.split('-')[0]
         tipoId= tipo.split('-')[0]
-        #Dejar Fecha completa o solo año
-        nuevoEncabezado=ObjetoEncabezado(instrucciones,año,tiempo,periodoiId,tipoId)
+        anno = fecha.split('-')[0]
+
+        nuevoEncabezado=ObjetoEncabezado(curso,escuela,instrucciones,anno,tiempo,periodoId,tipoId)
 
         GestorBase.agregarEncabezado(nuevoEncabezado)
 

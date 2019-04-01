@@ -225,15 +225,24 @@ def previewEncabezado():
     Controller.generarPreview(curso,escuela,instrucciones,periodo,fecha,tiempo,tipo)
 
     return jsonify(status = "success")
-    #else:
-        #Controller.insertarNuevoEncabezado(instrucciones,periodo,anno,tiempo,tipo)
 
-    #Periodos = Controller.obtenerPeriodos()
-    #Tipos = Controller.obtenerTExamen()
+@app.route("/guardarEncabezado", methods= ['post'])
+def guardarEncabezado():
 
-    #return render_template("CRUDEncabezado.html", tiposExamen=Tipos, periodos=Periodos)
+    curso = "Probabilidades" #TODO Agarrar de un combobox
+    escuela = "Escuela de Matemática" #TODO Agarrar de un combobox
+    instrucciones = request.form.get("txtInstrucciones")
+    periodo = request.form.get("selectPeriodo")
+    fecha = request.form.get("inputFecha")
+    tiempo = request.form.get("inputTiempo")
+    tipo = request.form.get("selectTipo")
 
-#@app.route("guardarEncabezado")
+    Controller.insertarNuevoEncabezado(curso,escuela,instrucciones, periodo, fecha, tiempo, tipo)
+
+    Periodos = Controller.obtenerPeriodos()
+    Tipos = Controller.obtenerTExamen()
+
+    return render_template("CRUDEncabezado.html", tiposExamen=Tipos, periodos=Periodos)
 
 @app.route("/ConstruirExamen.html")
 def construirExamen():

@@ -12,6 +12,12 @@ class ObjetoEncabezado:
     def getId(self):
         return self.id
 
+    def getCurso(self):
+        return self.curso
+
+    def getEscuela(self):
+        return self.escuela
+
     def getInstrucciones(self):
         return self.instrucciones
 
@@ -20,6 +26,7 @@ class ObjetoEncabezado:
 
     def getTiempo(self):
         return self.tiempo
+
     def getIdPeriodo(self):
         return self.idPeriodo
 
