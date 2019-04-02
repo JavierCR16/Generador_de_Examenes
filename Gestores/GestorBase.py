@@ -533,7 +533,7 @@ def eliminarIndice(idItem,usuario,contrasenna):
 #AQUI EMPIEZA EL SUGERIR-VERIFICAR EDICIONES
 
 def enviarSugerencia(objetoSugerencia, contrasenna):
-    nuevaConexion = establecerConexion(usuario,contrasenna)
+    nuevaConexion = establecerConexion(objetoSugerencia.getUsuario(),contrasenna)
 
     if(nuevaConexion.open):
 
@@ -541,7 +541,8 @@ def enviarSugerencia(objetoSugerencia, contrasenna):
             with nuevaConexion.cursor() as envioSugerencia:
                 envioSugerenciaQuery = "INSERT INTO SugerenciaEdicion (idItem,sugerencia,comentarios,usuarioSugeridor) VALUES " \
                                        "(%s,%s,%s,%s)"
-                envioSugerencia.execute(envioSugerenciaQuery,(idItem,nuevaEdicion,comentarios,usuario))
+                envioSugerencia.execute(envioSugerenciaQuery,(objetoSugerencia.getIdItem(),objetoSugerencia.getSugerencia(),
+                                                              objetoSugerencia.getComentarios(),objetoSugerencia.getUsuario()))
 
                 nuevaConexion.commit()
         except Exception as e:
@@ -560,13 +561,15 @@ def filtrarSugerencias(usuario,contrasenna):
         try:
             with nuevaConexion.cursor() as sugerencias:
 
-                querySugerencias = "SELECT Item.idItem, Item.id, Item.tipo, Item.puntaje, tema,subtema FROM Item,Subtema,Tema,SugerenciaEdicion,Tema,Subtema WHERE " \
-                                   "idSubtema = Subtema.id AND  Subtema.idTema = Tema.id AND Item.idItem = SugerenciaEdicion.idItem AND " \
-                                   "SugerenciaEdicion.usuarioSugeridor = %s"
+                querySugerencias = "SELECT Item.idItem, Item.id, Item.tipo, Item.puntaje, tema,subtema FROM Item,Subtema,Tema,SugerenciaEdicion,Tema WHERE " \
+                                   "Item.idSubtema = Subtema.id AND  Subtema.idTema = Tema.id AND Item.idItem = SugerenciaEdicion.idItem AND " \
+                                   "SugerenciaEdicion.aprobacion =NULL AND " \
+                                   "Item.usuarioCreador = %s"
                 sugerencias.execute(querySugerencias,(usuario))
 
-                objetoSugerenciasVerificar.append(ObjetoVerificacionEdicion())
-
+                for atributos in sugerencias:
+                    objetoSugerenciasVerificar.append(ObjetoVerificacionSugerencia(atributos[0],atributos[1],atributos[2],
+                                                                                   atributos[3],atributos[4],atributos[5],usuario))
         except Exception as e:
             print(e)
             print("Error al obtener las sugerencias")
