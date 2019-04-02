@@ -6,11 +6,13 @@ from Modelo.ObjetoTipoExamen import ObjetoTipoExamen
 from Modelo.ObjetoPeriodo import ObjetoPeriodo
 from Modelo.ObjetoUsuario import ObjetoUsuario
 from Modelo.ObjetoRespuesta import ObjetoRespuesta
+from Modelo.ObjetoSugerencia import ObjetoSugerencia
+from Modelo.ObjetoVerificacionSugerencia import ObjetoVerificacionSugerencia
+
 #TODO AGREGAR A LA SECCION DE ENCABEZADO (BASE Y SISTEMA), LA OPCION DE METER ESCUELA Y CURSO.
 #TODO AGREGAR FUNCIONES PARA CARGAR TODOS LOS ENCABEZADOS(PLANTILLAS) Y QUE ESTOS SEAN PREVISUALIZADOS POR EL USUARIO.
 #TODO EN UN FUTURO, QUE LE PUEDA CAMBIAR EL TEMA ASOCIADO A UN SUBTEMA,AHORITA SI SE EQUIVOCA DI QUE LO BORRE.
 #TODO EN UN FUTURO, QUE LE PUEDA CAMBIAR EL SUBTEMA ASOCIADO A UN ITEM,AHORITA SI SE EQUIVOCA DI QUE LO BORRE.
-#TODO INTENTAR MANEJAR LAS VARIABLES A TRAVES DE LA SESION
 #TODO ACOMODAR UN POCO EL CODIGO
 #TODO VER SI HAY UNA MEJOR MANERA PARA MANEJAR LOS USUARIOS Y HACER QUE EL ACCESO AL CONTROLADOR SEA SINCRONIZADO.
 #TODO Reemplazar condicion de si la conexion esta abierta por conexion != FALSE
@@ -530,7 +532,7 @@ def eliminarIndice(idItem,usuario,contrasenna):
 
 #AQUI EMPIEZA EL SUGERIR-VERIFICAR EDICIONES
 
-def enviarSugerencia(idItem,nuevaEdicion, comentarios, usuario, contrasenna):
+def enviarSugerencia(objetoSugerencia, contrasenna):
     nuevaConexion = establecerConexion(usuario,contrasenna)
 
     if(nuevaConexion.open):
@@ -549,4 +551,28 @@ def enviarSugerencia(idItem,nuevaEdicion, comentarios, usuario, contrasenna):
         finally:
             nuevaConexion.close()
 
+def filtrarSugerencias(usuario,contrasenna):
+
+    nuevaConexion = establecerConexion(usuario,contrasenna)
+    objetoSugerenciasVerificar = []
+    if(nuevaConexion.open):
+
+        try:
+            with nuevaConexion.cursor() as sugerencias:
+
+                querySugerencias = "SELECT Item.idItem, Item.id, Item.tipo, Item.puntaje, tema,subtema FROM Item,Subtema,Tema,SugerenciaEdicion,Tema,Subtema WHERE " \
+                                   "idSubtema = Subtema.id AND  Subtema.idTema = Tema.id AND Item.idItem = SugerenciaEdicion.idItem AND " \
+                                   "SugerenciaEdicion.usuarioSugeridor = %s"
+                sugerencias.execute(querySugerencias,(usuario))
+
+                objetoSugerenciasVerificar.append(ObjetoVerificacionEdicion())
+
+        except Exception as e:
+            print(e)
+            print("Error al obtener las sugerencias")
+
+        finally:
+            nuevaConexion.close()
+
+    return objetoSugerenciasVerificar
 

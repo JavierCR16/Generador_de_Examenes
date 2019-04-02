@@ -19,6 +19,7 @@ from Modelo.ObjetoPeriodo import ObjetoPeriodo
 from Modelo.ObjetoUsuario import ObjetoUsuario
 from Modelo.ObjetoEncabezado import ObjetoEncabezado
 from Modelo.ObjetoRespuesta import ObjetoRespuesta
+from Modelo.ObjetoSugerencia import ObjetoSugerencia
 
 class Controlador:
 
@@ -200,5 +201,7 @@ class Controlador:
 
     def enviarSugerencia(self,idItem,nuevaEdicion, comentarios, usuario,contrasenna):
 
-        GestorBase.enviarSugerencia(idItem,nuevaEdicion,comentarios,usuario,contrasenna)
+        objetoSugerencia = ObjetoSugerencia(idItem,nuevaEdicion,comentarios,usuario)
+
+        GestorBase.enviarSugerencia(objetoSugerencia,contrasenna)
 
