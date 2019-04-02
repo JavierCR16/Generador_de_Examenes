@@ -39,7 +39,6 @@ def obtenerInformacionItem(idItem,usuario,contrasenna):
 
                 for atributos in infoItem:
                     objetoItem = ObjetoItem(idItem,atributos[0],atributos[1],atributos[2], None,atributos[3],None)
-
         except:
             print("Error al obtener la informacion del item")
         finally:
