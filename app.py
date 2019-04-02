@@ -95,7 +95,7 @@ def cambioIndiceDiscriminacion():
     else:
         Controller.eliminarIndice(idItemModificar,session['user'],session['contrasenna'])
 
-    itemsActualizados = Controller.filtrarItems(idSubtemaFiltro,session['user'],session['contrasenna'])
+    itemsActualizados = Controller.filtrarItems(idSubtemaFiltro,"total",session['user'],session['contrasenna'])
 
     return jsonify({'items':Controller.convertirItemsJson(itemsActualizados)})
 
@@ -109,7 +109,7 @@ def buscarSubtemasItems():
 
     subtemaFiltroIndice = request.form.get("subtemaIndice")
 
-    itemsIndiceFiltrados = Controller.filtrarItems(subtemaFiltroIndice,session['user'],session['contrasenna'])
+    itemsIndiceFiltrados = Controller.filtrarItems(subtemaFiltroIndice,"total",session['user'],session['contrasenna'])
 
     descripcionesItems = [item.getDescripcion() for item in itemsIndiceFiltrados]
 
