@@ -96,8 +96,9 @@ function procesarAjaxItemModificar(itemSeleccionado){
         success: function (datos) {
             descripcion.val(datos["informacionItem"]["descripcion"]);
             puntaje.val(datos["informacionItem"]["puntaje"]);
-
+            console.log(datos);
             for(i =0; i<tiposSelected.length;i++){
+
                 if(tiposSelected[i].value===datos["informacionItem"]["tipo"])
                     tiposSelected[i].checked = true
             }
@@ -122,6 +123,7 @@ function procesarAjaxRespuestasViejas(itemSeleccionado){
             if(datos["informacionItem"]["respuestas"].length !==0) {
 
                 for (i = 0; i < radioRespuestas.length; i++) {
+
                     if (radioRespuestas[i].value === datos["informacionItem"]["respCorrecta"]) {
                         radioRespuestas[i].checked = true;
                     }
@@ -157,6 +159,23 @@ function procesarAjaxEncabezado(curso,escuela,periodo,fecha,tiempo,tipo,instrucc
             });
         }
     })
+}
+
+function procesarAjaxSugerencias(nuevaEdicion,comentarios,idItem){
+
+    $.ajax({
+
+        url: "/enviarSugerencia",
+        type: 'post',
+        data:JSON.stringify({nuevaEdicion:nuevaEdicion,comentarios:comentarios,idItem:idItem}),
+        contentType: 'application/json;charset=UTF-8',
+        dataType: "json",
+
+        success: function (datos) {
+            console.log(datos["status"]);
+        }
+    })
+
 }
 
 function obtenerSubtemas(selectEscogido, idObjHTML){
@@ -288,3 +307,30 @@ function previewEncabezado() {
     procesarAjaxEncabezado(curso, escuela, periodo, fecha, tiempo,tipo, instrucciones);
 
 }
+
+function desplegarModalSugerencia(botonClickeado, descripcionItems){
+    var indice = $(botonClickeado).closest('tr').index();
+    var filaTabla = $("#tablaSugerencia tr").eq(indice+1).find('td');
+    var idItem = filaTabla.eq(0).text().split("/Item")[1];
+
+
+    $("#descModalSugerencia").text("Descripción Actual: "+ descripcionItems[indice]);
+
+    $("#modalSugerencia").modal({
+       show:true
+    });
+
+    $("#botonModalSugerencia").attr("onclick","enviarSugerencia("+idItem+")")
+
+}
+
+function enviarSugerencia(idItem){
+
+    var nuevaEdicion = $("#sugerenciaEdicion").val();
+
+    var comentarios = $("#comentarios").val();
+
+    procesarAjaxSugerencias(nuevaEdicion,comentarios,idItem)
+}
+
+

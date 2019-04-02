@@ -224,6 +224,8 @@ def crudRespuestasModificar():
 
     return render_template("CRUDRespuestas.html", temas=listaTemas)
 
+
+#CRUD ENCABEZADO
 @app.route("/CRUDEncabezado.html")
 def ventanaCRUDEncabezado():
 
@@ -266,10 +268,46 @@ def guardarEncabezado():
 
     return render_template("CRUDEncabezado.html", tiposExamen=Tipos, periodos=Periodos)
 
+#CRUD CONSTRUIR EXAMEN
 @app.route("/ConstruirExamen.html")
 def construirExamen():
 
     return render_template("ConstruirExamen.html")
+
+
+#CRUD SUGERIR EDICIONES
+
+@app.route("/SugerenciaEdicion.html")
+def sugerenciaEdicion():
+    temas = Controller.obtenerTemas(session['user'],session['contrasenna'])
+
+    return render_template("SugerenciaEdicion.html", temasItemEdicion=temas)
+
+@app.route("/buscarItemsSugerencia",methods=['post'])
+def sugerirEdicion():
+    subtemaFiltro = request.form.get("subtemaSugerencia")
+
+    objetosItems = Controller.filtrarItems(subtemaFiltro,'noparcial',session['user'],session['contrasenna'])
+
+    descripcionesItems = [item.getDescripcion() for item in objetosItems]
+
+    temas = Controller.obtenerTemas(session['user'],session['contrasenna'])
+
+    return render_template("SugerenciaEdicion.html",temasItemEdicion =temas, descripItems = descripcionesItems, itemsFiltroSugerencia = objetosItems)
+
+@app.route("/enviarSugerencia",methods=['post'])
+def enviarSugerencia():
+
+    datosSugerencia = request.get_json()
+
+    nuevaEdicion = datosSugerencia['nuevaEdicion']
+    comentarios = datosSugerencia['comentarios']
+    idItem = datosSugerencia['idItem']
+
+    Controller.enviarSugerencia(idItem,nuevaEdicion,comentarios,session['user'],session['contrasenna'])
+
+    return jsonify({"status":"Sugerencia Enviada con Éxito"})
+
 
 if __name__ == '__main__':
 

@@ -12,7 +12,8 @@ from Modelo.ObjetoRespuesta import ObjetoRespuesta
 #TODO EN UN FUTURO, QUE LE PUEDA CAMBIAR EL SUBTEMA ASOCIADO A UN ITEM,AHORITA SI SE EQUIVOCA DI QUE LO BORRE.
 #TODO INTENTAR MANEJAR LAS VARIABLES A TRAVES DE LA SESION
 #TODO ACOMODAR UN POCO EL CODIGO
-#TODO VER SI HAY UNA MEJOR MANERA PARA MANEJAR LOS USUARIOS Y HACER QUE EL ACCESO AL CONTROLADOR SEA SINCRONIZADO..
+#TODO VER SI HAY UNA MEJOR MANERA PARA MANEJAR LOS USUARIOS Y HACER QUE EL ACCESO AL CONTROLADOR SEA SINCRONIZADO.
+#TODO Reemplazar condicion de si la conexion esta abierta por conexion != FALSE
 
 #FUNCIONES DE CONEXION Y QUERIES
 def establecerConexion(usuario,password):#usuario,password):
@@ -33,11 +34,11 @@ def obtenerInformacionItem(idItem,usuario,contrasenna):
 
         try:
             with nuevaConexion.cursor() as infoItem:
-                queryItem = "SELECT id, descripcion, puntaje FROM Item WHERE idItem = %s"
+                queryItem = "SELECT id, descripcion, tipo,puntaje FROM Item WHERE idItem = %s"
                 infoItem.execute(queryItem,(idItem))
 
                 for atributos in infoItem:
-                    objetoItem = ObjetoItem(idItem,atributos[0],atributos[1],None, None,atributos[2],None)
+                    objetoItem = ObjetoItem(idItem,atributos[0],atributos[1],atributos[2], None,atributos[3],None)
 
         except:
             print("Error al obtener la informacion del item")
@@ -174,8 +175,15 @@ def filtrarItems(idSubtema,tipoFiltrado,usuario,contrasenna):
                 queryitemsTotal = "SELECT idItem,id, descripcion,tipo, puntaje, indiceDiscriminacion FROM Item WHERE idSubtema = %s"
                 queryitemsUser = "SELECT idItem,id, descripcion,tipo, puntaje, indiceDiscriminacion FROM Item WHERE idSubtema = %s AND" \
                                  " usuarioCreador = %s"
+                queryitemsNotUser = "SELECT idItem,id, descripcion,tipo, puntaje, indiceDiscriminacion FROM Item WHERE idSubtema = %s AND" \
+                                 " usuarioCreador != %s"
 
-                items.execute(queryitemsTotal, (idSubtema)) if tipoFiltrado == "total" else items.execute(queryitemsUser, (idSubtema,usuario))
+                if(tipoFiltrado == "total"):
+                    items.execute(queryitemsTotal, (idSubtema))
+                elif(tipoFiltrado =="parcial"):
+                    items.execute(queryitemsUser, (idSubtema, usuario))
+                else:
+                    items.execute(queryitemsNotUser, (idSubtema, usuario))
 
                 for atributos in items:
                     nuevoItem = ObjetoItem(atributos[0], atributos[1],atributos[2],atributos[3],idSubtema,atributos[4],atributos[5])
@@ -218,7 +226,7 @@ def agregarEncabezado(objetoEncabezado,usuario,contrasenna):
 
         try:
             with nuevaConexion.cursor() as nuevoEncabezado:
-                insertEncabezado = "INSERT INTO Encabezado (curso,escuela,instrucciones,anno,tiempo,idPeriodo,idTipoExamen) VALUES(%s, %s, %s, %s, %s)"
+                insertEncabezado = "INSERT INTO Encabezado (curso,escuela,instrucciones,anno,tiempo,idPeriodo,idTipoExamen) VALUES(%s, %s,%s, %s, %s, %s, %s)"
                 nuevoEncabezado.execute(insertEncabezado,(objetoEncabezado.getCurso(),objetoEncabezado.getEscuela(),
                                                           objetoEncabezado.getInstrucciones(),objetoEncabezado.getAnno(),
                                                           objetoEncabezado.getTiempo(),objetoEncabezado.getIdPeriodo(),
@@ -229,7 +237,6 @@ def agregarEncabezado(objetoEncabezado,usuario,contrasenna):
 
         finally:
             nuevaConexion.close()
-
 
 #AQUI EMPIEZA EL CRUD TEMAS SUBTEMAS
 def agregarTema(nuevoTemaIngresado,usuario,contrasenna):
@@ -333,7 +340,6 @@ def eliminarSubtema(idSubtema,usuario,contrasenna):
         finally:
             nuevaConexion.close()
 
-
 #AQUI EMPIEZA EL CRUD DE ITEMS
 def agregarItem(nuevoObjetoItem,usuario,contrasenna):
 
@@ -428,7 +434,7 @@ def filtrarRespuestasViejas(idItem,usuario,contrasenna):
                 contador =1
                 for atributos in respViejas:
                     if(atributos[1] == "S"):
-                        objetoRespuesta.respCorrecta = contador
+                        objetoRespuesta.respCorrecta = str(contador)
                     contador+= 1
 
                     listaRespuestas+= [atributos[0]]
@@ -524,3 +530,24 @@ def eliminarIndice(idItem,usuario,contrasenna):
             nuevaConexion.close()
 
 #AQUI EMPIEZA EL SUGERIR-VERIFICAR EDICIONES
+
+def enviarSugerencia(idItem,nuevaEdicion, comentarios, usuario, contrasenna):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
+
+    if(nuevaConexion.open):
+
+        try:
+            with nuevaConexion.cursor() as envioSugerencia:
+                envioSugerenciaQuery = "INSERT INTO SugerenciaEdicion (idItem,sugerencia,comentarios,usuarioSugeridor) VALUES " \
+                                       "(%s,%s,%s,%s)"
+                envioSugerencia.execute(envioSugerenciaQuery,(idItem,nuevaEdicion,comentarios,usuario))
+
+                nuevaConexion.commit()
+        except Exception as e:
+            print(e)
+            print("Error al agregar una sugerencia")
+
+        finally:
+            nuevaConexion.close()
+
+

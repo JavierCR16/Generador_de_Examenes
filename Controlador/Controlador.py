@@ -196,3 +196,9 @@ class Controlador:
 
         return GestorJSON.convertirJsonSingleObject(objetoSimple)
 
+    #Funciones Sugerencia Edicion
+
+    def enviarSugerencia(self,idItem,nuevaEdicion, comentarios, usuario,contrasenna):
+
+        GestorBase.enviarSugerencia(idItem,nuevaEdicion,comentarios,usuario,contrasenna)
+
