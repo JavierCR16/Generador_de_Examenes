@@ -20,45 +20,32 @@
 <body>
     <div class="header">
         <a href="/"><i class="material-icons" style="font-size: 30px;">arrow_back</i></a>
-        <h1> Sugerencia de Edición </h1>
+        <h1> Revisión de Ediciones </h1>
     </div>
     <div>
-        <form action="buscarItemsSugerencia" method="post">
-            <label>Tema:</label>
-
-            <select onchange="obtenerSubtemas(this,'subtemaSugerencia')" name="temaSugerencia">
-                <option>Escoger Tema</option>
-                {% for tema in temasItemEdicion %}
-                    <option> {{ tema.getId()}}-{{tema.getTema()}}</option>
-                {% endfor %}
-            </select>
-
-            <label>Subtema:</label>
-
-            <select id = "subtemaSugerencia" name="subtemaSugerencia">
-
-            </select>
-
-            <input name = "buscarItems" class="btnSearch" type="submit" value="Buscar">
-        </form>
-        <table id= "tablaSugerencia" class="TablaSugerencia">
+        <table id= "tablaVerificaciones" class="TablaVerificaciones">
             <thead>
             <tr>
                 <td>Identificador</td>
                 <td>Tipo</td>
                 <td>Puntaje</td>
-                <td>Índice de Discriminación</td>
-                <td>Realizar Sugerencia</td>
+                <td>Tema</td>
+                <td>Subtema</td>
+                <td>Sugerido Por</td>
+                <td>Revisar Sugerencia</td>
             </tr>
             </thead>
             <tbody>
-            {% for item in itemsFiltroSugerencia %}
+            {% for sugerencia in sugerenciasFiltradas %}
                 <tr>
-                    <td>{{item.getIdLargo()}}/Item{{ item.getId() }}</td>
-                    <td>{{ item.getTipo() }}</td>
-                    <td>{{ item.getPuntaje() }}</td>
-                    <td>{{ item.getIndice() }}</td>
-                    <td> <button class="consult-button" onclick="desplegarModalSugerencia(this,{{ descripItems }})">Realizar Sugerencia</button></td>
+                    <td hidden>{{ sugerencia.getIdSugerencia() }} </td>
+                    <td>{{sugerencia.getIdLargo()}}/Item{{ sugerencia.getId()}}</td>
+                    <td>{{ sugerencia.getTipo() }}</td>
+                    <td>{{ sugerencia.getPuntaje() }}</td>
+                    <td>{{ sugerencia.getTema() }}</td>
+                    <td>{{ sugerencia.getSubtema() }}</td>
+                    <td>{{ sugerencia.getUsuario() }}</td>
+                    <td> <button class="consult-button" onclick="desplegarModalVerificar(this,{{descripItems}},{{sugerencias}}, {{comentarios}})">Revisar Sugerencia</button></td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -71,18 +58,19 @@
 
 
     <!-- Modal -->
-    <form action="sugerirEdicion" method="post">
-        <div class="modal fade" id="modalSugerencia" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <form action="verificarEdicion" method="post">
+        <div class="modal fade" id="modalVerificacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Sugerencia de Edición</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Verificar Edición</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div id="descripcionModalSugerencia" class="modal-body">
-                  <h2 id="descModalSugerencia"> </h2> <br>
+
+                  <h2 id="descModalVerificacion"> </h2> <br>
                   <h2>Sugerencia de Edicion </h2>
 
                   <textarea id = "sugerenciaEdicion"> </textarea>
@@ -93,7 +81,8 @@
 
               </div>
               <div class="modal-footer">
-                  <button id="botonModalSugerencia" type ="button" class="btn btn-secondary" onclick="enviarSugerencia()">Enviar Sugerencia</button>
+                  <button id="botonModalAprobar" type ="button" class="btn btn-secondary">Aceptar Sugerencia</button>
+                  <button id="botonModalRechazar" type ="button" class="btn btn-secondary">Rechazar Sugerencia</button>
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
               </div>
             </div>

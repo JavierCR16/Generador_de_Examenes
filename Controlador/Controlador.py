@@ -205,4 +205,16 @@ class Controlador:
 
         GestorBase.enviarSugerencia(objetoSugerencia,contrasenna)
 
+    def filtrarSugerencias(self,usuario,contrasenna):
+
+        return GestorBase.filtrarSugerencias(usuario,contrasenna)
+
+    def rechazarSugerencia(self,idSugerencia,usuario,contrasenna):
+
+        GestorBase.rechazarSugerencia(idSugerencia,usuario,contrasenna)
+
+    def aprobarSugerencia(self,idSugerencia,sugerencia,idItem,usuario,contrasenna):
+
+        GestorBase.aprobarSugerencia(idSugerencia,sugerencia,idItem,usuario,contrasenna)
+
 

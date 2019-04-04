@@ -16,6 +16,7 @@ from Modelo.ObjetoVerificacionSugerencia import ObjetoVerificacionSugerencia
 #TODO ACOMODAR UN POCO EL CODIGO
 #TODO VER SI HAY UNA MEJOR MANERA PARA MANEJAR LOS USUARIOS Y HACER QUE EL ACCESO AL CONTROLADOR SEA SINCRONIZADO.
 #TODO Reemplazar condicion de si la conexion esta abierta por conexion != FALSE
+#TODO Buscar cualquier usso que se haga de arreglos en un for y dejar setteado el valor que corresponde mediante loop.index0
 
 #FUNCIONES DE CONEXION Y QUERIES
 def establecerConexion(usuario,password):#usuario,password):
@@ -561,15 +562,18 @@ def filtrarSugerencias(usuario,contrasenna):
         try:
             with nuevaConexion.cursor() as sugerencias:
 
-                querySugerencias = "SELECT Item.idItem, Item.id, Item.tipo, Item.puntaje, tema,subtema FROM Item,Subtema,Tema,SugerenciaEdicion,Tema WHERE " \
+                querySugerencias = "SELECT Item.idItem, Item.id,Item.descripcion,Item.tipo, Item.puntaje, tema,subtema,sugerencia,comentarios," \
+                                   "SugerenciaEdicion.id,Usuario.nombreCompleto" \
+                                   " FROM Item,Subtema,Tema,SugerenciaEdicion,Usuario WHERE " \
                                    "Item.idSubtema = Subtema.id AND  Subtema.idTema = Tema.id AND Item.idItem = SugerenciaEdicion.idItem AND " \
-                                   "SugerenciaEdicion.aprobacion =NULL AND " \
+                                   "SugerenciaEdicion.aprobacion IS NULL AND Item.usuarioCreador = Usuario.correo AND " \
                                    "Item.usuarioCreador = %s"
                 sugerencias.execute(querySugerencias,(usuario))
 
                 for atributos in sugerencias:
                     objetoSugerenciasVerificar.append(ObjetoVerificacionSugerencia(atributos[0],atributos[1],atributos[2],
-                                                                                   atributos[3],atributos[4],atributos[5],usuario))
+                                                                                   atributos[3],atributos[4],atributos[5],atributos[6],
+                                                                                   atributos[7],atributos[8],atributos[9],atributos[10]))
         except Exception as e:
             print(e)
             print("Error al obtener las sugerencias")
@@ -579,3 +583,43 @@ def filtrarSugerencias(usuario,contrasenna):
 
     return objetoSugerenciasVerificar
 
+def aprobarSugerencia(idSugerencia,sugerencia,idItem,usuario,contrasenna):
+    nuevaConexion = establecerConexion(usuario, contrasenna)
+
+    if (nuevaConexion.open):
+
+        try:
+            with nuevaConexion.cursor() as aprobarSugerencia:
+                queryAprobar = "UPDATE SugerenciaEdicion SET aprobacion = 'A' WHERE id = %s"
+                queryUpdateItem = "UPDATE Item SET descripcion = %s WHERE idItem = %s"
+
+                aprobarSugerencia.execute(queryAprobar, (idSugerencia))
+                aprobarSugerencia.execute(queryUpdateItem,(sugerencia,idItem))
+
+                nuevaConexion.commit()
+        except Exception as e:
+            print(e)
+            print("Error al rechazar la sugerencia")
+
+        finally:
+            nuevaConexion.close()
+
+
+def rechazarSugerencia(idSugerencia,usuario,contrasenna):
+
+    nuevaConexion = establecerConexion(usuario,contrasenna)
+
+    if(nuevaConexion.open):
+
+        try:
+            with nuevaConexion.cursor() as rechazarSugerencia:
+                queryRechazar = "UPDATE SugerenciaEdicion SET aprobacion = 'R' WHERE id = %s"
+                rechazarSugerencia.execute(queryRechazar,(idSugerencia))
+
+                nuevaConexion.commit()
+        except Exception as e:
+            print(e)
+            print("Error al rechazar la sugerencia")
+
+        finally:
+            nuevaConexion.close()

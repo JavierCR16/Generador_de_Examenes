@@ -173,9 +173,26 @@ function procesarAjaxSugerencias(nuevaEdicion,comentarios,idItem){
 
         success: function (datos) {
             console.log(datos["status"]);
+            $("#modalSugerencia").modal('hide');
         }
     })
 
+}
+
+function procesarAjaxVerificarEdiciones(accion,idSugerencia,sugerencia,idItem){
+    $.ajax({
+
+        url: "/aprobarRechazarSugerencia",
+        type: 'post',
+        data:JSON.stringify({accion:accion,idSugerencia:idSugerencia,sugerencia:sugerencia,idItem:idItem}),
+        contentType: 'application/json;charset=UTF-8',
+        dataType: "json",
+
+        success: function (datos) {
+            console.log(datos["status"]);
+            $("#modalVerificacion").modal('hide');
+        }
+    })
 }
 
 function obtenerSubtemas(selectEscogido, idObjHTML){
@@ -293,7 +310,7 @@ function previewEncabezado() {
     var curso = "Probabilidades";  //LUEGO INCLUIR UN SELECT CON CURSOS
     var escuela = "Escuela de Matemáticas";  //LUEGO INCLUIR UN SELECT CON ESCUELAS
 
-    var periodoDOM = document.getElementById("selectPeriodo")
+    var periodoDOM = document.getElementById("selectPeriodo");
     var periodo = periodoDOM.options[periodoDOM.selectedIndex].text;
 
     var fecha = $("#fechaEncabezado").val();
@@ -316,12 +333,32 @@ function desplegarModalSugerencia(botonClickeado, descripcionItems){
 
     $("#descModalSugerencia").text("Descripción Actual: "+ descripcionItems[indice]);
 
+    $("#botonModalSugerencia").attr("onclick","enviarSugerencia("+idItem+")");
+
     $("#modalSugerencia").modal({
        show:true
     });
 
-    $("#botonModalSugerencia").attr("onclick","enviarSugerencia("+idItem+")")
+}
 
+function desplegarModalVerificar(botonClickeado,descripcionItem,sugerencia,comentarios){
+    var indice = $(botonClickeado).closest('tr').index();
+    var filaTabla = $("#tablaVerificaciones tr").eq(indice+1).find('td');
+    var idSugerencia = filaTabla.eq(0).text();
+    var idItem = filaTabla.eq(1).text().split("/Item")[1];
+
+    $("#descModalVerificacion").text("DESCRIPCIÓN: "+descripcionItem[indice]);
+
+    $("#sugerenciaEdicion").val(sugerencia[indice]);
+
+    $("#comentarios").val(comentarios[indice]);
+
+    $("#botonModalAprobar").attr("onclick","aprobacionSugerencia(1, "+idSugerencia+", "+JSON.stringify(sugerencia[indice])+", "+ idItem+")");
+    $("#botonModalRechazar").attr("onclick","aprobacionSugerencia(2, "+idSugerencia+")");
+
+    $("#modalVerificacion").modal({
+       show:true
+    });
 }
 
 function enviarSugerencia(idItem){
@@ -332,5 +369,8 @@ function enviarSugerencia(idItem){
 
     procesarAjaxSugerencias(nuevaEdicion,comentarios,idItem)
 }
+
+function aprobacionSugerencia(accion,idSugerencia,sugerencia = null,idItem = null){procesarAjaxVerificarEdiciones(accion,idSugerencia,sugerencia,idItem);}
+
 
 

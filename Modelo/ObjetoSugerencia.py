@@ -7,14 +7,14 @@ class ObjetoSugerencia:
         self.comentarios = comentarios
         self.usuarioSugeridor = usuarioSugeridor
 
-        def getIdItem():
-            return self.idItem
+    def getIdItem(self):
+        return self.idItem
 
-        def getSugerencia():
-            return self.sugerencia
+    def getSugerencia(self):
+        return self.sugerencia
 
-        def getComentarios():
-            return self.comentarios
+    def getComentarios(self):
+        return self.comentarios
 
-        def getUsuario():
-            return self.usuarioSugeridor
+    def getUsuario(self):
+        return self.usuarioSugeridor

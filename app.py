@@ -308,6 +308,33 @@ def enviarSugerencia():
 
     return jsonify({"status":"Sugerencia Enviada con Éxito"})
 
+@app.route("/VerificacionEdicion.html")
+def verificacionEdicion():
+
+    objetosSugerencia = Controller.filtrarSugerencias(session['user'],session['contrasenna'])
+    descripciones = [sugerencia.getDescripcionItem() for sugerencia in objetosSugerencia]
+    sugerencias = [sugerencia.getSugerencia() for sugerencia in objetosSugerencia]
+    comentarios = [sugerencia.getComentarios() for sugerencia in objetosSugerencia]
+
+    return render_template("VerificacionEdicion.html",sugerenciasFiltradas  = objetosSugerencia,
+                           sugerencias = sugerencias, comentarios= comentarios, descripItems = descripciones)
+
+@app.route("/aprobarRechazarSugerencia",methods=['post'])
+def aprobarRechazarSugerencia(): #1 = Aprobar, 0 = Rechazar
+
+    informacionVerificacion = request.get_json()
+    accion = informacionVerificacion['accion']
+    print(type(accion))
+    print(accion)
+    idSugerencia =  informacionVerificacion['idSugerencia']
+    sugerencia = informacionVerificacion['sugerencia']
+    idItem = informacionVerificacion['idItem']
+
+
+    Controller.aprobarSugerencia(idSugerencia,sugerencia,idItem,session['user'],session['contrasenna']) \
+        if accion == 1 else Controller.rechazarSugerencia(idSugerencia,session['user'],session['contrasenna'])
+
+    return jsonify({"status":"Sugerencia Revisada"})
 
 if __name__ == '__main__':
 
