@@ -23,6 +23,8 @@ def login():
 
         Controller.cerrarConexion(conexion)
 
+        Controller.loadInformacionExamen(Controller.obtenerTemas(session['user'],session['contrasenna']),'S',session['user'],session['contrasenna'])
+
         return render_template('OpcionesPrincipales.html')
 
     return render_template('LogIn.html')

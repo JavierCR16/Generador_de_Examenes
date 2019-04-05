@@ -217,4 +217,9 @@ class Controlador:
 
         GestorBase.aprobarSugerencia(idSugerencia,sugerencia,idItem,usuario,contrasenna)
 
+    #Funciones Construir Examen
+    def loadInformacionExamen(self,arregloTemas,tipoExamen,usuario,contrasenna):
+
+        return GestorBase.loadInformacionGenerarExamen(arregloTemas,tipoExamen,usuario,contrasenna)
+
 

@@ -8,6 +8,7 @@ from Modelo.ObjetoUsuario import ObjetoUsuario
 from Modelo.ObjetoRespuesta import ObjetoRespuesta
 from Modelo.ObjetoSugerencia import ObjetoSugerencia
 from Modelo.ObjetoVerificacionSugerencia import ObjetoVerificacionSugerencia
+from collections import defaultdict
 
 #TODO AGREGAR A LA SECCION DE ENCABEZADO (BASE Y SISTEMA), LA OPCION DE METER ESCUELA Y CURSO.
 #TODO AGREGAR FUNCIONES PARA CARGAR TODOS LOS ENCABEZADOS(PLANTILLAS) Y QUE ESTOS SEAN PREVISUALIZADOS POR EL USUARIO.
@@ -634,8 +635,6 @@ def loadInformacionGenerarExamen(arregloTemas,tipoExamen,usuario,contrasenna):
 
     items = []
 
-    respuestas = []
-
     if(nuevaConexion.open):
 
         try:
@@ -644,9 +643,26 @@ def loadInformacionGenerarExamen(arregloTemas,tipoExamen,usuario,contrasenna):
                 for tema in arregloTemas:
 
                     queryInformacion = "SELECT Subtema.id, Subtema.subtema, Item.idItem, Item.id, Item.descripcion, " \
-                                   "Item.puntaje, COUNT(*) as total FROM Subtema,Item WHERE Subtema.id = Item.idSubtema " \
-                                   "AND Subtema.idTema = %s AND Item.tipo = %s GROUP BY(Subtema.id)"
+                                   "Item.puntaje FROM Subtema,Item WHERE Subtema.id = Item.idSubtema " \
+                                   "AND Subtema.idTema = %s AND Item.tipo = %s"
+                    infoExamen.execute(queryInformacion,(tema.getId(),tipoExamen))
 
+                    respuestaTuplas = list(infoExamen.__dict__['_rows'])
+
+                    group = defaultdict(list)
+
+                    for tupla in respuestaTuplas:
+                        group[tupla[0]].append(tupla)
+
+                    listaSubtema = []
+                    for key in group:
+                        listaSubtema.append(key)
+
+                        listaItem = []
+                        for tupla in group[key]:
+                            listaItem.append(tupla[3]+"/Item"+str(tupla[2]))
+                        items.append(listaItem)
+                    subtemas.append(listaSubtema)
 
         except Exception as e:
             print(e)
@@ -656,4 +672,4 @@ def loadInformacionGenerarExamen(arregloTemas,tipoExamen,usuario,contrasenna):
             nuevaConexion.close()
 
 
-    #[tema1,tema2,tema3] [[subtema1,subtema2,subtema3],[],[]]  [[item1,item2,item3],[item4,item5,item6],[item7,item8,item9]]
+    return subtemas,items
