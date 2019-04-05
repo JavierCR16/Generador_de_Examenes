@@ -17,6 +17,7 @@ from Modelo.ObjetoVerificacionSugerencia import ObjetoVerificacionSugerencia
 #TODO VER SI HAY UNA MEJOR MANERA PARA MANEJAR LOS USUARIOS Y HACER QUE EL ACCESO AL CONTROLADOR SEA SINCRONIZADO.
 #TODO Reemplazar condicion de si la conexion esta abierta por conexion != FALSE
 #TODO Buscar cualquier usso que se haga de arreglos en un for y dejar setteado el valor que corresponde mediante loop.index0
+#TODO PONER TIPOS PARA LOS EXAMENES DE PRACTICA
 
 #FUNCIONES DE CONEXION Y QUERIES
 def establecerConexion(usuario,password):#usuario,password):
@@ -604,7 +605,6 @@ def aprobarSugerencia(idSugerencia,sugerencia,idItem,usuario,contrasenna):
         finally:
             nuevaConexion.close()
 
-
 def rechazarSugerencia(idSugerencia,usuario,contrasenna):
 
     nuevaConexion = establecerConexion(usuario,contrasenna)
@@ -623,3 +623,37 @@ def rechazarSugerencia(idSugerencia,usuario,contrasenna):
 
         finally:
             nuevaConexion.close()
+
+#AQUI EMPIEZA CONSTRUIR EXAMEN
+
+def loadInformacionGenerarExamen(arregloTemas,tipoExamen,usuario,contrasenna):
+
+    nuevaConexion = establecerConexion(usuario,contrasenna)
+
+    subtemas =[]
+
+    items = []
+
+    respuestas = []
+
+    if(nuevaConexion.open):
+
+        try:
+            with nuevaConexion.cursor() as infoExamen:
+
+                for tema in arregloTemas:
+
+                    queryInformacion = "SELECT Subtema.id, Subtema.subtema, Item.idItem, Item.id, Item.descripcion, " \
+                                   "Item.puntaje, COUNT(*) as total FROM Subtema,Item WHERE Subtema.id = Item.idSubtema " \
+                                   "AND Subtema.idTema = %s AND Item.tipo = %s GROUP BY(Subtema.id)"
+
+
+        except Exception as e:
+            print(e)
+            print("Error al obtener la información de examen")
+
+        finally:
+            nuevaConexion.close()
+
+
+    #[tema1,tema2,tema3] [[subtema1,subtema2,subtema3],[],[]]  [[item1,item2,item3],[item4,item5,item6],[item7,item8,item9]]

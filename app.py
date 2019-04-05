@@ -324,8 +324,6 @@ def aprobarRechazarSugerencia(): #1 = Aprobar, 0 = Rechazar
 
     informacionVerificacion = request.get_json()
     accion = informacionVerificacion['accion']
-    print(type(accion))
-    print(accion)
     idSugerencia =  informacionVerificacion['idSugerencia']
     sugerencia = informacionVerificacion['sugerencia']
     idItem = informacionVerificacion['idItem']
