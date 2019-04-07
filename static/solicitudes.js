@@ -252,7 +252,9 @@ function modificarEliminarIndiceDiscriminacion(valorBoton,descripItems) {
 }
 
 function verificarIndiceDiscriminacion(botonClickeado,descripItems){
+    console.log(descripItems);
     descripItems = !(descripItems instanceof Array) ? descripItems.split(",") : descripItems;
+    console.log(descripItems);
 
     var indice = $(botonClickeado).closest('tr').index();
     var filaTablaDiscriminacion = $("#tablaDiscriminacion tr").eq(indice+1).find('td');
@@ -390,4 +392,5 @@ function OcultAcordion(id) {
             x.className = x.className.replace(" w3-show", "");
         }
     }
+
 

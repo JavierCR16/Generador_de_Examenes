@@ -61,7 +61,7 @@ def cargarUsuarios(usuario,contrasenna):
 
         try:
             with nuevaConexion.cursor() as usuarios:
-                queryUsuarios = "SELECT nombreCompleto, correo FROM USUARIOS"
+                queryUsuarios = "SELECT nombreCompleto, correo FROM USUARIO"
 
                 usuarios.execute(queryUsuarios)
 
@@ -568,7 +568,7 @@ def filtrarSugerencias(usuario,contrasenna):
                                    "SugerenciaEdicion.id,Usuario.nombreCompleto" \
                                    " FROM Item,Subtema,Tema,SugerenciaEdicion,Usuario WHERE " \
                                    "Item.idSubtema = Subtema.id AND  Subtema.idTema = Tema.id AND Item.idItem = SugerenciaEdicion.idItem AND " \
-                                   "SugerenciaEdicion.aprobacion IS NULL AND Item.usuarioCreador = Usuario.correo AND " \
+                                   "SugerenciaEdicion.aprobacion IS NULL AND SugerenciaEdicion.usuarioSugeridor = Usuario.correo AND " \
                                    "Item.usuarioCreador = %s"
                 sugerencias.execute(querySugerencias,(usuario))
 

@@ -1,6 +1,5 @@
-from os import terminal_size
-
 from flask import Flask, render_template,request,session,jsonify
+from werkzeug.utils import secure_filename
 from Controlador.Controlador import Controlador
 
 app = Flask(__name__)
@@ -30,7 +29,6 @@ def login():
         return render_template('OpcionesPrincipales.html')
 
     return render_template('LogIn.html')
-
 
 #CRUD TEMAS SUBTEMAS
 @app.route("/CRUDTemasSubtemas.html")
@@ -155,7 +153,6 @@ def filtrarItems():
     descripcionesItems = [item.getDescripcion() for item in listaItems]
 
     return jsonify({'items':Controller.convertirItemsJson(listaItems), 'descripcionItems':Controller.convertirJson(descripcionesItems)})
-
 
 @app.route('/crudItemsModificar', methods = ['post'])
 def crudItemsModificar():
@@ -347,6 +344,28 @@ def creacionExamen():
     descripcionItems = [item.getDescripcion() for lista in informacionExamen[1] for item in lista]
 
     return render_template("CreacionExamen.html",temas = temas, infoExamen = informacionExamen, descripItems = descripcionItems)
+
+#COMPARTIR EXAMENES
+@app.route('/CompartirExamenes.html')
+def compartirExamenes():
+    usuarios = Controller.cargarUsuarios(session['user'],session['contrasenna'])
+
+    return render_template("CompartirExamenes.html",usuarios = usuarios)
+
+@app.route('/enviarCorreo',methods=['post'])
+def enviarCorreo():
+
+    asunto = request.form.get("asunto")
+    cuerpo= request.form.get("cuerpoCorreo")
+    archivosExamen = request.files.getlist("archivoExamen")
+    listaCorreos = request.form.getlist("correo")
+
+    Controller.enviarExamen(asunto,cuerpo,archivosExamen,listaCorreos)
+
+    usuarios = Controller.cargarUsuarios(session['user'], session['contrasenna'])
+
+    return render_template("CompartirExamenes.html", usuarios=usuarios)
+
 
 if __name__ == '__main__':
 

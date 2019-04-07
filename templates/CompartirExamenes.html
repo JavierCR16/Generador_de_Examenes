@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Compartir Exámenes</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/solicitudes.js"></script>
+</head>
+<body>
+    <form enctype="multipart/form-data" action="enviarCorreo" method="post">
+        <table>
+        <thead>
+            <tr>
+                <td>Nombre</td>
+                <td>Correo Electrónico</td>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for usuario in usuarios %}
+                <tr>
+                    <td>{{ usuario.getNombre() }}</td>
+
+                    <td>{{ usuario.getCorreo() }}</td>
+
+                    <td><input name="correo" value = "{{ usuario.getCorreo() }}" type="checkbox"> </td>
+                </tr>
+
+            {% endfor %}
+        </tbody>
+
+        </table>
+
+
+        <h1>Asunto</h1>
+        <input type = text name ="asunto"> <br>
+
+        <h1>Cuerpo</h1>
+        <textarea name = "cuerpoCorreo"> </textarea>
+
+        <button type="submit">Enviar Examen</button>
+
+        <input accept=".exam" id ="archivoExamen" name="archivoExamen" type="file" multiple="multiple" >
+    </form>
+</body>
+</html>
