@@ -359,8 +359,9 @@ def enviarCorreo():
     cuerpo= request.form.get("cuerpoCorreo")
     archivosExamen = request.files.getlist("archivoExamen")
     listaCorreos = request.form.getlist("correo")
+    nombreSender = Controller.getNombreUsuario(session['user'],session['contrasenna'])
 
-    Controller.enviarExamen(asunto,cuerpo,archivosExamen,listaCorreos)
+    Controller.enviarExamen(nombreSender,asunto,cuerpo,archivosExamen,listaCorreos)
 
     usuarios = Controller.cargarUsuarios(session['user'], session['contrasenna'])
 

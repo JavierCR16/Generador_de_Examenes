@@ -227,7 +227,11 @@ class Controlador:
 
         return GestorBase.cargarUsuarios(usuario,contrasenna)
 
-    def enviarExamen(self,asunto,cuerpo,examenes,listaCorreos):
+    def enviarExamen(self,usuarioLogueado,asunto,cuerpo,examenes,listaCorreos):
 
-        GestorCorreo.enviarExamen(asunto,cuerpo,examenes,listaCorreos)
+        GestorCorreo.enviarExamen(usuarioLogueado,asunto,cuerpo,examenes,listaCorreos)
+
+    def getNombreUsuario(self,usuario,contrasenna):
+
+        return GestorBase.getNombreUsuario(usuario,contrasenna)
 

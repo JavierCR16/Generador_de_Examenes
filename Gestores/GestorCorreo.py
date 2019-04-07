@@ -4,13 +4,13 @@ from email.mime.multipart import MIMEBase
 from email.encoders import encode_base64
 import smtplib
 
-def enviarExamen(asunto,cuerpo,listaExamenes,listaCorreos):
+def enviarExamen(usuarioLogueado,asunto,cuerpo,listaExamenes,listaCorreos):
     msg = MIMEMultipart()
     msg['Subject'] = asunto
     msg['From'] = "gema.teccr@gmail.com"
     msg['To'] = ', '.join(listaCorreos)
 
-    body = MIMEText(cuerpo)
+    body = MIMEText(cuerpo + "\n--- \nEnviado Por: "+usuarioLogueado)
     msg.attach(body)
 
     for examen in listaExamenes:

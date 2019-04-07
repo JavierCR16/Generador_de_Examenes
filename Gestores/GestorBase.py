@@ -61,9 +61,9 @@ def cargarUsuarios(usuario,contrasenna):
 
         try:
             with nuevaConexion.cursor() as usuarios:
-                queryUsuarios = "SELECT nombreCompleto, correo FROM USUARIO"
+                queryUsuarios = "SELECT nombreCompleto, correo FROM USUARIO WHERE correo != %s"
 
-                usuarios.execute(queryUsuarios)
+                usuarios.execute(queryUsuarios,(usuario))
 
                 for atributos in usuarios:
                     nuevoUsuario = ObjetoUsuario(atributos[0],atributos[1])
@@ -662,5 +662,30 @@ def loadInformacionGenerarExamen(arregloTemas,tipoExamen,usuario,contrasenna):
         finally:
             nuevaConexion.close()
 
-
     return subtemas,items
+
+#Funciones Correo
+
+def getNombreUsuario(usuario,contrasenna):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
+    nombreUsuario = ""
+    if(nuevaConexion != False):
+
+        try:
+            with nuevaConexion.cursor() as nombreCompleto:
+
+                queryNombreCompleto = "SELECT nombreCompleto FROM Usuario WHERE correo = %s"
+
+                nombreCompleto.execute(queryNombreCompleto,(usuario))
+
+                for atributos in nombreCompleto:
+                    nombreUsuario = atributos[0]
+
+        except Exception as e:
+            print(e)
+            print("Error al obtener el nombre del usuario")
+
+        finally:
+            nuevaConexion.close()
+
+    return nombreUsuario
