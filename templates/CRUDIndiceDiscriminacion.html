@@ -10,7 +10,10 @@
         <link rel="stylesheet" href="/static/popupForm.css">
         <link rel="stylesheet" type="text/css" href="../static/style.css">
         <link href="https://fonts.googleapis.com/css?family=Montserrat:300" rel="stylesheet">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="/static/solicitudes.js"></script>
     </head>
 
@@ -63,7 +66,7 @@
             </table>
         </div>
 
-        <div class="form-popupAgregar" id="agregarIndice">
+       <!--  <div class="form-popupAgregar" id="agregarIndice">
             <h1 id = "infoItemAgregar"> </h1>
             <label>No tiene índice de discriminación asociado</label><br>
             <label>Ingresar Índice</label>
@@ -77,7 +80,7 @@
         </div>
 
 
-        <div class="form-popupModEli" id="modiEliIndice">
+       <div class="form-popupModEli" id="modiEliIndice">
 
             <h1 id = "infoItemModificar"> </h1>
             <label>El índice de discriminación es:</label><br>
@@ -90,10 +93,66 @@
             <button value="eliminarIndiceBoton"  id = "eliminarIndiceBoton" onclick="modificarEliminarIndiceDiscriminacion(this.value, {{descripItems}})" type="button" class="btnModEliIndice">Eliminar Índice</button>
             <button type="button" class="btnBack" onclick="closeFormModDel()">Atrás</button>
 
-        </div>
+        </div> -->
 
         <div id="footer">
           <img style = "background-color: rgb(0, 0, 0, 0.7); width: 30%; height: 20%;" src="../static/TECB.png" alt="Tecnológico de Costa Rica">
+        </div>
+
+        <div class="modal fade" id="modalAgregarIndice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Agregar Índice de Discriminación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  <h2 id="infoItemAgregar"> </h2> <br>
+                  <h2>Índice de Discriminación</h2>
+
+                  <input id ="addIndice" type="text" placeholder="Ingresar Índice">
+
+                  <input id="idItemSecretoAdd" hidden type="text">
+                  <input id = "idSubtemaSecretAdd" hidden type="text">
+
+              </div>
+              <div class="modal-footer">
+                  <button value="agregarIndiceBoton" id="agregarIndiceBoton" type ="button" class="btn btn-secondary" onclick="agregarIndiceDiscriminacion({{ descripItems }})">Agregar Índice</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="modalModificarIndice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modificar Índice de Discriminación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+
+                  <h2 id="infoItemModificar"> </h2> <br>
+                  <h2>Índice de Discriminación </h2>
+
+                  <input  id="idItemSecretoMod" hidden type="text">
+                  <input id = "idSubtemaSecretMod" hidden type="text">
+
+                  <input  id = "modIndice" type="text" ><br>
+
+              </div>
+              <div class="modal-footer">
+                  <button value="modificarIndiceBoton" onclick="modificarEliminarIndiceDiscriminacion(this.value, {{descripItems}})"  type="button" class="btn btn-secondary">Modificar Índice</button>
+                  <button value="eliminarIndiceBoton" onclick="modificarEliminarIndiceDiscriminacion(this.value, {{descripItems}})" type="button" class="btn btn-secondary">Eliminar Índice</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+              </div>
+            </div>
+          </div>
         </div>
     </body>
 </html>

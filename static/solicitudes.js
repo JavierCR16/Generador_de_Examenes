@@ -64,7 +64,7 @@ function procesarAjaxIndice(idItemSecreto,nuevoIndice, idSub,valorBoton,descripI
                 var puntaje = datos["items"][i]["puntaje"];
                 var indice = datos["items"][i]["indiceDiscriminacion"];
                 var idSubtema = datos["items"][i]["idSubtema"];
-                var boton = $('<button class="consult-button" onclick="verificarIndiceDiscriminacion(this,\''+ descripItems + '\' )"><i class="material-icons" style="font-size: 20px;">info</i> </button>');
+                var boton = $('<button class="consult-button" onclick="verificarIndiceDiscriminacion(this,\''+ descripItems + '\' )"><i class="material-icons" style="font-size:20px;">info</i></button>');
 
 
                 tabla.append($('<tr>')
@@ -273,22 +273,22 @@ function openFormAdd(descripcion,idItem,idSubtema) {
     $('#idItemSecretoAdd').val(idItem);
     $('#idSubtemaSecretAdd').val(idSubtema);
 
-    document.getElementById("agregarIndice").style.display = "block";
+    $("#modalAgregarIndice").modal({show : true});
 }
 
-function closeFormAdd() {document.getElementById("agregarIndice").style.display = "none";}
+function closeFormAdd() {$("#modalAgregarIndice").modal('hide');}
 
 function openFormModDel(descripcion,indiceDisc,idItem,idSubtema) {
 
-    $("#infoItemModificar").text(descripcion)
+    $("#infoItemModificar").text(descripcion);
     $('#modIndice').val(indiceDisc);
     $('#idItemSecretoMod').val(idItem);
     $('#idSubtemaSecretMod').val(idSubtema);
 
-    document.getElementById("modiEliIndice").style.display = "block";
+    $("#modalModificarIndice").modal({show: true});
 }
 
-function closeFormModDel() {document.getElementById("modiEliIndice").style.display = "none";}
+function closeFormModDel() {$("#modalModificarIndice").modal('hide');}
 
 function desplegarDescripcion(descripcionesItems,selectItem) {
 
@@ -372,5 +372,22 @@ function enviarSugerencia(idItem){
 
 function aprobacionSugerencia(accion,idSugerencia,sugerencia = null,idItem = null){procesarAjaxVerificarEdiciones(accion,idSugerencia,sugerencia,idItem);}
 
+function descripcionItemsExamen(descripciones,index){
 
+    $("#descripcionModalExamen").text(descripciones[index]);
+
+    $("#modalItemExamen").modal({
+       show:true
+    });
+
+}
+
+function OcultAcordion(id) {
+        var x = document.getElementById(id);
+        if (x.className.indexOf("w3-show") === -1) {
+            x.className += " w3-show";
+        } else {
+            x.className = x.className.replace(" w3-show", "");
+        }
+    }
 

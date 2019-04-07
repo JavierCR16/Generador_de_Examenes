@@ -1,3 +1,5 @@
+from os import terminal_size
+
 from flask import Flask, render_template,request,session,jsonify
 from Controlador.Controlador import Controlador
 
@@ -277,7 +279,7 @@ def construirExamen():
     return render_template("ConstruirExamen.html")
 
 
-#CRUD SUGERIR EDICIONES
+#CRUD SUGERIR VERIFICAR EDICIONES
 
 @app.route("/SugerenciaEdicion.html")
 def sugerenciaEdicion():
@@ -335,6 +337,16 @@ def aprobarRechazarSugerencia(): #1 = Aprobar, 0 = Rechazar
         if accion == 1 else Controller.rechazarSugerencia(idSugerencia,session['user'],session['contrasenna'])
 
     return jsonify({"status":"Sugerencia Revisada"})
+
+#CONSTRUIR EXAMEN
+@app.route("/CreacionExamen.html") #TODO LLAMAR CON AJAX
+def creacionExamen():
+    temas = Controller.obtenerTemas(session['user'],session['contrasenna'])
+    informacionExamen = Controller.loadInformacionExamen(temas,"S",session['user'],session['contrasenna'])
+
+    descripcionItems = [item.getDescripcion() for lista in informacionExamen[1] for item in lista]
+
+    return render_template("CreacionExamen.html",temas = temas, infoExamen = informacionExamen, descripItems = descripcionItems)
 
 if __name__ == '__main__':
 

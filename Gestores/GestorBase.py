@@ -6,9 +6,9 @@ from Modelo.ObjetoTipoExamen import ObjetoTipoExamen
 from Modelo.ObjetoPeriodo import ObjetoPeriodo
 from Modelo.ObjetoUsuario import ObjetoUsuario
 from Modelo.ObjetoRespuesta import ObjetoRespuesta
-from Modelo.ObjetoSugerencia import ObjetoSugerencia
 from Modelo.ObjetoVerificacionSugerencia import ObjetoVerificacionSugerencia
-from collections import defaultdict
+from Gestores import GestorExamenes
+
 
 #TODO AGREGAR A LA SECCION DE ENCABEZADO (BASE Y SISTEMA), LA OPCION DE METER ESCUELA Y CURSO.
 #TODO AGREGAR FUNCIONES PARA CARGAR TODOS LOS ENCABEZADOS(PLANTILLAS) Y QUE ESTOS SEAN PREVISUALIZADOS POR EL USUARIO.
@@ -16,9 +16,9 @@ from collections import defaultdict
 #TODO EN UN FUTURO, QUE LE PUEDA CAMBIAR EL SUBTEMA ASOCIADO A UN ITEM,AHORITA SI SE EQUIVOCA DI QUE LO BORRE.
 #TODO ACOMODAR UN POCO EL CODIGO
 #TODO VER SI HAY UNA MEJOR MANERA PARA MANEJAR LOS USUARIOS Y HACER QUE EL ACCESO AL CONTROLADOR SEA SINCRONIZADO.
-#TODO Reemplazar condicion de si la conexion esta abierta por conexion != FALSE
 #TODO Buscar cualquier usso que se haga de arreglos en un for y dejar setteado el valor que corresponde mediante loop.index0
 #TODO PONER TIPOS PARA LOS EXAMENES DE PRACTICA
+#TODO Revisar bug en funcion procesarajaxindice con las descripciones devueltas, no se esta escapando el backslash
 
 #FUNCIONES DE CONEXION Y QUERIES
 def establecerConexion(usuario,password):#usuario,password):
@@ -35,7 +35,7 @@ def obtenerInformacionItem(idItem,usuario,contrasenna):
 
     nuevaConexion = establecerConexion(usuario,contrasenna)
     objetoItem = ""
-    if(nuevaConexion.open):
+    if(nuevaConexion != False):
 
         try:
             with nuevaConexion.cursor() as infoItem:
@@ -57,7 +57,7 @@ def cargarUsuarios(usuario,contrasenna):
 
     nuevaConexion = establecerConexion(usuario,contrasenna)
     listaUsuarios = []
-    if(nuevaConexion.open):
+    if(nuevaConexion != False):
 
         try:
             with nuevaConexion.cursor() as usuarios:
@@ -81,7 +81,7 @@ def cargarPeriodoExamenes(usuario,contrasenna):
 
     nuevaConexion = establecerConexion(usuario,contrasenna)
     listaPeriodos = []
-    if(nuevaConexion.open):
+    if(nuevaConexion != False):
 
         try:
             with nuevaConexion.cursor() as periodos:
@@ -108,7 +108,7 @@ def cargarTipoExamenes(usuario,contrasenna):
 
     listaTipos=[]
 
-    if(nuevaConexion.open):
+    if(nuevaConexion != False):
 
         try:
             with nuevaConexion.cursor() as  tipoexamenes:
@@ -130,7 +130,7 @@ def cargarTemas(usuario,contrasenna):
 
     listaTemas = []
 
-    if (nuevaConexion.open):
+    if (nuevaConexion != False):
 
         try:
             with nuevaConexion.cursor() as  temas:
@@ -152,7 +152,7 @@ def filtrarSubtemas(idTema,usuario,contrasenna):
 
     listaSubtemas = []
 
-    if (nuevaConexion.open):
+    if (nuevaConexion != False):
         try:
             with nuevaConexion.cursor() as  subtemas:
                 querySubtemas = "SELECT id, subtema FROM SubTema WHERE idTema = %s"
@@ -173,7 +173,7 @@ def filtrarItems(idSubtema,tipoFiltrado,usuario,contrasenna):
 
     listaItems = []
 
-    if (nuevaConexion.open):
+    if (nuevaConexion != False):
         try:
             with nuevaConexion.cursor() as items:
                 queryitemsTotal = "SELECT idItem,id, descripcion,tipo, puntaje, indiceDiscriminacion FROM Item WHERE idSubtema = %s"
@@ -203,7 +203,7 @@ def filtrarItemsSeleccion(idSubtema,usuario,contrasenna):
     nuevaConexion = establecerConexion(usuario,contrasenna)
     listaItemsSeleccion = []
 
-    if(nuevaConexion.open):
+    if(nuevaConexion != False):
 
         try:
             with nuevaConexion.cursor() as itemsSelect:
@@ -226,7 +226,7 @@ def filtrarItemsSeleccion(idSubtema,usuario,contrasenna):
 def agregarEncabezado(objetoEncabezado,usuario,contrasenna):
     nuevaConexion = establecerConexion(usuario,contrasenna)
 
-    if(nuevaConexion.open):
+    if(nuevaConexion != False):
 
         try:
             with nuevaConexion.cursor() as nuevoEncabezado:
@@ -246,7 +246,7 @@ def agregarEncabezado(objetoEncabezado,usuario,contrasenna):
 def agregarTema(nuevoTemaIngresado,usuario,contrasenna):
     nuevaConexion = establecerConexion(usuario,contrasenna)
 
-    if(nuevaConexion.open):
+    if(nuevaConexion != False):
         try:
             with nuevaConexion.cursor() as nuevoTema:
 
@@ -263,7 +263,7 @@ def agregarSubtema(nuevoObjetoSubtema,usuario,contrasenna):
 
     nuevaConexion = establecerConexion(usuario,contrasenna)
 
-    if(nuevaConexion.open):
+    if(nuevaConexion != False):
         try:
             with nuevaConexion.cursor() as nuevoSubtema:
                 insertSubtema = "INSERT INTO Subtema (subtema,idTema) VALUES (%s,%s)"
@@ -279,7 +279,7 @@ def modificarTema(objetoModTema,usuario,contrasenna):
 
     nuevaConexion = establecerConexion(usuario,contrasenna)
 
-    if(nuevaConexion.open):
+    if(nuevaConexion != False):
 
         try:
             with nuevaConexion.cursor() as temaModificar:
@@ -297,7 +297,7 @@ def modificarTema(objetoModTema,usuario,contrasenna):
 def eliminarTema(idTema,usuario,contrasenna):
     nuevaConexion = establecerConexion(usuario,contrasenna)
 
-    if (nuevaConexion.open):
+    if (nuevaConexion != False):
 
         try:
             with nuevaConexion.cursor() as temaEliminar:
@@ -315,7 +315,7 @@ def modificarSubtema(objetoModSubtema,usuario,contrasenna):
 
     nuevaConexion = establecerConexion(usuario,contrasenna)
 
-    if (nuevaConexion.open):
+    if (nuevaConexion != False):
 
         try:
             with nuevaConexion.cursor() as subtemaModificar:
@@ -332,7 +332,7 @@ def eliminarSubtema(idSubtema,usuario,contrasenna):
 
     nuevaConexion = establecerConexion(usuario,contrasenna)
 
-    if(nuevaConexion.open):
+    if(nuevaConexion != False):
 
         try:
             with nuevaConexion.cursor() as subtemaEliminar:
@@ -349,7 +349,7 @@ def agregarItem(nuevoObjetoItem,usuario,contrasenna):
 
     nuevaConexion = establecerConexion(usuario,contrasenna)
 
-    if(nuevaConexion.open):
+    if(nuevaConexion != False):
         try:
             with nuevaConexion.cursor() as nuevoItem:
 
@@ -368,7 +368,7 @@ def modificarItem(objetoModItem,usuario,contrasenna):
 
     nuevaConexion = establecerConexion(usuario,contrasenna)
 
-    if(nuevaConexion.open):
+    if(nuevaConexion != False):
         try:
 
             with nuevaConexion.cursor() as itemModificar:
@@ -388,7 +388,7 @@ def modificarItem(objetoModItem,usuario,contrasenna):
 def eliminarItem(idItem,usuario,contrasenna):
     nuevaConexion = establecerConexion(usuario,contrasenna)
 
-    if (nuevaConexion.open):
+    if (nuevaConexion != False):
         try:
 
             with nuevaConexion.cursor() as itemEliminar:
@@ -408,7 +408,7 @@ def agregarRespuestas(objetoRespuesta,usuario,contrasenna):         #REVISAR
 
     nuevaConexion = establecerConexion(usuario,contrasenna)
     cont = 1
-    if (nuevaConexion.open):
+    if (nuevaConexion != False):
         try:
             with nuevaConexion.cursor() as nuevaRespuesta:
                 for newResp in objetoRespuesta.getRespuestas():
@@ -426,7 +426,7 @@ def agregarRespuestas(objetoRespuesta,usuario,contrasenna):         #REVISAR
 def filtrarRespuestasViejas(idItem,usuario,contrasenna):
     nuevaConexion = establecerConexion(usuario,contrasenna)
     objetoRespuesta = ObjetoRespuesta(idItem,None,None)
-    if (nuevaConexion.open):
+    if (nuevaConexion != False):
 
         try:
             with nuevaConexion.cursor() as respViejas:
@@ -454,7 +454,7 @@ def filtrarRespuestasViejas(idItem,usuario,contrasenna):
 def obtenerIdFilaRespuestas(idItem,usuario,contrasenna):
     nuevaConexion = establecerConexion(usuario,contrasenna)
     idExtraido = ""
-    if(nuevaConexion.open):
+    if(nuevaConexion != False):
 
         try:
             with nuevaConexion.cursor() as idExtraer:
@@ -476,7 +476,7 @@ def modificarRespuestas(objetoModRespuesta,usuario,contrasenna):
 
     nuevaConexion = establecerConexion(usuario,contrasenna)
 
-    if (nuevaConexion.open):
+    if (nuevaConexion != False):
         try:
             with nuevaConexion.cursor() as respuestaModificar:
 
@@ -504,7 +504,7 @@ def modificarIndice(objetoModIndice,usuario,contrasenna):
 
     nuevaConexion = establecerConexion(usuario,contrasenna)
 
-    if (nuevaConexion.open):
+    if (nuevaConexion != False):
         try:
             with nuevaConexion.cursor() as indiceModificar:
 
@@ -520,7 +520,7 @@ def modificarIndice(objetoModIndice,usuario,contrasenna):
 def eliminarIndice(idItem,usuario,contrasenna):
     nuevaConexion = establecerConexion(usuario,contrasenna)
 
-    if (nuevaConexion.open):
+    if (nuevaConexion != False):
         try:
             with nuevaConexion.cursor() as indiceEliminar:
 
@@ -538,7 +538,7 @@ def eliminarIndice(idItem,usuario,contrasenna):
 def enviarSugerencia(objetoSugerencia, contrasenna):
     nuevaConexion = establecerConexion(objetoSugerencia.getUsuario(),contrasenna)
 
-    if(nuevaConexion.open):
+    if(nuevaConexion != False):
 
         try:
             with nuevaConexion.cursor() as envioSugerencia:
@@ -559,7 +559,7 @@ def filtrarSugerencias(usuario,contrasenna):
 
     nuevaConexion = establecerConexion(usuario,contrasenna)
     objetoSugerenciasVerificar = []
-    if(nuevaConexion.open):
+    if(nuevaConexion != False):
 
         try:
             with nuevaConexion.cursor() as sugerencias:
@@ -588,7 +588,7 @@ def filtrarSugerencias(usuario,contrasenna):
 def aprobarSugerencia(idSugerencia,sugerencia,idItem,usuario,contrasenna):
     nuevaConexion = establecerConexion(usuario, contrasenna)
 
-    if (nuevaConexion.open):
+    if (nuevaConexion != False):
 
         try:
             with nuevaConexion.cursor() as aprobarSugerencia:
@@ -610,7 +610,7 @@ def rechazarSugerencia(idSugerencia,usuario,contrasenna):
 
     nuevaConexion = establecerConexion(usuario,contrasenna)
 
-    if(nuevaConexion.open):
+    if(nuevaConexion != False):
 
         try:
             with nuevaConexion.cursor() as rechazarSugerencia:
@@ -635,7 +635,7 @@ def loadInformacionGenerarExamen(arregloTemas,tipoExamen,usuario,contrasenna):
 
     items = []
 
-    if(nuevaConexion.open):
+    if(nuevaConexion != False):
 
         try:
             with nuevaConexion.cursor() as infoExamen:
@@ -649,20 +649,11 @@ def loadInformacionGenerarExamen(arregloTemas,tipoExamen,usuario,contrasenna):
 
                     respuestaTuplas = list(infoExamen.__dict__['_rows'])
 
-                    group = defaultdict(list)
+                    tuplaInfoTema = GestorExamenes.informacionExamen(respuestaTuplas)
 
-                    for tupla in respuestaTuplas:
-                        group[tupla[0]].append(tupla)
+                    subtemas.append(tuplaInfoTema[0])
+                    items += tuplaInfoTema[1]
 
-                    listaSubtema = []
-                    for key in group:
-                        listaSubtema.append(key)
-
-                        listaItem = []
-                        for tupla in group[key]:
-                            listaItem.append(tupla[3]+"/Item"+str(tupla[2]))
-                        items.append(listaItem)
-                    subtemas.append(listaSubtema)
 
         except Exception as e:
             print(e)
