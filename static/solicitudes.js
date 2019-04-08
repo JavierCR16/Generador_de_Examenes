@@ -363,6 +363,25 @@ function desplegarModalVerificar(botonClickeado,descripcionItem,sugerencia,comen
     });
 }
 
+function desplegarModalEncabezados(dict_encabezados){
+
+    var indexEncabezado = $("#selectEncabezados").prop('selectedIndex');
+
+    if(indexEncabezado !== 0){
+       var curso = dict_encabezados[indexEncabezado -1]["curso"];
+       var escuela = dict_encabezados[indexEncabezado -1]["escuela"];
+       var periodo = dict_encabezados[indexEncabezado -1]["idPeriodo"];
+       var fecha = dict_encabezados[indexEncabezado -1]["anno"];
+       var tiempo = dict_encabezados[indexEncabezado -1]["tiempo"];
+       var tipo = dict_encabezados[indexEncabezado -1]["idTipoExamen"];
+       var instrucciones = dict_encabezados[indexEncabezado -1]["instrucciones"];
+
+       procesarAjaxEncabezado(curso,escuela,periodo,fecha,tiempo,tipo,instrucciones);
+    }
+
+
+}
+
 function enviarSugerencia(idItem){
 
     var nuevaEdicion = $("#sugerenciaEdicion").val();

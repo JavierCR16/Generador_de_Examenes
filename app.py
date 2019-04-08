@@ -24,8 +24,6 @@ def login():
 
         Controller.cerrarConexion(conexion)
 
-        Controller.loadInformacionExamen(Controller.obtenerTemas(session['user'],session['contrasenna']),'S',session['user'],session['contrasenna'])
-
         return render_template('OpcionesPrincipales.html')
 
     return render_template('LogIn.html')
@@ -340,10 +338,26 @@ def aprobarRechazarSugerencia(): #1 = Aprobar, 0 = Rechazar
 def creacionExamen():
     temas = Controller.obtenerTemas(session['user'],session['contrasenna'])
     informacionExamen = Controller.loadInformacionExamen(temas,"S",session['user'],session['contrasenna'])
-
     descripcionItems = [item.getDescripcion() for lista in informacionExamen[1] for item in lista]
+    listaEncabezados = Controller.obtenerEncabezados(session['user'],session['contrasenna'])
 
-    return render_template("CreacionExamen.html",temas = temas, infoExamen = informacionExamen, descripItems = descripcionItems)
+    encabezadosDict = [encabezado.__dict__ for encabezado in listaEncabezados]
+
+    return render_template("CreacionExamen.html",temas = temas, infoExamen = informacionExamen, descripItems = descripcionItems,
+                           encabezados = listaEncabezados, encabezadosDict = encabezadosDict)
+
+@app.route("/generarExamen",methods=['post'])
+def generarExamen():
+
+    items = request.form.getlist("items")
+    #temas = Controller.obtenerTemas(session['user'], session['contrasenna'])
+    #informacionExamen = Controller.loadInformacionExamen(temas, "S", session['user'], session['contrasenna'])
+
+    #descripcionItems = [item.getDescripcion() for lista in informacionExamen[1] for item in lista]
+
+    #return render_template("CreacionExamen.html", temas=temas, infoExamen=informacionExamen,
+     #                      descripItems=descripcionItems)
+
 
 #COMPARTIR EXAMENES
 @app.route('/CompartirExamenes.html')
@@ -366,6 +380,9 @@ def enviarCorreo():
     usuarios = Controller.cargarUsuarios(session['user'], session['contrasenna'])
 
     return render_template("CompartirExamenes.html", usuarios=usuarios)
+
+
+
 
 
 if __name__ == '__main__':

@@ -6,6 +6,7 @@ from Modelo.ObjetoTipoExamen import ObjetoTipoExamen
 from Modelo.ObjetoPeriodo import ObjetoPeriodo
 from Modelo.ObjetoUsuario import ObjetoUsuario
 from Modelo.ObjetoRespuesta import ObjetoRespuesta
+from Modelo.ObjetoEncabezado import ObjetoEncabezado
 from Modelo.ObjetoVerificacionSugerencia import ObjetoVerificacionSugerencia
 from Gestores import GestorExamenes
 
@@ -19,6 +20,8 @@ from Gestores import GestorExamenes
 #TODO Buscar cualquier usso que se haga de arreglos en un for y dejar setteado el valor que corresponde mediante loop.index0
 #TODO PONER TIPOS PARA LOS EXAMENES DE PRACTICA
 #TODO Revisar bug en funcion procesarajaxindice con las descripciones devueltas, no se esta escapando el backslash
+#TODO QUITAR LO DE AM Y PM DEL INPUT DE TIPO TIME.
+#TODO VER LO DEL NOMBRE DE LA IMAGEN DEL PREVIEW Y QUITAR CACHE
 
 #FUNCIONES DE CONEXION Y QUERIES
 def establecerConexion(usuario,password):#usuario,password):
@@ -221,6 +224,31 @@ def filtrarItemsSeleccion(idSubtema,usuario,contrasenna):
         finally:
             nuevaConexion.close()
     return listaItemsSeleccion
+
+def cargarEncabezados(usuario,contrasenna):
+
+    nuevaConexion = establecerConexion(usuario,contrasenna)
+    listaEncabezados = []
+    if(nuevaConexion !=False):
+
+        try:
+            with nuevaConexion.cursor() as encabezados:
+                queryEncabezados = "SELECT Encabezado.id, curso, escuela,instrucciones,anno,tiempo," \
+                                   "Periodo.id,descPeriodo,TipoExamen.id,descTipo FROM Encabezado,Periodo," \
+                               "TipoExamen WHERE idPeriodo = Periodo.id AND idtipoexamen = TipoExamen.id"
+                encabezados.execute(queryEncabezados)
+
+                for atributos in encabezados:
+                    listaEncabezados.append(ObjetoEncabezado(atributos[0],atributos[1],atributos[2],atributos[3],atributos[4],
+                                                             atributos[5],str(atributos[6])+"-"+atributos[7],str(atributos[8])+"-"+atributos[9]))
+
+        except Exception as e:
+            print(e)
+            print("Error al obtener los encabezados")
+        finally:
+            nuevaConexion.close()
+
+    return listaEncabezados
 
 #AQUI EMPIEZA EL CRUD DE ENCABEZADO
 def agregarEncabezado(objetoEncabezado,usuario,contrasenna):

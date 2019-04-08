@@ -5,6 +5,8 @@
     <title>Crear Exámen</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../static/style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -85,67 +87,80 @@
     });
 </script>
 
-<div class="slider">
+<form action="generarExamen" method="post">
+    <div class="slider">
 
-    <a href="#Encabezado y Tipo">1</a>
-    <a href="#Temas y Subtemas">2</a>
-    <a href="#Generar PDF">3</a>
+        <a href="#Encabezado y Tipo">1</a>
 
-    <div class="slides">
-        <div id="Encabezado y Tipo">
-            <div id="page-wrap">
+            <select id ="selectEncabezados">
+                <option>Escoger Encabezado</option>
+                {% for encabezados in encabezados %}
+                    <option>{{encabezados.getId()}}-{{ encabezados.getCurso()}}</option>
+                {% endfor %}
+            </select>
+    <i onclick="desplegarModalEncabezados({{ encabezadosDict }})" id="descripcionDesplegar" class="fa fa-eye"></i>
 
-                <h2>Treeview with Custom Checkboxes and Indeterminate State</h2>
 
+        <a href="#Temas y Subtemas">2</a>
+        <a href="#Generar PDF">3</a>
+
+        <div class="slides">
+            <div id="Encabezado y Tipo">
+                <div id="page-wrap">
+
+                    <h2>Treeview with Custom Checkboxes and Indeterminate State</h2>
+
+                </div>
+            </div>
+            <div id="Temas y Subtemas">
+                <ul>
+                    {% set indexItem = [] %}
+                    {% set cantItem = [] %}
+                        {% for tema in temas %}
+                            <li>
+                                <input type="checkbox" onclick="OcultAcordion('subtemas{{loop.index0}}')">
+                                <label for="tall" class="custom-unchecked">{{tema.getTema()}}</label>
+                                <div class = "w3-container w3-hide" id = "subtemas{{loop.index0}}">
+                                    <ul>
+                                        {% set loopTema = loop.index0%}
+                                        {% set subtemasActuales = infoExamen[0][loopTema] %}
+                                        {% for subtema in subtemasActuales %}
+                                            <li>
+                                                <input type="checkbox" name="tall" onclick="OcultAcordion('items{{loopTema}}-{{loop.index0}}')" >
+                                                <label for="tall" class="custom-unchecked">{{subtema.getSubtema()}}</label>
+
+                                                <div class = "w3-container w3-hide" id ="items{{loopTema}}-{{loop.index0}}">
+                                                    <ul>
+                                                        {% set itemsActuales = infoExamen[1][indexItem|length] %}
+                                                        {% for item in itemsActuales %}
+                                                        <li>
+                                                            <input type="checkbox" value = "{{descripItems[cantItem|length]}}" name="items">
+                                                            <label for="tall" class="custom-unchecked">{{item.getIdLargo()}}/Item{{item.getId()}}</label>
+                                                             <i onclick="descripcionItemsExamen({{descripItems}},{{ cantItem|length }})" id="descripcionDesplegar" class="fa fa-eye"></i>
+                                                        </li>
+                                                            {% if cantItem.append(1)%} {% endif %}
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+
+                                            </li>
+                                            {% if indexItem.append(1)%} {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+
+                            </li>
+
+                        {% endfor %}
+                    </ul>
+            </div>
+            <div id="Generar PDF">
+                3
             </div>
         </div>
-        <div id="Temas y Subtemas">
-            <ul>
-                {% set indexItem = [] %}
-                {% set cantItem = [] %}
-                    {% for tema in temas %}
-                        <li>
-                            <input type="checkbox" onclick="OcultAcordion('subtemas{{loop.index0}}')">
-                            <label for="tall" class="custom-unchecked">{{tema.getTema()}}</label>
-                            <div class = "w3-container w3-hide" id = "subtemas{{loop.index0}}">
-                                <ul>
-                                    {% set loopTema = loop.index0%}
-                                    {% set subtemasActuales = infoExamen[0][loopTema] %}
-                                    {% for subtema in subtemasActuales %}
-                                        <li>
-                                            <input type="checkbox" name="tall" onclick="OcultAcordion('items{{loopTema}}-{{loop.index0}}')" >
-                                            <label for="tall" class="custom-unchecked">{{subtema.getSubtema()}}</label>
-
-                                            <div class = "w3-container w3-hide" id ="items{{loopTema}}-{{loop.index0}}">
-                                                <ul>
-                                                    {% set itemsActuales = infoExamen[1][indexItem|length] %}
-                                                    {% for item in itemsActuales %}
-                                                    <li>
-                                                        <input type="checkbox" value = "{{descripItems}},{{cantItem|length}}" name="items">
-                                                        <label for="tall" class="custom-unchecked">{{item.getIdLargo()}}/Item{{item.getId()}}</label>
-                                                         <i onclick="descripcionItemsExamen({{descripItems}},{{ cantItem|length }})" id="descripcionDesplegar" class="fa fa-eye"></i>
-                                                    </li>
-                                                        {% if cantItem.append(1)%} {% endif %}
-                                                    {% endfor %}
-                                                </ul>
-                                            </div>
-
-                                        </li>
-                                        {% if indexItem.append(1)%} {% endif %}
-                                    {% endfor %}
-                                </ul>
-                            </div>
-
-                        </li>
-
-                    {% endfor %}
-                </ul>
-        </div>
-        <div id="Generar PDF">
-            3
-        </div>
+    <input type="submit" value="Enviar">
     </div>
-</div>
+</form>
 <div id="footerS">
     <img style = "width: 40%; height: 30%;" src="../static/TEC.png" alt="Tecnológico de Costa Rica">
 </div>
@@ -170,6 +185,25 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="previsualizationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Previsualización de Encabezado</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div id = "previewEncabezadoModal" class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 </body>
 </html>

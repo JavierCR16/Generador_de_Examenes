@@ -148,7 +148,7 @@ class Controlador:
         tipoId= tipo.split('-')[0]
         anno = fecha.split('-')[0]
 
-        nuevoEncabezado=ObjetoEncabezado(curso,escuela,instrucciones,anno,tiempo,periodoId,tipoId)
+        nuevoEncabezado=ObjetoEncabezado(None,curso,escuela,instrucciones,anno,tiempo,periodoId,tipoId)
 
         GestorBase.agregarEncabezado(nuevoEncabezado,usuario,contrasenna)
 
@@ -157,8 +157,12 @@ class Controlador:
         tipo = tipo.split('-')[1]
         fecha = fecha.split("-")[0]
 
-        nuevoEncabezado = ObjetoEncabezado(curso,escuela,instrucciones, fecha, tiempo,periodo, tipo)
+        nuevoEncabezado = ObjetoEncabezado(None,curso,escuela,instrucciones, fecha, tiempo,periodo, tipo)
         GestorEncabezado.previewEncabezado(nuevoEncabezado)
+
+    def obtenerEncabezados(self,usuario,contrasenna):
+
+        return GestorBase.cargarEncabezados(usuario,contrasenna)
 
 
     #Funciones Gestion Respuestas

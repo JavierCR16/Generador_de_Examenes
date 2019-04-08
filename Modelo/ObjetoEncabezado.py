@@ -1,6 +1,6 @@
 class ObjetoEncabezado:
-    def __init__(self,curso,escuela,instrucciones, anno,tiempo, idPeriodo, idTipoExamen):
-        self.id = None
+    def __init__(self,id,curso,escuela,instrucciones, anno,tiempo, idPeriodo, idTipoExamen):
+        self.id = id
         self.curso = curso
         self.escuela = escuela
         self.instrucciones =  instrucciones
