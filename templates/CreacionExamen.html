@@ -87,78 +87,94 @@
     });
 </script>
 
-<form action="generarExamen" method="post">
+
     <div class="slider">
 
         <a href="#Encabezado y Tipo">1</a>
-
-            <select id ="selectEncabezados">
-                <option>Escoger Encabezado</option>
-                {% for encabezados in encabezados %}
-                    <option>{{encabezados.getId()}}-{{ encabezados.getCurso()}}</option>
-                {% endfor %}
-            </select>
-    <i onclick="desplegarModalEncabezados({{ encabezadosDict }})" id="descripcionDesplegar" class="fa fa-eye"></i>
-
-
         <a href="#Temas y Subtemas">2</a>
         <a href="#Generar PDF">3</a>
 
         <div class="slides">
-            <div id="Encabezado y Tipo">
-                <div id="page-wrap">
+            <form action="loadInformacionExamen" method="post">
+                <div id="Encabezado y Tipo">
+                    <div id="page-wrap">
+                        <h2>Treeview with Custom Checkboxes and Indeterminate State</h2>
+                    </div>
 
-                    <h2>Treeview with Custom Checkboxes and Indeterminate State</h2>
+
+                <select id ="selectEncabezados">
+                    <option>Escoger Encabezado</option>
+                    {% for encabezados in encabezados %}
+                        <option>{{encabezados.getId()}}-{{ encabezados.getCurso()}}</option>
+                    {% endfor %}
+                </select>
+
+                <i onclick="desplegarModalEncabezados({{ encabezadosDict }})" id="descripcionDesplegar" class="fa fa-eye"></i> <br>
+
+                    <h1>Selección Única</h1>
+                    <input type = radio name = "tipoExamen" value="S">
+
+                    <h1>Desarrollo</h1>
+                    <input type = radio name = "tipoExamen" value="D">
+
+                    <h1>Práctica</h1>
+                    <input type = radio name = "tipoExamen" value="P">
+
+                    <button type="submit" >Continuar</button>
+
 
                 </div>
-            </div>
-            <div id="Temas y Subtemas">
-                <ul>
-                    {% set indexItem = [] %}
-                    {% set cantItem = [] %}
-                        {% for tema in temas %}
-                            <li>
-                                <input type="checkbox" onclick="OcultAcordion('subtemas{{loop.index0}}')">
-                                <label for="tall" class="custom-unchecked">{{tema.getTema()}}</label>
-                                <div class = "w3-container w3-hide" id = "subtemas{{loop.index0}}">
-                                    <ul>
-                                        {% set loopTema = loop.index0%}
-                                        {% set subtemasActuales = infoExamen[0][loopTema] %}
-                                        {% for subtema in subtemasActuales %}
-                                            <li>
-                                                <input type="checkbox" name="tall" onclick="OcultAcordion('items{{loopTema}}-{{loop.index0}}')" >
-                                                <label for="tall" class="custom-unchecked">{{subtema.getSubtema()}}</label>
+            </form>
+            <form action="generarExamen" method="post">
+                <div id="Temas_Subtemas">
+                    <ul>
+                        {% set indexItem = [] %}
+                        {% set cantItem = [] %}
+                            {% for tema in temas %}
+                                <li>
+                                    <input type="checkbox" onclick="OcultAcordion('subtemas{{loop.index0}}')">
+                                    <label for="tall" class="custom-unchecked">{{tema.getTema()}}</label>
+                                    <div class = "w3-container w3-hide" id = "subtemas{{loop.index0}}">
+                                        <ul>
+                                            {% set loopTema = loop.index0%}
+                                            {% set subtemasActuales = infoExamen[0][loopTema] %}
+                                            {% for subtema in subtemasActuales %}
+                                                <li>
+                                                    <input type="checkbox" name="tall" onclick="OcultAcordion('items{{loopTema}}-{{loop.index0}}')" >
+                                                    <label for="tall" class="custom-unchecked">{{subtema.getSubtema()}}</label>
 
-                                                <div class = "w3-container w3-hide" id ="items{{loopTema}}-{{loop.index0}}">
-                                                    <ul>
-                                                        {% set itemsActuales = infoExamen[1][indexItem|length] %}
-                                                        {% for item in itemsActuales %}
-                                                        <li>
-                                                            <input type="checkbox" value = "{{descripItems[cantItem|length]}}" name="items">
-                                                            <label for="tall" class="custom-unchecked">{{item.getIdLargo()}}/Item{{item.getId()}}</label>
-                                                             <i onclick="descripcionItemsExamen({{descripItems}},{{ cantItem|length }})" id="descripcionDesplegar" class="fa fa-eye"></i>
-                                                        </li>
-                                                            {% if cantItem.append(1)%} {% endif %}
-                                                        {% endfor %}
-                                                    </ul>
-                                                </div>
+                                                    <div class = "w3-container w3-hide" id ="items{{loopTema}}-{{loop.index0}}">
+                                                        <ul>
+                                                            {% set itemsActuales = infoExamen[1][indexItem|length] %}
+                                                            {% for item in itemsActuales %}
+                                                            <li>
+                                                                <input type="checkbox" value = "{{descripItems[cantItem|length]}}" name="items">
+                                                                <label for="tall" class="custom-unchecked">{{item.getIdLargo()}}/Item{{item.getId()}}</label>
+                                                                 <i onclick="descripcionItemsExamen({{descripItems}},{{ cantItem|length }})" id="descripcionDesplegar" class="fa fa-eye"></i>
+                                                            </li>
+                                                                {% if cantItem.append(1)%} {% endif %}
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </div>
 
-                                            </li>
-                                            {% if indexItem.append(1)%} {% endif %}
-                                        {% endfor %}
-                                    </ul>
-                                </div>
+                                                </li>
+                                                {% if indexItem.append(1)%} {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
 
-                            </li>
+                                </li>
 
-                        {% endfor %}
-                    </ul>
-            </div>
-            <div id="Generar PDF">
-                3
-            </div>
+                            {% endfor %}
+                        </ul>
+                </div>
+                <div id="Generar PDF">
+                    3
+                </div>
+                <input type="submit" value="Enviar">
+            </form>
         </div>
-    <input type="submit" value="Enviar">
+
     </div>
 </form>
 <div id="footerS">

@@ -668,7 +668,7 @@ def loadInformacionGenerarExamen(arregloTemas,tipoExamen,usuario,contrasenna):
         try:
             with nuevaConexion.cursor() as infoExamen:
 
-                for tema in arregloTemas:
+                for tema in arregloTemas:#TODO QUERY PARA QUE SAQUE TEMAS QUE NO TIENEN ITEMS
 
                     queryInformacion = "SELECT Subtema.id, Subtema.subtema, Item.idItem, Item.id, Item.descripcion, " \
                                    "Item.puntaje FROM Subtema,Item WHERE Subtema.id = Item.idSubtema " \

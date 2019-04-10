@@ -10,6 +10,7 @@ from Gestores import GestorLaTeX
 from Gestores import GestorPDF
 from Gestores import GestorRespuestas
 from Gestores import GestorTemasSubtemas
+from Gestores import GestorLaTeX
 from Gestores import GestorJSON
 from Modelo.ObjetoItem import ObjetoItem
 from Modelo.ObjetoSubtema import ObjetoSubtema
@@ -238,4 +239,11 @@ class Controlador:
     def getNombreUsuario(self,usuario,contrasenna):
 
         return GestorBase.getNombreUsuario(usuario,contrasenna)
+
+    #Funciones Generar Examen
+
+    def generarExamen(self,items):
+
+        GestorLaTeX.generarExamen(items)
+
 

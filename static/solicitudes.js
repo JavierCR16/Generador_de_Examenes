@@ -195,6 +195,27 @@ function procesarAjaxVerificarEdiciones(accion,idSugerencia,sugerencia,idItem){
     })
 }
 
+/*function procesarAjaxInformacionExamen(tipoExamen){
+    var stringInfoExamen = "";
+    $.ajax({
+
+        url: "/loadInformacionExamen",
+        type: 'post',
+        data:JSON.stringify({tipoExamen:tipoExamen}),
+        contentType: 'application/json;charset=UTF-8',
+        dataType: "json",
+
+        success: function (datos) {
+            console.log(datos);
+
+
+
+        }
+    })
+
+
+}*/
+
 function obtenerSubtemas(selectEscogido, idObjHTML){
 
     var temaEscogido = selectEscogido.options[selectEscogido.selectedIndex].text;
@@ -412,4 +433,13 @@ function OcultAcordion(id) {
         }
     }
 
+/*function loadInformacionExamen(){
+
+    var radioTipo = $('[name = "tipoExamen"]');
+
+    for(i =0; i< radioTipo.length;i++){
+        if(radioTipo[i].checked)
+            procesarAjaxInformacionExamen(radioTipo[i].value)
+    }
+}*/
 
