@@ -150,7 +150,6 @@ function procesarAjaxEncabezado(curso,escuela,periodo,fecha,tiempo,tipo,instrucc
             var bodyModalPreview = $("#previewEncabezadoModal");
             bodyModalPreview.find('img').remove();
 
-            //TODO Cambiar nombre de imagen de forma dinamica por si hay varios usuarios conectados haciendo previews.
             bodyModalPreview.append("<img id=\"imagenPreview\" class=\"img-responsive\" alt=\"Previsualización\"  style=\"border-color: black;width: 100%\">");
             $("#imagenPreview").attr("src","/static/" +datos["imagen"]);
 

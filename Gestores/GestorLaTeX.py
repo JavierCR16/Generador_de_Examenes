@@ -3,6 +3,7 @@ import os,glob,subprocess
 def generarExamen(objEncabezado,listaItems,respuestas,tipoExamen,conSolucion):
     header = r'''\documentclass{article}
     \usepackage{enumerate}
+    \usepackage{xcolor}
     \begin{document}
     '''
 
@@ -27,19 +28,19 @@ def generarStringSeleccionUnica(listaItems,listaRespuestas,conSolucion):
     finSeleccion = "\\end{enumerate}"
     for indexItem,item in enumerate(listaItems):
 
-        seleccion+= "\\item "+item +"\n"
+        seleccion+= "\\item "+item +"\n "
 
         if(listaRespuestas[indexItem].getRespuestas()!= []):
             objetoResp = listaRespuestas[indexItem]
             seleccion += "\\begin{enumerate}\n"
 
-            for index,respuesta in enumerate(objetoResp.getRespuestas()):
+            for index,respuesta in enumerate(objetoResp.getRespuestas(), start=1):
 
                 #TODO En esta  primera, poner algo que identifique la respuesta correcta
-                seleccion += "\\item " + respuesta + "\n" \
-                    if(conSolucion and index == objetoResp.getRespuestaCorrecta()) else "\\item " + respuesta + "\n"
+                seleccion += "\\item \\colorbox{red}{" + respuesta + "} \n" \
+                    if(conSolucion and str(index) == objetoResp.getRespuestaCorrecta()) else "\\item " + respuesta + "\n"
 
-            seleccion+="\\end{enumerate}"
+            seleccion+="\\end{enumerate}\n \\vspace{0.5cm}"
 
     return seleccion + finSeleccion
 
