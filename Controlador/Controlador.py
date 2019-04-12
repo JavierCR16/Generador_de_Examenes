@@ -153,13 +153,14 @@ class Controlador:
 
         GestorBase.agregarEncabezado(nuevoEncabezado,usuario,contrasenna)
 
-    def generarPreview(self,curso,escuela,instrucciones ,periodo,fecha,tiempo,tipo):
+    def generarPreview(self,curso,escuela,instrucciones ,periodo,fecha,tiempo,tipo,usuario):
         periodo= periodo.split('-')[1]
         tipo = tipo.split('-')[1]
         fecha = fecha.split("-")[0]
 
         nuevoEncabezado = ObjetoEncabezado(None,curso,escuela,instrucciones, fecha, tiempo,periodo, tipo)
-        GestorEncabezado.previewEncabezado(nuevoEncabezado)
+
+        return GestorEncabezado.previewEncabezado(nuevoEncabezado,usuario)
 
     def obtenerEncabezados(self,usuario,contrasenna):
 
@@ -187,6 +188,15 @@ class Controlador:
         objetoRespuesta = ObjetoRespuesta(idItem, listaRespuestas, respCorrecta)
 
         GestorBase.modificarRespuestas(objetoRespuesta,usuario,contrasenna)
+
+    def obtenerRespuestasExamen(self,listaIdItems,usuario,contrasenna):
+
+        listaRespuestas = []
+
+        for id in listaIdItems:
+            listaRespuestas.append(GestorBase.filtrarRespuestasViejas(id,usuario,contrasenna))
+
+        return listaRespuestas
 
     #Funciones JSON
 
@@ -223,9 +233,9 @@ class Controlador:
         GestorBase.aprobarSugerencia(idSugerencia,sugerencia,idItem,usuario,contrasenna)
 
     #Funciones Construir Examen
-    def loadInformacionExamen(self,arregloTemas,tipoExamen,usuario,contrasenna):
+    def loadInformacionExamen(self,tipoExamen,usuario,contrasenna):
 
-        return GestorBase.loadInformacionGenerarExamen(arregloTemas,tipoExamen,usuario,contrasenna)
+        return GestorBase.loadInformacionGenerarExamen(tipoExamen,usuario,contrasenna)
 
     #Funciones Compartir Examenes
     def cargarUsuarios(self,usuario,contrasenna):
@@ -242,8 +252,8 @@ class Controlador:
 
     #Funciones Generar Examen
 
-    def generarExamen(self,items):
+    def generarExamen(self,objEncabezado,items,respuestas,tipoExamen,conSolucion):
 
-        GestorLaTeX.generarExamen(items)
+        GestorLaTeX.generarExamen(objEncabezado,items,respuestas,tipoExamen,conSolucion)
 
 

@@ -245,9 +245,9 @@ def previewEncabezado():
     tipo = infoPreview["tipo"]
     instrucciones = infoPreview["instrucciones"]
 
-    Controller.generarPreview(curso,escuela,instrucciones,periodo,fecha,tiempo,tipo)
+    nombreImagen = Controller.generarPreview(curso,escuela,instrucciones,periodo,fecha,tiempo,tipo,session['user'])
 
-    return jsonify(status = "success")
+    return jsonify({"imagen":nombreImagen})
 
 @app.route("/guardarEncabezado", methods= ['post'])
 def guardarEncabezado():
@@ -333,56 +333,49 @@ def aprobarRechazarSugerencia(): #1 = Aprobar, 0 = Rechazar
 
     return jsonify({"status":"Sugerencia Revisada"})
 
-#CONSTRUIR EXAMEN
-@app.route("/CreacionExamen.html") #TODO LLAMAR CON AJAX
+#GENERAR EXAMEN
+@app.route("/CreacionExamen.html")
 def creacionExamen():
-    #temas = Controller.obtenerTemas(session['user'],session['contrasenna'])
-    #informacionExamen = Controller.loadInformacionExamen(temas,"S",session['user'],session['contrasenna'])
-    #descripcionItems = [item.getDescripcion() for lista in informacionExamen[1] for item in lista]
 
     listaEncabezados = Controller.obtenerEncabezados(session['user'],session['contrasenna'])
 
     encabezadosDict = [encabezado.__dict__ for encabezado in listaEncabezados]
 
-    return render_template("CreacionExamen.html",encabezadosDict = encabezadosDict,encabezados = listaEncabezados)#,temas = temas, infoExamen = informacionExamen, descripItems = descripcionItems,
-                           #encabezados = listaEncabezados, )
+    return render_template("CreacionExamen.html",encabezadosDict = encabezadosDict,encabezados = listaEncabezados)
 
 @app.route("/loadInformacionExamen",methods=['post'])
 def loadInformacionExamen():
+    listaEncabezados = Controller.obtenerEncabezados(session['user'], session['contrasenna'])
+
+    encabezadosDict = [encabezado.__dict__ for encabezado in listaEncabezados]
+
+    encabezado = request.form.get("selectEncabezados")#TODO QUE QUEDE EL VIEJO ENCABEZADO Y TALVEZ EL TIPO DE EXAMEN
 
     tipoExamen = request.form.get("tipoExamen")
 
-    #print("Tipo Examen",tipoExamen)
+    informacionExamen = Controller.loadInformacionExamen(tipoExamen,session['user'],session['contrasenna'])
 
-    temas = Controller.obtenerTemas(session['user'],session['contrasenna'])
+    descripcionItems = [item.getDescripcion() for lista in informacionExamen[2] for item in lista]
 
-    informacionExamen = Controller.loadInformacionExamen(temas,tipoExamen,session['user'],session['contrasenna'])
+    return render_template("CreacionExamen.html", infoExamen=informacionExamen,
+                           descripItems=descripcionItems
+                           ,encabezadosDict = encabezadosDict,encabezados = listaEncabezados)
 
-    #temas = [tema.getTema() for tema in temas]
-
-    #print(temas)
-    #print(informacionExamen[0])
-    #print(informacionExamen[1])
-    descripcionItems = [item.getDescripcion() for lista in informacionExamen[1] for item in lista]
-
-    return render_template("CreacionExamen.html", temas=temas, infoExamen=informacionExamen,
-                           descripItems=descripcionItems)
-
-    #return jsonify({"temas":temas,"infoExamen":informacionExamen,"descripcionItems":descripcionItems})
-
-@app.route("/generarExamen",methods=['post'])
+@app.route("/generarExamen",methods=['post'])#TODO MUY POSIBLEMENTE CON AJAX
 def generarExamen():
 
-    items = request.form.getlist("items")
+    objEncabezado = request.form.get("selectEncabezados")
+    itemsSeleccionados = request.form.getlist("items")
 
+    items = [item.split(",")[0] for item in itemsSeleccionados]
+    idItems = [item.split(",")[1] for item in itemsSeleccionados]
+    tipoExamen = request.form.get("items").split(",")[2]
+    respuestas = Controller.obtenerRespuestasExamen(idItems,session['user'],session['contrasenna'])
+    conSolucion = request.form.get("solucionado")
 
+    print(tipoExamen,conSolucion)
 
-    #temas = Controller.obtenerTemas(session['user'], session['contrasenna'])
-    #informacionExamen = Controller.loadInformacionExamen(temas, "S", session['user'], session['contrasenna'])
-
-    #descripcionItems = [item.getDescripcion() for lista in informacionExamen[1] for item in lista]
-
-    Controller.generarExamen(items)
+    Controller.generarExamen(objEncabezado,items,respuestas,tipoExamen,conSolucion)
 
     return render_template("CreacionExamen.html")#, temas=temas), infoExamen=informacionExamen,
                            #descripItems=descripcionItems)
@@ -409,10 +402,6 @@ def enviarCorreo():
     usuarios = Controller.cargarUsuarios(session['user'], session['contrasenna'])
 
     return render_template("CompartirExamenes.html", usuarios=usuarios)
-
-
-
-
 
 if __name__ == '__main__':
 

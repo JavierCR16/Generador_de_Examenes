@@ -1,9 +1,13 @@
 from collections import defaultdict
 from Modelo.ObjetoItem import ObjetoItem
 from Modelo.ObjetoSubtema import ObjetoSubtema
+from Modelo.ObjetoTema import ObjetoTema
 
 def informacionExamen(respuestaTuplas):
     group = defaultdict(list)
+    listaItem = []
+
+    temas = []
     subtemas = []
     items = []
 
@@ -11,17 +15,30 @@ def informacionExamen(respuestaTuplas):
         group[tupla[0]].append(tupla)
 
     for key in group:
-
-        listaItem = []
+        listaSubtemas = []
+        subtemaActual = 0
         executed = False
+
         for tupla in group[key]:
-            if(not executed):
-                subtemas.append(ObjetoSubtema(key,tupla[1],None))
+
+            if (not executed):
+                temas.append(ObjetoTema(key, tupla[1]))
+                subtemaActual = tupla[2] #Lo ejecuta solo la primera vez
                 executed = True
 
-            listaItem.append(ObjetoItem(tupla[2],tupla[3],tupla[4],None,None,tupla[5],None))
+            if(not any(subtema.getId() == tupla[2] for subtema in listaSubtemas)):
+                listaSubtemas.append(ObjetoSubtema(tupla[2], tupla[3], None))
 
-        items.append(listaItem)
+            if(subtemaActual != tupla[2]):
+                items.append(listaItem.copy())
+                listaItem.clear()
 
+            listaItem.append(ObjetoItem(tupla[4], tupla[5], tupla[6], tupla[7], None, tupla[8], None))
 
-    return subtemas,items
+            subtemaActual = tupla[2]
+
+        items.append(listaItem.copy())
+        listaItem.clear()
+        subtemas.append(listaSubtemas)
+
+    return temas,subtemas,items

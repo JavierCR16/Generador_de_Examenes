@@ -10,7 +10,6 @@ from Modelo.ObjetoEncabezado import ObjetoEncabezado
 from Modelo.ObjetoVerificacionSugerencia import ObjetoVerificacionSugerencia
 from Gestores import GestorExamenes
 
-
 #TODO AGREGAR A LA SECCION DE ENCABEZADO (BASE Y SISTEMA), LA OPCION DE METER ESCUELA Y CURSO.
 #TODO AGREGAR FUNCIONES PARA CARGAR TODOS LOS ENCABEZADOS(PLANTILLAS) Y QUE ESTOS SEAN PREVISUALIZADOS POR EL USUARIO.
 #TODO EN UN FUTURO, QUE LE PUEDA CAMBIAR EL TEMA ASOCIADO A UN SUBTEMA,AHORITA SI SE EQUIVOCA DI QUE LO BORRE.
@@ -21,9 +20,11 @@ from Gestores import GestorExamenes
 #TODO PONER TIPOS PARA LOS EXAMENES DE PRACTICA
 #TODO Revisar bug en funcion procesarajaxindice con las descripciones devueltas, no se esta escapando el backslash
 #TODO QUITAR LO DE AM Y PM DEL INPUT DE TIPO TIME.
-#TODO VER LO DEL NOMBRE DE LA IMAGEN DEL PREVIEW Y QUITAR CACHE
+#TODO ELIMINAR IMAGENES DE PREVIEW CADA CIERTO TIEMPO
+#TODO REESTRUCTURAR LA PARTE DE RESPUESTAS, ABAJO IGUAL VIENE OTRO TODO DE ESO.
 
 #FUNCIONES DE CONEXION Y QUERIES
+
 def establecerConexion(usuario,password):#usuario,password):
 
     try:
@@ -432,7 +433,27 @@ def eliminarItem(idItem,usuario,contrasenna):
             nuevaConexion.close()
 
 #AQUI EMPIEZA EL CRUD DE RESPUESTAS
-def agregarRespuestas(objetoRespuesta,usuario,contrasenna):         #REVISAR
+
+def obtenerIdFilaRespuestas(idItem,usuario,contrasenna):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
+    idExtraido = ""
+    if(nuevaConexion != False):
+
+        try:
+            with nuevaConexion.cursor() as idExtraer:
+                queryID = "SELECT id FROM Respuestas WHERE idItem = %s LIMIT 1"
+                idExtraer.execute(queryID,(idItem))
+
+                for atributos in idExtraer:
+                    idExtraido = atributos[0]
+        except:
+            print("Error al extraer el id")
+        finally:
+            nuevaConexion.close()
+
+    return idExtraido
+
+def agregarRespuestas(objetoRespuesta,usuario,contrasenna): #TODO MODIFICAR PARA QUE SE ADAPTE A SELECCION Y DESARROLLO
 
     nuevaConexion = establecerConexion(usuario,contrasenna)
     cont = 1
@@ -453,7 +474,7 @@ def agregarRespuestas(objetoRespuesta,usuario,contrasenna):         #REVISAR
 
 def filtrarRespuestasViejas(idItem,usuario,contrasenna):
     nuevaConexion = establecerConexion(usuario,contrasenna)
-    objetoRespuesta = ObjetoRespuesta(idItem,None,None)
+    objetoRespuesta = ObjetoRespuesta(idItem,[],None)
     if (nuevaConexion != False):
 
         try:
@@ -478,25 +499,6 @@ def filtrarRespuestasViejas(idItem,usuario,contrasenna):
             nuevaConexion.close()
 
     return objetoRespuesta
-
-def obtenerIdFilaRespuestas(idItem,usuario,contrasenna):
-    nuevaConexion = establecerConexion(usuario,contrasenna)
-    idExtraido = ""
-    if(nuevaConexion != False):
-
-        try:
-            with nuevaConexion.cursor() as idExtraer:
-                queryID = "SELECT id from Respuestas WHERE idItem = %s LIMIT 1"
-                idExtraer.execute(queryID,(idItem))
-
-                for atributos in idExtraer:
-                    idExtraido = atributos[0]
-        except:
-            print("Error al extraer el id")
-        finally:
-            nuevaConexion.close()
-
-    return idExtraido
 
 def modificarRespuestas(objetoModRespuesta,usuario,contrasenna):
     idFila = obtenerIdFilaRespuestas(objetoModRespuesta.getIdItem(),usuario,contrasenna)
@@ -655,9 +657,11 @@ def rechazarSugerencia(idSugerencia,usuario,contrasenna):
 
 #AQUI EMPIEZA CONSTRUIR EXAMEN
 
-def loadInformacionGenerarExamen(arregloTemas,tipoExamen,usuario,contrasenna):
+def loadInformacionGenerarExamen(tipoExamen,usuario,contrasenna):
 
     nuevaConexion = establecerConexion(usuario,contrasenna)
+
+    temas= []
 
     subtemas =[]
 
@@ -668,20 +672,18 @@ def loadInformacionGenerarExamen(arregloTemas,tipoExamen,usuario,contrasenna):
         try:
             with nuevaConexion.cursor() as infoExamen:
 
-                for tema in arregloTemas:#TODO QUERY PARA QUE SAQUE TEMAS QUE NO TIENEN ITEMS
+                queryInformacion ="SELECT Tema.id,Tema.tema,Subtema.id, Subtema.subtema, Item.idItem, Item.id, " \
+                                      "Item.descripcion,Item.tipo,Item.puntaje FROM Tema left join Subtema on Tema.id = Subtema.idTema " \
+                                      "left join Item on Subtema.Id = Item.idSubtema WHERE Subtema.id is NOT NULL AND Item.idItem is NOT NULL AND Item.tipo =%s "
 
-                    queryInformacion = "SELECT Subtema.id, Subtema.subtema, Item.idItem, Item.id, Item.descripcion, " \
-                                   "Item.puntaje FROM Subtema,Item WHERE Subtema.id = Item.idSubtema " \
-                                   "AND Subtema.idTema = %s AND Item.tipo = %s"
-                    infoExamen.execute(queryInformacion,(tema.getId(),tipoExamen))
+                infoExamen.execute(queryInformacion,(tipoExamen))
 
-                    respuestaTuplas = list(infoExamen.__dict__['_rows'])
+                respuestaTuplas = list(infoExamen.__dict__['_rows'])
 
-                    tuplaInfoTema = GestorExamenes.informacionExamen(respuestaTuplas)
-
-                    subtemas.append(tuplaInfoTema[0])
-                    items += tuplaInfoTema[1]
-
+                tuplaInfoTema = GestorExamenes.informacionExamen(respuestaTuplas)
+                temas += tuplaInfoTema[0]
+                subtemas += (tuplaInfoTema[1])
+                items += tuplaInfoTema[2]
 
         except Exception as e:
             print(e)
@@ -690,7 +692,7 @@ def loadInformacionGenerarExamen(arregloTemas,tipoExamen,usuario,contrasenna):
         finally:
             nuevaConexion.close()
 
-    return subtemas,items
+    return temas,subtemas,items
 
 #Funciones Correo
 
@@ -717,3 +719,5 @@ def getNombreUsuario(usuario,contrasenna):
             nuevaConexion.close()
 
     return nombreUsuario
+
+

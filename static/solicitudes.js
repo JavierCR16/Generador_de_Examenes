@@ -146,11 +146,13 @@ function procesarAjaxEncabezado(curso,escuela,periodo,fecha,tiempo,tipo,instrucc
         dataType: "json",
 
         success: function (datos) {
+            console.log(datos);
             var bodyModalPreview = $("#previewEncabezadoModal");
             bodyModalPreview.find('img').remove();
 
             //TODO Cambiar nombre de imagen de forma dinamica por si hay varios usuarios conectados haciendo previews.
-            bodyModalPreview.append("<img class=\"img-responsive\" src=\"/static/preview.png\" alt=\"Previsualización\"  style=\"border-color: black;width: 100%\">");
+            bodyModalPreview.append("<img id=\"imagenPreview\" class=\"img-responsive\" alt=\"Previsualización\"  style=\"border-color: black;width: 100%\">");
+            $("#imagenPreview").attr("src","/static/" +datos["imagen"]);
 
             var modalPreview = $("#previsualizationModal");
 
@@ -194,27 +196,6 @@ function procesarAjaxVerificarEdiciones(accion,idSugerencia,sugerencia,idItem){
         }
     })
 }
-
-/*function procesarAjaxInformacionExamen(tipoExamen){
-    var stringInfoExamen = "";
-    $.ajax({
-
-        url: "/loadInformacionExamen",
-        type: 'post',
-        data:JSON.stringify({tipoExamen:tipoExamen}),
-        contentType: 'application/json;charset=UTF-8',
-        dataType: "json",
-
-        success: function (datos) {
-            console.log(datos);
-
-
-
-        }
-    })
-
-
-}*/
 
 function obtenerSubtemas(selectEscogido, idObjHTML){
 
@@ -385,7 +366,6 @@ function desplegarModalVerificar(botonClickeado,descripcionItem,sugerencia,comen
 }
 
 function desplegarModalEncabezados(dict_encabezados){
-
     var indexEncabezado = $("#selectEncabezados").prop('selectedIndex');
 
     if(indexEncabezado !== 0){
@@ -433,13 +413,4 @@ function OcultAcordion(id) {
         }
     }
 
-/*function loadInformacionExamen(){
-
-    var radioTipo = $('[name = "tipoExamen"]');
-
-    for(i =0; i< radioTipo.length;i++){
-        if(radioTipo[i].checked)
-            procesarAjaxInformacionExamen(radioTipo[i].value)
-    }
-}*/
 

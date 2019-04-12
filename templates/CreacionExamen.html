@@ -101,11 +101,10 @@
                         <h2>Treeview with Custom Checkboxes and Indeterminate State</h2>
                     </div>
 
-
-                <select id ="selectEncabezados">
+                <select name="selectEncabezados" id="selectEncabezados" >
                     <option>Escoger Encabezado</option>
-                    {% for encabezados in encabezados %}
-                        <option>{{encabezados.getId()}}-{{ encabezados.getCurso()}}</option>
+                    {% for encabezado in encabezados %}
+                        <option value="{{ encabezado }}">{{encabezado.getId()}}-{{ encabezado.getCurso()}}</option>
                     {% endfor %}
                 </select>
 
@@ -130,14 +129,15 @@
                     <ul>
                         {% set indexItem = [] %}
                         {% set cantItem = [] %}
-                            {% for tema in temas %}
+                        {% if infoExamen is defined %}
+                            {% for tema in infoExamen[0]%}
                                 <li>
                                     <input type="checkbox" onclick="OcultAcordion('subtemas{{loop.index0}}')">
                                     <label for="tall" class="custom-unchecked">{{tema.getTema()}}</label>
                                     <div class = "w3-container w3-hide" id = "subtemas{{loop.index0}}">
                                         <ul>
                                             {% set loopTema = loop.index0%}
-                                            {% set subtemasActuales = infoExamen[0][loopTema] %}
+                                            {% set subtemasActuales = infoExamen[1][loopTema] %}
                                             {% for subtema in subtemasActuales %}
                                                 <li>
                                                     <input type="checkbox" name="tall" onclick="OcultAcordion('items{{loopTema}}-{{loop.index0}}')" >
@@ -145,10 +145,10 @@
 
                                                     <div class = "w3-container w3-hide" id ="items{{loopTema}}-{{loop.index0}}">
                                                         <ul>
-                                                            {% set itemsActuales = infoExamen[1][indexItem|length] %}
+                                                            {% set itemsActuales = infoExamen[2][indexItem|length] %}
                                                             {% for item in itemsActuales %}
                                                             <li>
-                                                                <input type="checkbox" value = "{{descripItems[cantItem|length]}}" name="items">
+                                                                <input type="checkbox" value = "{{descripItems[cantItem|length]}},{{item.getId()}},{{item.getTipo()}}" name="items">
                                                                 <label for="tall" class="custom-unchecked">{{item.getIdLargo()}}/Item{{item.getId()}}</label>
                                                                  <i onclick="descripcionItemsExamen({{descripItems}},{{ cantItem|length }})" id="descripcionDesplegar" class="fa fa-eye"></i>
                                                             </li>
@@ -166,12 +166,15 @@
                                 </li>
 
                             {% endfor %}
+                        {% endif %}
                         </ul>
                 </div>
                 <div id="Generar PDF">
                     3
                 </div>
-                <input type="submit" value="Enviar">
+                <button name = "solucionado" type="submit" value=1>Generar Examen Con Solución</button>
+                <button name = "solucionado" type = "submit" value = 0>Generar Examen Sin Solución</button>
+
             </form>
         </div>
 
