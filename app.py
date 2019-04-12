@@ -10,8 +10,8 @@ Controller = Controlador()
 @app.route('/')
 def main():
 
-    # if (session.get('user') is not None):
-    #     return render_template('OpcionesPrincipales.html', nombre = session['user'])
+    if (session.get('user') is not None):
+        return render_template('OpcionesPrincipales.html', nombre = session['user'])
 
     return render_template('LogIn.html')
 
