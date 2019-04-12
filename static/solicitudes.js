@@ -411,6 +411,14 @@ function OcultAcordion(id) {
         } else {
             x.className = x.className.replace(" w3-show", "");
         }
-    }
+}
+
+function openNav() {
+      document.getElementById("mySidenav").style.width = "100%";
+}
+
+function closeNav() {
+      document.getElementById("mySidenav").style.width = "0";
+}
 
 

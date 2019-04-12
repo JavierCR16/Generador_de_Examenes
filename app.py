@@ -10,8 +10,8 @@ Controller = Controlador()
 @app.route('/')
 def main():
 
-    if (session.get('user') is not None):
-        return render_template('OpcionesPrincipales.html')
+    # if (session.get('user') is not None):
+    #     return render_template('OpcionesPrincipales.html', nombre = session['user'])
 
     return render_template('LogIn.html')
 
@@ -27,9 +27,16 @@ def login():
 
         Controller.cerrarConexion(conexion)
 
-        return render_template('OpcionesPrincipales.html')
+        usuarios = Controller.cargarUsuarios(session['user'], session['contrasenna'])
+
+        return render_template('OpcionesPrincipales.html', usuarios = usuarios, nombre = user)
 
     return render_template('LogIn.html')
+
+@app.route('/OpcionesPrincipales.html')
+def opcionesPrincipales():
+
+    return render_template("OpcionesPrincipales.html", nombre = session['user'])
 
 @app.route('/cerrarSesion',methods = ['post'])
 def cerrarSesion():
@@ -38,8 +45,6 @@ def cerrarSesion():
     session.pop('contrasenna',None)
 
     return render_template("LogIn.html")
-
-
 
 #CRUD TEMAS SUBTEMAS
 @app.route("/CRUDTemasSubtemas.html")

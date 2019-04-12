@@ -2,55 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Crear Exámen</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../static/style.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/static/solicitudes.js"></script>
+    <title>GEMA 💎 </title>
 </head>
 <body>
 
-<script>
-    $(function() {
+    <script>
+        $(function() {
 
-        $('input[type="checkbox"]').change(checkboxChanged);
+            $('input[type="checkbox"]').change(checkboxChanged);
 
-        function checkboxChanged() {
-            var $this = $(this),
-                checked = $this.prop("checked"),
-                container = $this.parent(),
-                siblings = container.siblings();
+            function checkboxChanged() {
+                var $this = $(this),
+                    checked = $this.prop("checked"),
+                    container = $this.parent(),
+                    siblings = container.siblings();
 
-            container.find('input[type="checkbox"]')
-                .prop({
-                    indeterminate: false,
-                    checked: checked
-                })
-                .siblings('label')
-                .removeClass('custom-checked custom-unchecked custom-indeterminate')
-                .addClass(checked ? 'custom-checked' : 'custom-unchecked');
-
-            checkSiblings(container, checked);
-        }
-
-        function checkSiblings($el, checked) {
-            var parent = $el.parent().parent(),
-                all = true,
-                indeterminate = false;
-
-            $el.siblings().each(function() {
-                return all = ($(this).children('input[type="checkbox"]').prop("checked") === checked);
-            });
-
-            if (all && checked) {
-                parent.children('input[type="checkbox"]')
+                container.find('input[type="checkbox"]')
                     .prop({
                         indeterminate: false,
                         checked: checked
@@ -59,170 +38,186 @@
                     .removeClass('custom-checked custom-unchecked custom-indeterminate')
                     .addClass(checked ? 'custom-checked' : 'custom-unchecked');
 
-                checkSiblings(parent, checked);
+                checkSiblings(container, checked);
             }
-            else if (all && !checked) {
-                indeterminate = parent.find('input[type="checkbox"]:checked').length > 0;
 
-                parent.children('input[type="checkbox"]')
-                    .prop("checked", checked)
-                    .prop("indeterminate", indeterminate)
-                    .siblings('label')
-                    .removeClass('custom-checked custom-unchecked custom-indeterminate')
-                    .addClass(indeterminate ? 'custom-indeterminate' : (checked ? 'custom-checked' : 'custom-unchecked'));
+            function checkSiblings($el, checked) {
+                var parent = $el.parent().parent(),
+                    all = true,
+                    indeterminate = false;
 
-                checkSiblings(parent, checked);
+                $el.siblings().each(function() {
+                    return all = ($(this).children('input[type="checkbox"]').prop("checked") === checked);
+                });
+
+                if (all && checked) {
+                    parent.children('input[type="checkbox"]')
+                        .prop({
+                            indeterminate: false,
+                            checked: checked
+                        })
+                        .siblings('label')
+                        .removeClass('custom-checked custom-unchecked custom-indeterminate')
+                        .addClass(checked ? 'custom-checked' : 'custom-unchecked');
+
+                    checkSiblings(parent, checked);
+                }
+                else if (all && !checked) {
+                    indeterminate = parent.find('input[type="checkbox"]:checked').length > 0;
+
+                    parent.children('input[type="checkbox"]')
+                        .prop("checked", checked)
+                        .prop("indeterminate", indeterminate)
+                        .siblings('label')
+                        .removeClass('custom-checked custom-unchecked custom-indeterminate')
+                        .addClass(indeterminate ? 'custom-indeterminate' : (checked ? 'custom-checked' : 'custom-unchecked'));
+
+                    checkSiblings(parent, checked);
+                }
+                else {
+                    $el.parents("li").children('input[type="checkbox"]')
+                        .prop({
+                            indeterminate: true,
+                            checked: false
+                        })
+                        .siblings('label')
+                        .removeClass('custom-checked custom-unchecked custom-indeterminate')
+                        .addClass('custom-indeterminate');
+                }
             }
-            else {
-                $el.parents("li").children('input[type="checkbox"]')
-                    .prop({
-                        indeterminate: true,
-                        checked: false
-                    })
-                    .siblings('label')
-                    .removeClass('custom-checked custom-unchecked custom-indeterminate')
-                    .addClass('custom-indeterminate');
-            }
-        }
-    });
-</script>
+        });
+    </script>
+
+{#    <img style= "width: auto; height:auto; opacity: 0.2; z-index:-1;" src="../static/bkg.jpg">#}
 
 
-    <div class="slider">
+    <div class="row">
+        <div class="col-md-12 header">
+            <a href="OpcionesPrincipales.html"><i class="material-icons backA">chevron_left</i></a>
+            <h1>Creación de Examen</h1>
+        </div>
+    </div>
 
-        <a href="#Encabezado y Tipo">1</a>
-        <a href="#Temas y Subtemas">2</a>
-        <a href="#Generar PDF">3</a>
+    <br>
 
-        <div class="slides">
-            <form action="loadInformacionExamen" method="post">
-                <div id="Encabezado y Tipo">
-                    <div id="page-wrap">
-                        <h2>Treeview with Custom Checkboxes and Indeterminate State</h2>
-                    </div>
+        <form action="loadInformacionExamen" method="post">
+            <div class="row">
+                <div class= "col-md-6 w3-container divX" id="Encabezado y Tipo">
+                    <select class = "inputs" name="selectEncabezados" id="selectEncabezados" >
+                        <option>Escoger Encabezado</option>
+                        {% for encabezado in encabezados %}
+                            <option value="{{ encabezado }}">{{encabezado.getId()}}-{{ encabezado.getCurso()}}</option>
+                        {% endfor %}
+                    </select>
 
-                <select name="selectEncabezados" id="selectEncabezados" >
-                    <option>Escoger Encabezado</option>
-                    {% for encabezado in encabezados %}
-                        <option value="{{ encabezado }}">{{encabezado.getId()}}-{{ encabezado.getCurso()}}</option>
-                    {% endfor %}
-                </select>
+                    <i onclick="desplegarModalEncabezados({{ encabezadosDict }})" id="descripcionDesplegar" class="fa fa-eye eyeI"></i> <br>
 
-                <i onclick="desplegarModalEncabezados({{ encabezadosDict }})" id="descripcionDesplegar" class="fa fa-eye"></i> <br>
+                    <h3>Selección Única</h3>
+                    <input class = "inputs" type = radio name = "tipoExamen" value="S">
 
-                    <h1>Selección Única</h1>
-                    <input type = radio name = "tipoExamen" value="S">
+                    <h3>Desarrollo</h3>
+                    <input class = "inputs" type = radio name = "tipoExamen" value="D">
 
-                    <h1>Desarrollo</h1>
-                    <input type = radio name = "tipoExamen" value="D">
+                    <h3>Práctica</h3>
+                    <input class = "inputs" type = radio name = "tipoExamen" value="P">
 
-                    <h1>Práctica</h1>
-                    <input type = radio name = "tipoExamen" value="P">
-
-                    <button type="submit" >Continuar</button>
-
-
+                    <button class = "buttons" type="submit" >Continuar</button>
                 </div>
-            </form>
-            <form action="generarExamen" method="post">
-                <div id="Temas_Subtemas">
-                    <ul>
-                        {% set indexItem = [] %}
-                        {% set cantItem = [] %}
-                        {% if infoExamen is defined %}
-                            {% for tema in infoExamen[0]%}
-                                <li>
-                                    <input type="checkbox" onclick="OcultAcordion('subtemas{{loop.index0}}')">
-                                    <label for="tall" class="custom-unchecked">{{tema.getTema()}}</label>
-                                    <div class = "w3-container w3-hide" id = "subtemas{{loop.index0}}">
-                                        <ul>
-                                            {% set loopTema = loop.index0%}
-                                            {% set subtemasActuales = infoExamen[1][loopTema] %}
-                                            {% for subtema in subtemasActuales %}
-                                                <li>
-                                                    <input type="checkbox" name="tall" onclick="OcultAcordion('items{{loopTema}}-{{loop.index0}}')" >
-                                                    <label for="tall" class="custom-unchecked">{{subtema.getSubtema()}}</label>
+            </div>
+        </form>
+        <form action="generarExamen" method="post">
+            <div class="row">
+                <div class= "col-md-6 w3-container divX" id="Temas_Subtemas">
+                <ul>
+                    {% set indexItem = [] %}
+                    {% set cantItem = [] %}
+                    {% if infoExamen is defined %}
+                        {% for tema in infoExamen[0]%}
+                            <li>
+                                <input type="checkbox" onclick="OcultAcordion('subtemas{{loop.index0}}')">
+                                <label for="tall" class="custom-unchecked">{{tema.getTema()}}</label>
+                                <div class = "w3-container w3-hide" id = "subtemas{{loop.index0}}">
+                                    <ul>
+                                        {% set loopTema = loop.index0%}
+                                        {% set subtemasActuales = infoExamen[1][loopTema] %}
+                                        {% for subtema in subtemasActuales %}
+                                            <li>
+                                                <input type="checkbox" name="tall" onclick="OcultAcordion('items{{loopTema}}-{{loop.index0}}')" >
+                                                <label for="tall" class="custom-unchecked">{{subtema.getSubtema()}}</label>
 
-                                                    <div class = "w3-container w3-hide" id ="items{{loopTema}}-{{loop.index0}}">
-                                                        <ul>
-                                                            {% set itemsActuales = infoExamen[2][indexItem|length] %}
-                                                            {% for item in itemsActuales %}
+                                                <div class = "w3-container w3-hide" id ="items{{loopTema}}-{{loop.index0}}">
+                                                    <ul>
+                                                        {% set itemsActuales = infoExamen[2][indexItem|length] %}
+                                                        {% for item in itemsActuales %}
                                                             <li>
                                                                 <input type="checkbox" value = "{{descripItems[cantItem|length]}},{{item.getId()}},{{item.getTipo()}}" name="items">
                                                                 <label for="tall" class="custom-unchecked">{{item.getIdLargo()}}/Item{{item.getId()}}</label>
-                                                                 <i onclick="descripcionItemsExamen({{descripItems}},{{ cantItem|length }})" id="descripcionDesplegar" class="fa fa-eye"></i>
+                                                                <i onclick="descripcionItemsExamen({{descripItems}},{{ cantItem|length }})" id="descripcionDesplegar" class="fa fa-eye"></i>
                                                             </li>
-                                                                {% if cantItem.append(1)%} {% endif %}
-                                                            {% endfor %}
-                                                        </ul>
-                                                    </div>
+                                                            {% if cantItem.append(1)%} {% endif %}
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
 
-                                                </li>
-                                                {% if indexItem.append(1)%} {% endif %}
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
+                                            </li>
+                                            {% if indexItem.append(1)%} {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
 
-                                </li>
+                            </li>
 
-                            {% endfor %}
-                        {% endif %}
-                        </ul>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+            </div>
+            </div>
+            <div class="row">
+                <div class= "col-md-6 w3-container divX" id="Generar PDF">
+                <button class= "buttons" style="height: 40px;" name = "solucionado" type="submit" value=1>Generar Examen Con Solución</button>
+                <button class= "buttons" style="height: 40px;" name = "solucionado" type = "submit" value = 0>Generar Examen Sin Solución</button>
+            </div>
+            </div>
+        </form>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalItemExamen" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Descripción</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div id="Generar PDF">
-                    3
+                <div id="descripcionModalExamen" class="modal-body">
+                    ...
                 </div>
-                <button name = "solucionado" type="submit" value=1>Generar Examen Con Solución</button>
-                <button name = "solucionado" type = "submit" value = 0>Generar Examen Sin Solución</button>
-
-            </form>
-        </div>
-
-    </div>
-</form>
-<div id="footerS">
-    <img style = "width: 40%; height: 30%;" src="../static/TEC.png" alt="Tecnológico de Costa Rica">
-</div>
-
-
-<!-- Modal -->
-<div class="modal fade" id="modalItemExamen" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Descripción</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div id="descripcionModalExamen" class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="previsualizationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Previsualización de Encabezado</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div id = "previewEncabezadoModal" class="modal-body">
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="modal fade" id="previsualizationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Previsualización de Encabezado</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id = "previewEncabezadoModal" class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
