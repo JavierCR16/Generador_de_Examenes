@@ -7,15 +7,9 @@
     padding: 1% 1% 0% 1%;
 }
 
-.footerP {
+.footer {
     position: absolute;
     margin-top: 25%;
-    bottom: 5px;
-}
-
-.footerS {
-    position: absolute;
-    margin-top: 5%;
     bottom: 5px;
 }
 
@@ -51,9 +45,7 @@
 }
 
 .eyeI {
-    font-size: 2vh;
     color: #0a86f0;
-    position: absolute;
     cursor: pointer;
     -webkit-transition: all 0.2s ease-in-out;
 }
@@ -124,8 +116,7 @@ h3,label {
     font-size: 2.5vh;
 }
 
-
-.inputs {
+input[type=text], select, textarea,  input[type=file] , input[type=number], input[type=time], input[type=email], input[type=password]{
     font-family: 'Montserrat', sans-serif;
     background-color: white;
     color: #0a86f0;
@@ -138,14 +129,26 @@ h3,label {
     height: 7%;
 }
 
-.inputs:hover {
+input[type=text]:hover, select:hover, textarea:hover, input[type=file]:hover, input[type=number]:hover, input[type=time]:hover, input[type=email]:hover, input[type=password]:hover{
     -webkit-transition: all 0.4s ease-in-out;
     color: #00457c;
     border: 1px solid #00457c;
     cursor: text;
 }
 
-.buttons {
+input[type=radio], input[type=checkbox]{
+    color: #0a86f0;
+    position: relative;
+    -webkit-transition: all 0.2s ease-in-out;
+}
+
+input[type=radio]:hover, input[type=checkbox]:hover{
+    -webkit-transition: all 0.4s ease-in-out;
+    color: #00457c;
+    cursor: pointer;
+}
+
+button:not(#aFalse):not(#titulo), input[type="submit"]{
     font-family: 'Montserrat', sans-serif;
     background-color: #00457c;
     color: white;
@@ -158,7 +161,7 @@ h3,label {
     height: 9%;
 }
 
-.buttons:hover {
+button:not(#aFalse):not(#titulo):hover, input[type=submit]:hover{
     background-color: #0a86f0;
     color: white;
     border: 1px solid white;
@@ -211,9 +214,8 @@ th, td {
 
 tr:hover {
     cursor: pointer;
-    background-color: #00457c;
     -webkit-transition: all 0.2s ease-in-out;
-    color: white;
+    color: #0a86f0;
 }
 
 .sidenav {

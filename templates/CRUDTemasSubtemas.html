@@ -32,8 +32,8 @@
         <div class="row ">
             <div id="TS1" class = "col-md-6 w3-container w3-hide divs">
                 <h1> Agregar Tema </h1>
-                <input class="inputs" type = text name = "temaNuevo" placeholder="Nombre"> <br>
-                <input class="buttons" type = submit name = "accioncrudtemassubtemas" value = "Agregar Tema">
+                <input type = text name = "temaNuevo" placeholder="Nombre"> <br>
+                <input type = submit name = "accioncrudtemassubtemas" value = "Agregar Tema">
             </div>
 
             <div id="TS2" class = "col-md-6 w3-container w3-hide divs">
@@ -41,7 +41,7 @@
                 <br>
                 <h3>Seleccionar Tema</h3>
 
-                <select class="inputs" name = "selectTema">
+                <select name = "selectTema">
                     <option>Escoger Tema </option>
                     {% for tema in temas %}
                         <option> {{ tema.getId()}}-{{tema.getTema()}} </option>
@@ -49,15 +49,15 @@
                 </select> <br>
 
                 <h3> Nuevo Subtema </h3> <br>
-                <input class="inputs" type = text name = "subtemaNuevo"><br>
-                <input class="buttons" type = submit value = "Agregar Subtema" name = "accioncrudtemassubtemas">
+                <input type = text name = "subtemaNuevo"><br>
+                <input type = submit value = "Agregar Subtema" name = "accioncrudtemassubtemas">
             </div>
 
             <div id="TS3" class = "col-md-6 w3-container divs">
                 <h2>Modificar y Eliminar Temas</h2><br>
                 <h3>Seleccionar Tema</h3>
 
-                <select class="inputs" name = "selectTemaModEli">
+                <select name = "selectTemaModEli">
                     <option>Escoger Tema </option>
                     {% for tema in temas %}
                         <option> {{ tema.getId()}}-{{tema.getTema()}}</option>
@@ -66,11 +66,11 @@
                 <br>
 
                 <h3>Cambiar Nombre</h3><br>
-                <input class="inputs" type = text name = nuevoModificarTema> <br>
+                <input type = text name = nuevoModificarTema> <br>
 
-                <input class="buttons" type = submit name = "accioncrudtemassubtemas" value = "Modificar Tema"><br>
+                <input type = submit name = "accioncrudtemassubtemas" value = "Modificar Tema"><br>
 
-                <input class="buttons" type = submit name = "accioncrudtemassubtemas" value = "Eliminar Tema">
+                <input type = submit name = "accioncrudtemassubtemas" value = "Eliminar Tema">
             </div>
 
             <div id="TS4" class = "col-md-6 w3-container w3-hide divs">
@@ -79,7 +79,7 @@
 
                 <div>
                     <h3>Seleccionar Tema</h3>
-                    <select class="inputs" name = "selectTemaSub" onchange="obtenerSubtemas(this,'selectSubModificar')">
+                    <select name = "selectTemaSub" onchange="obtenerSubtemas(this,'selectSubModificar')">
 
                         <option>Escoger Tema </option>
                         {% for tema in temas %}
@@ -90,18 +90,18 @@
 
                 <div>
                     <h3>Seleccionar Subtema</h3>
-                    <select class="inputs" id = "selectSubModificar" name = "selectSub">
+                    <select id = "selectSubModificar" name = "selectSub">
                     </select>
                     <br>
                 </div>
 
                 <h3>Cambiar Nombre </h3> <br>
 
-                <input class="inputs" type = text name = nuevoModificarSubtema><br>
+                <input type = text name = nuevoModificarSubtema><br>
 
-                <input class="buttons" type = submit name = "accioncrudtemassubtemas" value = "Modificar Subtema"><br>
+                <input type = submit name = "accioncrudtemassubtemas" value = "Modificar Subtema"><br>
 
-                <input class="buttons" type = submit name = "accioncrudtemassubtemas" value = "Eliminar Subtema">
+                <input type = submit name = "accioncrudtemassubtemas" value = "Eliminar Subtema">
 
             </div>
         </div>
