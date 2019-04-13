@@ -103,7 +103,7 @@
     <form action="loadInformacionExamen" method="post">
         <div class="row">
             <div class= "col-md-6 w3-container divX" id="Encabezado y Tipo">
-                <select class = "inputs" name="selectEncabezados" id="selectEncabezados" >
+                <select name="selectEncabezados" id="selectEncabezados" >
                     <option>Escoger Encabezado</option>
                     {% for encabezado in encabezados %}
                         <option value="{{ encabezado }}">{{encabezado.getId()}}-{{ encabezado.getCurso()}}</option>
@@ -113,15 +113,15 @@
                 <i onclick="desplegarModalEncabezados({{ encabezadosDict }})" id="descripcionDesplegar" class="fa fa-eye eyeI"></i> <br>
 
                 <h3>Selección Única</h3>
-                <input class = "inputs" type = radio name = "tipoExamen" value="S">
+                <input type = radio name = "tipoExamen" value="S">
 
                 <h3>Desarrollo</h3>
-                <input class = "inputs" type = radio name = "tipoExamen" value="D">
+                <input type = radio name = "tipoExamen" value="D">
 
                 <h3>Práctica</h3>
-                <input class = "inputs" type = radio name = "tipoExamen" value="P">
+                <input type = radio name = "tipoExamen" value="P">
 
-                <button class = "buttons" type="submit" >Continuar</button>
+                <button type="submit" >Continuar</button>
             </div>
         </div>
     </form>
@@ -174,8 +174,8 @@
         </div>
         <div class="row">
             <div class= "col-md-6 w3-container divX" id="Generar PDF">
-                <button class= "buttons" style="height: 40px;" name = "solucionado" type="submit" value=1>Generar Examen Con Solución</button>
-                <button class= "buttons" style="height: 40px;" name = "solucionado" type = "submit" value = 0>Generar Examen Sin Solución</button>
+                <button style="height: 40px;" name = "solucionado" type="submit" value=1>Generar Examen Con Solución</button>
+                <button style="height: 40px;" name = "solucionado" type = "submit" value = 0>Generar Examen Sin Solución</button>
             </div>
         </div>
     </form>
