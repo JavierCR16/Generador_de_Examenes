@@ -2,22 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Encabezado</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="../static/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
     <script type="text/javascript" src="/static/solicitudes.js"></script>
+    <title>GEMA 💎 </title>
 </head>
 <body>
 
-    <form method="post" action="guardarEncabezado" name="formEncabezado">
-        <div id="header"  >
-            <a href="ConstruirExamen.html"><i class="material-icons" style="font-size: 30px;">arrow_back</i></a>
-            <h1> Configuración de encabezado</h1>
+    {#    <img style= "width: auto; height:auto; opacity: 0.2; z-index:-1;" src="../static/bkg.jpg">#}
+
+
+    <div class="row">
+        <div class="col-md-12 header">
+            <a href="OpcionesPrincipales.html"><i class="material-icons backA">chevron_left</i></a>
+            <h1>Gestión de Encabezado</h1>
+            <a href="/" data-toggle="SignOutTooltip" data-placement="bottom" title="Cerrar Sesión"><i class="material-icons signO">exit_to_app</i></a>
         </div>
+    </div>
+    <br>
+
+    <form method="post" action="guardarEncabezado" name="formEncabezado">
 
         <div style=".." >
             <h2>Instrucciones de examen</h2>
@@ -61,28 +72,24 @@
 
     </form>
 
-{#    <div id="footer">#}
-{#      <img style = "background-color: rgb(0, 0, 0, 0.7); width: 30%; height: 20%;" src="../static/TECB.png" alt="Tecnológico de Costa Rica">#}
-{#    </div>#}
+    <div class="modal fade" id="previsualizationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Previsualización de Encabezado</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id = "previewEncabezadoModal" class="modal-body">
 
-<div class="modal fade" id="previsualizationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Previsualización de Encabezado</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div id = "previewEncabezadoModal" class="modal-body">
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
+    </div>
 
 </body>
 </html>

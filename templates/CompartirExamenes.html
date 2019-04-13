@@ -2,28 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Compartir Exámenes</title>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="../static/style.css">
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:300" rel="stylesheet">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
     <script type="text/javascript" src="/static/solicitudes.js"></script>
+    <title>GEMA 💎 </title>
 </head>
 <body>
+
+    {#    <img style= "width: auto; height:auto; opacity: 0.2; z-index:-1;" src="../static/bkg.jpg">#}
+
+
+    <div class="row">
+        <div class="col-md-12 header">
+            <a href="OpcionesPrincipales.html"><i class="material-icons backA">chevron_left</i></a>
+            <h1>Compartir Exámenes</h1>
+            <a href="/" data-toggle="SignOutTooltip" data-placement="bottom" title="Cerrar Sesión"><i class="material-icons signO">exit_to_app</i></a>
+        </div>
+    </div>
+    <br>
+
     <form enctype="multipart/form-data" action="enviarCorreo" method="post">
         <table>
-        <thead>
+            <thead>
             <tr>
                 <td>Nombre</td>
                 <td>Correo Electrónico</td>
             </tr>
-        </thead>
+            </thead>
 
-        <tbody>
+            <tbody>
             {% for usuario in usuarios %}
                 <tr>
                     <td>{{ usuario.getNombre() }}</td>
@@ -34,7 +48,7 @@
                 </tr>
 
             {% endfor %}
-        </tbody>
+            </tbody>
 
         </table>
 

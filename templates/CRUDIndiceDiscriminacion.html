@@ -1,37 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Índice de Discriminación</title>
-        <meta name="description" content="">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-        <link rel="stylesheet" href="/static/popupForm.css">
-        <link rel="stylesheet" type="text/css" href="../static/style.css">
-        <link href="https://fonts.googleapis.com/css?family=Montserrat:300" rel="stylesheet">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="/static/solicitudes.js"></script>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+    <script type="text/javascript" src="/static/solicitudes.js"></script>
+    <title>GEMA 💎 </title>
+</head>
 
-    <body>
-        <div class="header">
-            <a href="/"><i class="material-icons" style="font-size: 30px;">arrow_back</i></a>
-            <h1> Índice de Discriminación </h1>
+<body>
+
+    {#    <img style= "width: auto; height:auto; opacity: 0.2; z-index:-1;" src="../static/bkg.jpg">#}
+
+
+    <div class="row">
+        <div class="col-md-12 header">
+            <a href="OpcionesPrincipales.html"><i class="material-icons backA">chevron_left</i></a>
+            <h1>Gestión de Indice de Discriminación</h1>
+            <a href="/" data-toggle="SignOutTooltip" data-placement="bottom" title="Cerrar Sesión"><i class="material-icons signO">exit_to_app</i></a>
         </div>
-        <div>
-           <form action="BuscarSubtemasItems" method="post">
-              <label>Tema:</label>
+    </div>
+    <br>
 
-                  <select onchange="obtenerSubtemas(this,'subtemaIndDiscriminacion')" name="selectBuscarTemaIndDis">
-                      <option>Escoger Tema</option>
-                      {% for tema in temas %}
-                          <option> {{ tema.getId()}}-{{tema.getTema()}}</option>
-                      {% endfor %}
-                  </select>
+
+    <div>
+        <form action="BuscarSubtemasItems" method="post">
+            <label>Tema:</label>
+
+            <select onchange="obtenerSubtemas(this,'subtemaIndDiscriminacion')" name="selectBuscarTemaIndDis">
+                <option>Escoger Tema</option>
+                {% for tema in temas %}
+                    <option> {{ tema.getId()}}-{{tema.getTema()}}</option>
+                {% endfor %}
+            </select>
 
             <label>Subtema:</label>
 
@@ -40,90 +49,86 @@
             </select>
 
             <input class="btnSearch" type="submit" value="Buscar">
-            </form>
-            <table id= "tablaDiscriminacion" class="TablaIndice">
-                <thead>
-                   <tr>
-                        <td>Identificador</td>
-                        <td>Tipo</td>
-                        <td>Puntaje</td>
-                        <td>Índice de Discriminación</td>
-                        <td>Consulta</td>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for item in itemsFiltroIndice %}
-                    <tr>
-                        <td>{{item.getIdLargo()}}/Item{{ item.getId()}}</td>
-                        <td>{{ item.getTipo() }}</td>
-                        <td>{{ item.getPuntaje() }}</td>
-                        <td>{{ item.getIndice() }}</td>
-                        <td hidden>{{ item.getIdSubtema() }}</td>
-                        <td> <button class="consult-button" onclick="verificarIndiceDiscriminacion(this,{{descripItems}})"><i class="material-icons" style="font-size: 20px;">info</i> </button></td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
+        </form>
+        <table id= "tablaDiscriminacion" class="TablaIndice">
+            <thead>
+            <tr>
+                <td>Identificador</td>
+                <td>Tipo</td>
+                <td>Puntaje</td>
+                <td>Índice de Discriminación</td>
+                <td>Consulta</td>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in itemsFiltroIndice %}
+                <tr>
+                    <td>{{item.getIdLargo()}}/Item{{ item.getId()}}</td>
+                    <td>{{ item.getTipo() }}</td>
+                    <td>{{ item.getPuntaje() }}</td>
+                    <td>{{ item.getIndice() }}</td>
+                    <td hidden>{{ item.getIdSubtema() }}</td>
+                    <td> <button class="consult-button" onclick="verificarIndiceDiscriminacion(this,{{descripItems}})"><i class="material-icons" style="font-size: 20px;">info</i> </button></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-{#        <div id="footer">#}
-{#          <img style = "background-color: rgb(0, 0, 0, 0.7); width: 30%; height: 20%;" src="../static/TECB.png" alt="Tecnológico de Costa Rica">#}
-{#        </div>#}
-
-        <div class="modal fade" id="modalAgregarIndice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal fade" id="modalAgregarIndice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Agregar Índice de Discriminación</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                  <h2 id="infoItemAgregar"> </h2> <br>
-                  <h2>Índice de Discriminación</h2>
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Agregar Índice de Discriminación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h2 id="infoItemAgregar"> </h2> <br>
+                    <h2>Índice de Discriminación</h2>
 
-                  <input id ="addIndice" type="text" placeholder="Ingresar Índice">
+                    <input id ="addIndice" type="text" placeholder="Ingresar Índice">
 
-                  <input id="idItemSecretoAdd" hidden type="text">
-                  <input id = "idSubtemaSecretAdd" hidden type="text">
+                    <input id="idItemSecretoAdd" hidden type="text">
+                    <input id = "idSubtemaSecretAdd" hidden type="text">
 
-              </div>
-              <div class="modal-footer">
-                  <button value="agregarIndiceBoton" id="agregarIndiceBoton" type ="button" class="btn btn-secondary" onclick="agregarIndiceDiscriminacion({{ descripItems }})">Agregar Índice</button>
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-              </div>
+                </div>
+                <div class="modal-footer">
+                    <button value="agregarIndiceBoton" id="agregarIndiceBoton" type ="button" class="btn btn-secondary" onclick="agregarIndiceDiscriminacion({{ descripItems }})">Agregar Índice</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
             </div>
-          </div>
         </div>
+    </div>
 
-        <div class="modal fade" id="modalModificarIndice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal fade" id="modalModificarIndice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modificar Índice de Discriminación</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modificar Índice de Discriminación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
 
-                  <h2 id="infoItemModificar"> </h2> <br>
-                  <h2>Índice de Discriminación </h2>
+                    <h2 id="infoItemModificar"> </h2> <br>
+                    <h2>Índice de Discriminación </h2>
 
-                  <input  id="idItemSecretoMod" hidden type="text">
-                  <input id = "idSubtemaSecretMod" hidden type="text">
+                    <input  id="idItemSecretoMod" hidden type="text">
+                    <input id = "idSubtemaSecretMod" hidden type="text">
 
-                  <input  id = "modIndice" type="text" ><br>
+                    <input  id = "modIndice" type="text" ><br>
 
-              </div>
-              <div class="modal-footer">
-                  <button value="modificarIndiceBoton" onclick="modificarEliminarIndiceDiscriminacion(this.value, {{descripItems}})"  type="button" class="btn btn-secondary">Modificar Índice</button>
-                  <button value="eliminarIndiceBoton" onclick="modificarEliminarIndiceDiscriminacion(this.value, {{descripItems}})" type="button" class="btn btn-secondary">Eliminar Índice</button>
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-              </div>
+                </div>
+                <div class="modal-footer">
+                    <button value="modificarIndiceBoton" onclick="modificarEliminarIndiceDiscriminacion(this.value, {{descripItems}})"  type="button" class="btn btn-secondary">Modificar Índice</button>
+                    <button value="eliminarIndiceBoton" onclick="modificarEliminarIndiceDiscriminacion(this.value, {{descripItems}})" type="button" class="btn btn-secondary">Eliminar Índice</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
             </div>
-          </div>
         </div>
-    </body>
+    </div>
+</body>
 </html>

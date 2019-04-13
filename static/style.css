@@ -103,6 +103,8 @@ body {
 
 h1 {
     color: #0a86f0;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
     font-size: 5vh;
     font-weight: 200;
     line-height: 58px;
@@ -111,12 +113,14 @@ h1 {
 h2 {
     color: #00457c;
     text-align: center;
+    font-family: 'Montserrat', sans-serif;
     font-size: 3.5vh;
 }
 
 h3,label {
     color: #00457c;
     text-align: center;
+    font-family: 'Montserrat', sans-serif;
     font-size: 2.5vh;
 }
 
@@ -189,6 +193,7 @@ h3,label {
 }
 
 table {
+    font-family: 'Montserrat', sans-serif;
     border-collapse: collapse;
     width: 50%;
     margin: 25px 5px;
@@ -198,6 +203,7 @@ table {
 }
 
 th, td {
+    font-family: 'Montserrat', sans-serif;
     padding: 8px;
     text-align: left;
     border-bottom: 1px solid #00457c;
@@ -225,11 +231,12 @@ tr:hover {
 }
 
 .aFake{
+    font-family: 'Montserrat', sans-serif;
     background: transparent;
     text-decoration: none;
     padding: 8px 8px 8px 32px;
     border: 0px solid transparent;
-    font-size: 4vh;
+    font-size: 3vh;
     color: #818181;
     transition: 0.3s;
 }
@@ -239,6 +246,7 @@ tr:hover {
 }
 
 .LogIn {
+    font-family: 'Montserrat', sans-serif;
     top: 20%;
     height: auto;
     max-width: 40%;
@@ -253,9 +261,10 @@ tr:hover {
 /*SideNav*/
 
 .sidenav a{
+    font-family: 'Montserrat', sans-serif;
     padding: 8px 8px 8px 32px;
     text-decoration: none;
-    font-size: 4vh;
+    font-size: 3vh;
     color: #818181;
     display: block;
     transition: 0.3s;

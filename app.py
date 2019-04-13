@@ -285,12 +285,6 @@ def guardarEncabezado():
 
     return render_template("CRUDEncabezado.html", tiposExamen=Tipos, periodos=Periodos)
 
-#CRUD CONSTRUIR EXAMEN
-@app.route("/ConstruirExamen.html")
-def construirExamen():
-
-    return render_template("ConstruirExamen.html")
-
 
 #CRUD SUGERIR VERIFICAR EDICIONES
 
