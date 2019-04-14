@@ -132,7 +132,6 @@ class Controlador:
 
         GestorBase.cerrarConexion(objetoConexion)
 
-
     #Funciones Indice Discriminacion
     def agregarIndice(self,idItem, nuevoIndice,usuario,contrasenna):
         objetoItem = ObjetoItem(idItem,None,None,None,None,None,nuevoIndice)
@@ -168,12 +167,12 @@ class Controlador:
 
 
     #Funciones Gestion Respuestas
-    def agregarRespuestas(self,itemSeleccionado, listaRespuestas, respCorrecta,usuario,contrasenna):
+    def agregarRespuestas(self,itemSeleccionado, tipoItem,listaRespuestas, respCorrecta,usuario,contrasenna):
         idItem = itemSeleccionado.split("/Item")[1]
 
-        objetoRespuesta = ObjetoRespuesta(idItem,listaRespuestas,respCorrecta)
+        objetoRespuesta = ObjetoRespuesta(idItem,listaRespuestas,int(respCorrecta))
 
-        GestorBase.agregarRespuestas(objetoRespuesta,usuario,contrasenna)
+        GestorBase.agregarRespuestas(objetoRespuesta,tipoItem,usuario,contrasenna)
 
     def obtenerRespuestasViejas(self,itemSeleccionado,usuario,contrasenna):
 
@@ -185,7 +184,7 @@ class Controlador:
 
         idItem = itemSeleccionado.split("/Item")[1]
 
-        objetoRespuesta = ObjetoRespuesta(idItem, listaRespuestas, respCorrecta)
+        objetoRespuesta = ObjetoRespuesta(idItem, listaRespuestas, int(respCorrecta))
 
         GestorBase.modificarRespuestas(objetoRespuesta,usuario,contrasenna)
 

@@ -24,7 +24,9 @@
         <div class="col-md-12 header">
             <a href="OpcionesPrincipales.html"><i class="material-icons backA">chevron_left</i></a>
             <h1>Gestión de Respuestas</h1>
-            <a href="/" data-toggle="SignOutTooltip" data-placement="bottom" title="Cerrar Sesión"><i class="material-icons signO">exit_to_app</i></a>
+            <form id="formlogout" action="cerrarSesion" method="post">
+                <a href="javascript:$('#formlogout').submit();" data-toggle="SignOutTooltip" data-placement="bottom" title="Cerrar Sesión"><i class="material-icons signO">exit_to_app</i></a>
+            </form>
         </div>
     </div>
     <br>
@@ -49,24 +51,31 @@
 
             <label>Ítems</label>
 
-            <select id = "selectItemRespAgregar" name = "selectItemRespAgregar">
+            <select onchange="mostrarAddRespuestas(this)" id = "selectItemRespAgregar" name = "selectItemRespAgregar">
 
             </select><br>
 
             <i id="despDescAddResp" class="fa fa-eye"></i> <br>
 
             <h1>Respuestas</h1>
-            <input type="text" name="Arespuesta1" placeholder="respuesta1">
-            <input type="radio" name="Arespuesta" value="1" checked><br>
-            <input type="text" name="Arespuesta2" placeholder="respuesta2">
-            <input type="radio" name="Arespuesta" value="2"><br>
-            <input type="text" name="Arespuesta3" placeholder="respuesta3">
-            <input type="radio" name="Arespuesta" value="3"><br>
-            <input type="text" name="Arespuesta4" placeholder="respuesta4">
-            <input type="radio" name="Arespuesta" value="4"><br>
-            <input name = "respuestasAdd" class="btnSearch" type="submit" value="Agregar Respuestas">
-        </form>
+                <div hidden id = "respAddSelect">
+                    <input type="text" name="Arespuesta1" placeholder="respuesta1">
+                    <input type="radio" name="Arespuesta" value=1 checked><br>
+                    <input type="text" name="Arespuesta2" placeholder="respuesta2">
+                    <input type="radio" name="Arespuesta" value=2><br>
+                    <input type="text" name="Arespuesta3" placeholder="respuesta3">
+                    <input type="radio" name="Arespuesta" value=3><br>
+                    <input type="text" name="Arespuesta4" placeholder="respuesta4">
+                    <input type="radio" name="Arespuesta" value=4><br>
 
+                </div>
+
+                <div hidden id = "respAddDesarrollo">
+                    <textarea name = "respDesarrollo"> </textarea>
+                </div>
+
+                <input hidden id="botonAddResp" name = "respuestasAdd" class="btnSearch" type="submit" value="Agregar Respuestas">
+        </form>
         <form action="crudRespuestasModificar" method="post">
             <label>Tema</label>
             <select onchange="obtenerSubtemas(this,'selectSubModificarResp')" name="selectTemaRespModificar">
@@ -96,19 +105,19 @@
                 <h1>Respuestas</h1>
                 <input id ="Mrespuesta1" type="text" name="Mrespuesta1" placeholder="respuesta1">
 
-                <input type="radio" name="Mrespuesta" value="1"><br>
+                <input type="radio" name="Mrespuesta" value=1><br>
 
                 <input id ="Mrespuesta2" type="text" name="Mrespuesta2" placeholder="respuesta2">
 
-                <input type="radio" name="Mrespuesta" value="2"><br>
+                <input type="radio" name="Mrespuesta" value=2><br>
 
                 <input id ="Mrespuesta3" type="text" name="Mrespuesta3" placeholder="respuesta3">
 
-                <input type="radio" name="Mrespuesta" value="3"><br>
+                <input type="radio" name="Mrespuesta" value=3><br>
 
                 <input id ="Mrespuesta4" type="text" name="Mrespuesta4" placeholder="respuesta4">
 
-                <input type="radio" name="Mrespuesta" value="4"><br>
+                <input type="radio" name="Mrespuesta" value=4><br>
 
                 <input name = "respuestasMod" class="btnSearch" type="submit" value="Modificar Respuestas">
             </div>

@@ -124,13 +124,15 @@ function procesarAjaxRespuestasViejas(itemSeleccionado){
 
                 for (i = 0; i < radioRespuestas.length; i++) {
 
-                    if (radioRespuestas[i].value === datos["informacionItem"]["respCorrecta"]) {
+                    if (radioRespuestas[i].value === datos["informacionItem"]["respCorrecta"].toString()) {
                         radioRespuestas[i].checked = true;
                     }
                     listaRespuestas[i].val(datos["informacionItem"]["respuestas"][i]);
                 }
                 $("#respuestasModificar").removeAttr('hidden');
             }
+            else
+                $("#respuestasModificar").attr("hidden",true);
         }
     })
 }
@@ -418,6 +420,25 @@ function openNav() {
 
 function closeNav() {
       document.getElementById("mySidenav").style.width = "0";
+}
+
+function mostrarAddRespuestas(selectItems){
+
+    var item = $(selectItems).children("option:selected").val();
+    var tipo = item.split("/Item")[0];
+    tipo = tipo.split("-")[2];
+
+    if(tipo === "S" || tipo ==="PS") {
+        $("#respAddSelect").removeAttr("hidden");
+        $("#respAddDesarrollo").attr("hidden",true);
+    }
+    else {
+        $("#respAddDesarrollo").removeAttr("hidden");
+        $("#respAddSelect").attr("hidden",true);
+    }
+
+    $("#botonAddResp").removeAttr("hidden")
+
 }
 
 

@@ -23,7 +23,9 @@
         <div class="col-md-12 header">
             <a href="OpcionesPrincipales.html"><i class="material-icons backA">chevron_left</i></a>
             <h1>Gestión de Items</h1>
-            <a href="/" data-toggle="SignOutTooltip" data-placement="bottom" title="Cerrar Sesión"><i class="material-icons signO">exit_to_app</i></a>
+            <form id="formlogout" action="cerrarSesion" method="post">
+                <a href="javascript:$('#formlogout').submit();" data-toggle="SignOutTooltip" data-placement="bottom" title="Cerrar Sesión"><i class="material-icons signO">exit_to_app</i></a>
+            </form>
         </div>
     </div>
     <br>

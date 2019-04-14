@@ -11,7 +11,7 @@ from Modelo.ObjetoVerificacionSugerencia import ObjetoVerificacionSugerencia
 from Gestores import GestorExamenes
 
 #TODO AGREGAR A LA SECCION DE ENCABEZADO (BASE Y SISTEMA), LA OPCION DE METER ESCUELA Y CURSO.
-#TODO AGREGAR FUNCIONES PARA CARGAR TODOS LOS ENCABEZADOS(PLANTILLAS) Y QUE ESTOS SEAN PREVISUALIZADOS POR EL USUARIO.
+#TODO AGREGAR FUNCIONES PARA CARGAR TODOS LOS ENCABEZADOS(PLANTILLAS) Y QUE SEAN EDITABLES Y QUE ESTOS SEAN PREVISUALIZADOS POR EL USUARIO.
 #TODO EN UN FUTURO, QUE LE PUEDA CAMBIAR EL TEMA ASOCIADO A UN SUBTEMA,AHORITA SI SE EQUIVOCA DI QUE LO BORRE.
 #TODO EN UN FUTURO, QUE LE PUEDA CAMBIAR EL SUBTEMA ASOCIADO A UN ITEM,AHORITA SI SE EQUIVOCA DI QUE LO BORRE.
 #TODO ACOMODAR UN POCO EL CODIGO
@@ -454,7 +454,7 @@ def obtenerIdFilaRespuestas(idItem,usuario,contrasenna):
 
     return idExtraido
 
-def agregarRespuestas(objetoRespuesta,usuario,contrasenna): #TODO MODIFICAR PARA QUE SE ADAPTE A SELECCION Y DESARROLLO
+def agregarRespuestas(objetoRespuesta,tipoItem,usuario,contrasenna): #TODO MODIFICAR PARA QUE SE ADAPTE A SELECCION Y DESARROLLO
 
     nuevaConexion = establecerConexion(usuario,contrasenna)
     cont = 1
@@ -463,7 +463,7 @@ def agregarRespuestas(objetoRespuesta,usuario,contrasenna): #TODO MODIFICAR PARA
             with nuevaConexion.cursor() as nuevaRespuesta:
                 for newResp in objetoRespuesta.getRespuestas():
                     insertRespuesta = "INSERT INTO Respuestas (idItem, respuesta,respuestaCorrecta) VALUES(%s,%s,%s)"
-                    nuevaRespuesta.execute(insertRespuesta, (objetoRespuesta.getIdItem(), newResp,"S")) if str(cont) == objetoRespuesta.getRespuestaCorrecta() else nuevaRespuesta.execute(insertRespuesta, (objetoRespuesta.getIdItem(), newResp,"N"))
+                    nuevaRespuesta.execute(insertRespuesta, (objetoRespuesta.getIdItem(), newResp,"S")) if cont == objetoRespuesta.getRespuestaCorrecta() else nuevaRespuesta.execute(insertRespuesta, (objetoRespuesta.getIdItem(), newResp,"N"))
 
                     nuevaConexion.commit()
                     cont+=1
@@ -488,7 +488,7 @@ def filtrarRespuestasViejas(idItem,usuario,contrasenna):
                 contador =1
                 for atributos in respViejas:
                     if(atributos[1] == "S"):
-                        objetoRespuesta.respCorrecta = str(contador)
+                        objetoRespuesta.respCorrecta = contador
                     contador+= 1
 
                     listaRespuestas+= [atributos[0]]
@@ -517,7 +517,7 @@ def modificarRespuestas(objetoModRespuesta,usuario,contrasenna):
 
                     modifyRespuesta = "UPDATE Respuestas SET respuesta = %s, respuestaCorrecta = %s WHERE id = %s"
                     respuestaModificar.execute(modifyRespuesta, (modResp,"S",
-                                                             ids[index])) if str(contador) == objetoModRespuesta.getRespuestaCorrecta() else respuestaModificar.execute(modifyRespuesta, (modResp,"N",
+                                                             ids[index])) if contador == objetoModRespuesta.getRespuestaCorrecta() else respuestaModificar.execute(modifyRespuesta, (modResp,"N",
                                                              ids[index]))
                     contador+=1
                     index+=1

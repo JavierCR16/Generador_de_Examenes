@@ -1,4 +1,4 @@
-from flask import Flask, render_template,request,session,jsonify
+from flask import Flask, render_template,request,session,jsonify,redirect, url_for
 from werkzeug.utils import secure_filename
 from Controlador.Controlador import Controlador
 
@@ -27,16 +27,14 @@ def login():
 
         Controller.cerrarConexion(conexion)
 
-        usuarios = Controller.cargarUsuarios(session['user'], session['contrasenna'])
-
-        return render_template('OpcionesPrincipales.html', usuarios = usuarios, nombre = user)
+        return redirect(url_for('opcionesPrincipales'))
 
     return render_template('LogIn.html')
 
 @app.route('/OpcionesPrincipales.html')
 def opcionesPrincipales():
-
-    return render_template("OpcionesPrincipales.html", nombre = session['user'])
+    usuario = Controller.getNombreUsuario(session['user'],session['contrasenna'])
+    return render_template("OpcionesPrincipales.html", nombre = usuario)
 
 @app.route('/cerrarSesion',methods = ['post'])
 def cerrarSesion():
@@ -211,22 +209,23 @@ def ventanaCRUDRespuestas():
 def crudRespuestasAgregar():
 
     itemSeleccionado = request.form.get("selectItemRespAgregar")
-    respCorrecta = request.form.get("Arespuesta")
-    respuestas = [request.form.get("Arespuesta1"),request.form.get("Arespuesta2"),request.form.get("Arespuesta3")
-                      ,request.form.get("Arespuesta4")]
+    tipoItem = itemSeleccionado.split("/Item")[0].split("-")[2]
 
-    Controller.agregarRespuestas(itemSeleccionado,respuestas,respCorrecta,session['user'],session['contrasenna'])
+    respCorrecta = ""
+    respuestas = []
+
+    if(tipoItem == "S" or tipoItem == "PS"):
+        respCorrecta = request.form.get("Arespuesta")
+        respuestas = [request.form.get("Arespuesta1"),request.form.get("Arespuesta2"),request.form.get("Arespuesta3")
+                      ,request.form.get("Arespuesta4")]
+    else:
+        respCorrecta = 0
+        respuestas = request.form.get("respDesarrollo")
+
+    Controller.agregarRespuestas(itemSeleccionado,tipoItem,respuestas,respCorrecta,session['user'],session['contrasenna'])
 
     listaTemas = Controller.obtenerTemas(session['user'],session['contrasenna'])
     return render_template("CRUDRespuestas.html",temas = listaTemas)
-
-@app.route("/extraerRespuestasItem", methods = ['post'])
-def extraerRespuestasItem():
-
-    infoJson = request.get_json()
-    objetoRespuesta = Controller.obtenerRespuestasViejas(infoJson["item"],session['user'],session['contrasenna'])
-
-    return jsonify({'informacionItem':objetoRespuesta.__dict__})
 
 @app.route("/crudRespuestasModificar", methods=['post'])  ##Revisar
 def crudRespuestasModificar():
@@ -240,6 +239,14 @@ def crudRespuestasModificar():
     listaTemas = Controller.obtenerTemas(session['user'],session['contrasenna'])
 
     return render_template("CRUDRespuestas.html", temas=listaTemas)
+
+@app.route("/extraerRespuestasItem", methods = ['post'])
+def extraerRespuestasItem():
+
+    infoJson = request.get_json()
+    objetoRespuesta = Controller.obtenerRespuestasViejas(infoJson["item"],session['user'],session['contrasenna'])
+
+    return jsonify({'informacionItem':objetoRespuesta.__dict__})
 
 
 #CRUD ENCABEZADO
