@@ -167,12 +167,12 @@ class Controlador:
 
 
     #Funciones Gestion Respuestas
-    def agregarRespuestas(self,itemSeleccionado, tipoItem,listaRespuestas, respCorrecta,usuario,contrasenna):
+    def agregarRespuestas(self,itemSeleccionado,listaRespuestas, respCorrecta,usuario,contrasenna):
         idItem = itemSeleccionado.split("/Item")[1]
 
         objetoRespuesta = ObjetoRespuesta(idItem,listaRespuestas,int(respCorrecta))
 
-        GestorBase.agregarRespuestas(objetoRespuesta,tipoItem,usuario,contrasenna)
+        GestorBase.agregarRespuestas(objetoRespuesta,usuario,contrasenna)
 
     def obtenerRespuestasViejas(self,itemSeleccionado,usuario,contrasenna):
 

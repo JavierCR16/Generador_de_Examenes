@@ -38,14 +38,14 @@ def generarStringSeleccionUnica(listaItems,listaRespuestas,conSolucion):
 
                 #TODO En esta  primera, poner algo que identifique la respuesta correcta
                 seleccion += "\\item \\colorbox{red}{" + respuesta + "} \n" \
-                    if(conSolucion and str(index) == objetoResp.getRespuestaCorrecta()) else "\\item " + respuesta + "\n"
+                    if(conSolucion and index == objetoResp.getRespuestaCorrecta()) else "\\item " + respuesta + "\n"
 
             seleccion+="\\end{enumerate}\n \\vspace{0.5cm}"
 
     return seleccion + finSeleccion
 
 def generarStringDesarrollo(listaItems, listaRespuestas,conSolucion):
-
+    print(conSolucion,type(conSolucion))
     desarrollo = "\\begin{enumerate}\n"
     finDesarrollo = "\\end{enumerate}"
 

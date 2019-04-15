@@ -11,7 +11,7 @@ Controller = Controlador()
 def main():
 
     if (session.get('user') is not None):
-        return render_template('OpcionesPrincipales.html', nombre = session['user'])
+        return redirect(url_for('opcionesPrincipales'))
 
     return render_template('LogIn.html')
 
@@ -159,7 +159,7 @@ def crudItemsAgregar():
 def filtrarItems():
     filtroItems = request.get_json()
 
-    tipoFiltrado = filtroItems['tipo'] #total, usuario
+    tipoFiltrado = filtroItems['tipo'] #total, parcial, cualquier otro
 
     subtemaFiltro = filtroItems['informacionSubtema']
 
@@ -219,10 +219,10 @@ def crudRespuestasAgregar():
         respuestas = [request.form.get("Arespuesta1"),request.form.get("Arespuesta2"),request.form.get("Arespuesta3")
                       ,request.form.get("Arespuesta4")]
     else:
-        respCorrecta = 0
-        respuestas = request.form.get("respDesarrollo")
+        respCorrecta = 1 #Para que pegue con la base
+        respuestas = request.form.getlist("respAddDesarrollo")
 
-    Controller.agregarRespuestas(itemSeleccionado,tipoItem,respuestas,respCorrecta,session['user'],session['contrasenna'])
+    Controller.agregarRespuestas(itemSeleccionado,respuestas,respCorrecta,session['user'],session['contrasenna'])
 
     listaTemas = Controller.obtenerTemas(session['user'],session['contrasenna'])
     return render_template("CRUDRespuestas.html",temas = listaTemas)
@@ -231,9 +231,18 @@ def crudRespuestasAgregar():
 def crudRespuestasModificar():
 
     itemSeleccionado = request.form.get("selectItemRespModificar")
-    respCorrecta = request.form.get("Mrespuesta")
-    respuestas = [request.form.get("Mrespuesta1"), request.form.get("Mrespuesta2"), request.form.get("Mrespuesta3")
+    tipoItem = itemSeleccionado.split("/Item")[0].split("-")[2]
+
+    respCorrecta = ""
+    respuestas = []
+
+    if (tipoItem == "S" or tipoItem == "PS"):
+        respCorrecta = request.form.get("Mrespuesta")
+        respuestas = [request.form.get("Mrespuesta1"), request.form.get("Mrespuesta2"), request.form.get("Mrespuesta3")
             , request.form.get("Mrespuesta4")]
+    else:
+        respCorrecta = 1  # Para que pegue con la base
+        respuestas = request.form.getlist("respModDesarrollo")
 
     Controller.modificarRespuestas(itemSeleccionado,respuestas,respCorrecta,session['user'],session['contrasenna'])
     listaTemas = Controller.obtenerTemas(session['user'],session['contrasenna'])
@@ -247,7 +256,6 @@ def extraerRespuestasItem():
     objetoRespuesta = Controller.obtenerRespuestasViejas(infoJson["item"],session['user'],session['contrasenna'])
 
     return jsonify({'informacionItem':objetoRespuesta.__dict__})
-
 
 #CRUD ENCABEZADO
 @app.route("/CRUDEncabezado.html")
@@ -291,7 +299,6 @@ def guardarEncabezado():
     Tipos = Controller.obtenerTExamen(session['user'],session['contrasenna'])
 
     return render_template("CRUDEncabezado.html", tiposExamen=Tipos, periodos=Periodos)
-
 
 #CRUD SUGERIR VERIFICAR EDICIONES
 
@@ -390,9 +397,7 @@ def generarExamen():
     idItems = [item.split(",")[1] for item in itemsSeleccionados]
     tipoExamen = request.form.get("items").split(",")[2]
     respuestas = Controller.obtenerRespuestasExamen(idItems,session['user'],session['contrasenna'])
-    conSolucion = request.form.get("solucionado")
-
-    print(tipoExamen,conSolucion)
+    conSolucion = int(request.form.get("solucionado"))
 
     Controller.generarExamen(objEncabezado,items,respuestas,tipoExamen,conSolucion)
 

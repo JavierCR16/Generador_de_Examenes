@@ -23,6 +23,7 @@ from Gestores import GestorExamenes
 #TODO ELIMINAR IMAGENES DE PREVIEW CADA CIERTO TIEMPO
 #TODO REESTRUCTURAR LA PARTE DE RESPUESTAS, ABAJO IGUAL VIENE OTRO TODO DE ESO.
 #TODO ENVIAR PUNTAJE A GENERAR EXAMEN
+#TODO MOSTRAR SOLAMENTE EN RESPUESTAS, AQUELLOS ITEMS QUE NO TENGAN RESPUESTAS A LA HORA DE AGREGAR.
 
 #FUNCIONES DE CONEXION Y QUERIES
 
@@ -454,7 +455,7 @@ def obtenerIdFilaRespuestas(idItem,usuario,contrasenna):
 
     return idExtraido
 
-def agregarRespuestas(objetoRespuesta,tipoItem,usuario,contrasenna): #TODO MODIFICAR PARA QUE SE ADAPTE A SELECCION Y DESARROLLO
+def agregarRespuestas(objetoRespuesta,usuario,contrasenna): #TODO MODIFICAR PARA QUE SE ADAPTE A SELECCION Y DESARROLLO
 
     nuevaConexion = establecerConexion(usuario,contrasenna)
     cont = 1

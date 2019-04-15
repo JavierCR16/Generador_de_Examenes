@@ -107,9 +107,13 @@ function procesarAjaxItemModificar(itemSeleccionado){
     })
 }
 
-function procesarAjaxRespuestasViejas(itemSeleccionado){
+function procesarAjaxRespuestasViejas(itemSeleccionado,tipoItem){
     var radioRespuestas = $('[name = "Mrespuesta"]');
     var listaRespuestas = [$('#Mrespuesta1'),$('#Mrespuesta2'),$('#Mrespuesta3'),$('#Mrespuesta4')];
+    var respuestaDesarrollo = $("#respModDesarrollo");
+    var divModificarSel = $("#divrespModSelect");
+    var divModificarDes = $("#divrespModDesarrollo");
+    var botonModResp = $("#botonModResp");
 
     $.ajax({
 
@@ -122,17 +126,29 @@ function procesarAjaxRespuestasViejas(itemSeleccionado){
         success: function (datos) {
             if(datos["informacionItem"]["respuestas"].length !==0) {
 
-                for (i = 0; i < radioRespuestas.length; i++) {
+                if(tipoItem === "S" || tipoItem === "PS") {
+                    for (i = 0; i < datos["informacionItem"]["respuestas"].length; i++) {
 
-                    if (radioRespuestas[i].value === datos["informacionItem"]["respCorrecta"].toString()) {
-                        radioRespuestas[i].checked = true;
+                        if (radioRespuestas[i].value === datos["informacionItem"]["respCorrecta"].toString()) {
+                            radioRespuestas[i].checked = true;
+                        }
+                        listaRespuestas[i].val(datos["informacionItem"]["respuestas"][i]);
                     }
-                    listaRespuestas[i].val(datos["informacionItem"]["respuestas"][i]);
+                    divModificarSel.removeAttr('hidden');
+                    divModificarDes.attr('hidden',true);
                 }
-                $("#respuestasModificar").removeAttr('hidden');
+                else{
+                    respuestaDesarrollo.val(datos["informacionItem"]["respuestas"][0]);
+                    divModificarDes.removeAttr('hidden');
+                    divModificarSel.attr('hidden',true);
+                }
+                botonModResp.removeAttr('hidden')
             }
-            else
-                $("#respuestasModificar").attr("hidden",true);
+            else {
+                divModificarSel.attr("hidden", true);
+                divModificarDes.attr("hidden", true);
+                botonModResp.attr("hidden",true);
+            }
         }
     })
 }
@@ -223,8 +239,9 @@ function cargarDatosModificar(selectItem){
 
 function cargarRespuestasModificar(selectItem){
     var itemSeleccionado = selectItem.options[selectItem.selectedIndex].text;
+    var tipoItem = itemSeleccionado.split("/Item")[0].split("-")[2];
 
-    procesarAjaxRespuestasViejas(itemSeleccionado)
+    procesarAjaxRespuestasViejas(itemSeleccionado,tipoItem)
 }
 
 function agregarIndiceDiscriminacion(descripItems) {
@@ -424,17 +441,19 @@ function closeNav() {
 
 function mostrarAddRespuestas(selectItems){
 
+    var divRespAddSel = $("#divrespAddSelect");
+    var divRespAddDes = $("#divrespAddDesarrollo");
     var item = $(selectItems).children("option:selected").val();
     var tipo = item.split("/Item")[0];
     tipo = tipo.split("-")[2];
 
     if(tipo === "S" || tipo ==="PS") {
-        $("#respAddSelect").removeAttr("hidden");
-        $("#respAddDesarrollo").attr("hidden",true);
+        divRespAddSel.removeAttr("hidden");
+        divRespAddDes.attr("hidden",true);
     }
     else {
-        $("#respAddDesarrollo").removeAttr("hidden");
-        $("#respAddSelect").attr("hidden",true);
+        divRespAddDes.removeAttr("hidden");
+        divRespAddSel.attr("hidden",true);
     }
 
     $("#botonAddResp").removeAttr("hidden")

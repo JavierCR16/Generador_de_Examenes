@@ -58,7 +58,7 @@
             <i id="despDescAddResp" class="fa fa-eye"></i> <br>
 
             <h1>Respuestas</h1>
-                <div hidden id = "respAddSelect">
+                <div hidden id = "divrespAddSelect">
                     <input type="text" name="Arespuesta1" placeholder="respuesta1">
                     <input type="radio" name="Arespuesta" value=1 checked><br>
                     <input type="text" name="Arespuesta2" placeholder="respuesta2">
@@ -70,8 +70,8 @@
 
                 </div>
 
-                <div hidden id = "respAddDesarrollo">
-                    <textarea name = "respDesarrollo"> </textarea>
+                <div hidden id = "divrespAddDesarrollo">
+                    <textarea name = "respAddDesarrollo"> </textarea>
                 </div>
 
                 <input hidden id="botonAddResp" name = "respuestasAdd" class="btnSearch" type="submit" value="Agregar Respuestas">
@@ -99,9 +99,9 @@
 
             </select><br></select>
 
-            <i id="despDescModResp" class="fa fa-eye"></i> <br>><br>
+            <i id="despDescModResp" class="fa fa-eye"></i> <br><br>
 
-            <div id="respuestasModificar" hidden>
+            <div id="divrespModSelect" hidden>
                 <h1>Respuestas</h1>
                 <input id ="Mrespuesta1" type="text" name="Mrespuesta1" placeholder="respuesta1">
 
@@ -119,8 +119,13 @@
 
                 <input type="radio" name="Mrespuesta" value=4><br>
 
-                <input name = "respuestasMod" class="btnSearch" type="submit" value="Modificar Respuestas">
             </div>
+
+            <div id = "divrespModDesarrollo" hidden>
+                <textarea id = "respModDesarrollo" name = "respModDesarrollo" ></textarea>
+            </div>
+
+            <input hidden id = "botonModResp" name = "respuestasMod" class="btnSearch" type="submit" value="Modificar Respuestas">
         </form>
     </div>
 
