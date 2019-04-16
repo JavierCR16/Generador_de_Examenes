@@ -164,9 +164,25 @@ def filtrarItems():
     subtemaFiltro = filtroItems['informacionSubtema']
 
     listaItems = Controller.filtrarItems(subtemaFiltro,tipoFiltrado,session['user'],session['contrasenna'])
+
     descripcionesItems = [item.getDescripcion() for item in listaItems]
 
     return jsonify({'items':Controller.convertirItemsJson(listaItems), 'descripcionItems':Controller.convertirJson(descripcionesItems)})
+
+@app.route('/filtrarItemsRespuestas', methods=['post'])
+def filtrarItemsRespuestas():
+    filtroItems = request.get_json()
+
+    tipoFiltrado = filtroItems['tipo']
+
+    subtemaFiltro = filtroItems['informacionSubtema']
+
+    listaItems = Controller.filtrarItemsRespuestas(subtemaFiltro,tipoFiltrado,session['user'],session['contrasenna'])
+
+    descripcionesItems = [item.getDescripcion() for item in listaItems]
+
+    return jsonify({'items':Controller.convertirItemsJson(listaItems), 'descripcionItems':Controller.convertirJson(descripcionesItems)})
+
 
 @app.route('/crudItemsModificar', methods = ['post'])
 def crudItemsModificar():

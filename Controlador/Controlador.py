@@ -40,13 +40,21 @@ class Controlador:
 
         return listaItems
 
+    def filtrarItemsRespuestas(self,subtemaSeleccionado, tipoFiltrado, usuario, contrasenna):
+
+        idSubtema = subtemaSeleccionado.split("-")[0]
+
+        listaItems = GestorBase.filtrarItemsRespuestas(idSubtema,tipoFiltrado,usuario,contrasenna)
+
+        return listaItems
+
     def obtenerItemByID(self,itemSeleccionado,usuario,contrasenna):
 
         idItem = itemSeleccionado.split("/Item")[1]
 
         return GestorBase.obtenerInformacionItem(idItem,usuario,contrasenna)
 
-    def filtrarItemsSeleccion(self,subtemaRespuestas,usuario,contrasenna):
+    def filtrarItemsSeleccion(self,subtemaRespuestas,usuario,contrasenna): #FIXME NOT IN USE.
 
         idSubtema = subtemaRespuestas.split("-")[0]
 
