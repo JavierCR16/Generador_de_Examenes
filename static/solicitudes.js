@@ -96,12 +96,14 @@ function procesarAjaxItemModificar(itemSeleccionado){
         success: function (datos) {
             descripcion.val(datos["informacionItem"]["descripcion"]);
             puntaje.val(datos["informacionItem"]["puntaje"]);
-            console.log(datos);
+
             for(i =0; i<tiposSelected.length;i++){
 
                 if(tiposSelected[i].value===datos["informacionItem"]["tipo"])
                     tiposSelected[i].checked = true
             }
+
+            $("#divModificarItem").removeAttr('hidden');
 
         }
     })
@@ -164,7 +166,6 @@ function procesarAjaxEncabezado(curso,escuela,periodo,fecha,tiempo,tipo,instrucc
         dataType: "json",
 
         success: function (datos) {
-            console.log(datos);
             var bodyModalPreview = $("#previewEncabezadoModal");
             bodyModalPreview.find('img').remove();
 
@@ -191,7 +192,7 @@ function procesarAjaxSugerencias(nuevaEdicion,comentarios,idItem){
         dataType: "json",
 
         success: function (datos) {
-            console.log(datos["status"]);
+
             $("#modalSugerencia").modal('hide');
         }
     })
@@ -208,7 +209,6 @@ function procesarAjaxVerificarEdiciones(accion,idSugerencia,sugerencia,idItem){
         dataType: "json",
 
         success: function (datos) {
-            console.log(datos["status"]);
             $("#modalVerificacion").modal('hide');
         }
     })
@@ -279,10 +279,12 @@ function modificarEliminarIndiceDiscriminacion(valorBoton,descripItems) {
     closeFormModDel()
 }
 
-function verificarIndiceDiscriminacion(botonClickeado,descripItems){
+function verificarIndiceDiscriminacion(botonClickeado,descripItems)
+{
     console.log(descripItems);
     descripItems = !(descripItems instanceof Array) ? descripItems.split(",") : descripItems;
     console.log(descripItems);
+
 
     var indice = $(botonClickeado).closest('tr').index();
     var filaTablaDiscriminacion = $("#tablaDiscriminacion tr").eq(indice+1).find('td');

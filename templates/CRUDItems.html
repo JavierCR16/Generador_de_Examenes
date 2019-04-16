@@ -52,8 +52,10 @@
         <input type =radio name = "tiposItemAgregar" value = "S" checked>
         <label>Desarrollo</label>
         <input type =radio name = "tiposItemAgregar" value = "D">
-        <label>Práctica de Examen</label>
-        <input type =radio name = "tiposItemAgregar" value = "P"><br><br>
+        <label>Práctica de Examen (Selección Única)</label>
+        <input type =radio name = "tiposItemAgregar" value = "PS"><br><br>
+        <label>Práctica de Examen (Desarrollo)</label>
+        <input type =radio name = "tiposItemAgregar" value = "PD"><br><br>
 
         <label>Inserte un ítem en formato LaTeX</label>
         <textarea name="descripcionItemAgregar"> </textarea> <br>
@@ -91,24 +93,26 @@
 
         <i id="descripcionDesplegar" class="fa fa-eye"></i>
         <br>
+        <div hidden id="divModificarItem">
+            <label>Selección Única</label>
+            <input type =radio name = "tiposItemModificar" value = "S">
+            <label>Desarrollo</label>
+            <input type =radio name = "tiposItemModificar" value = "D">
+            <label>Práctica de Examen (Selección Única)</label>
+            <input type =radio name = "tiposItemModificar" value = "PS"><br><br>
+            <label>Práctica de Examen (Desarrollo)</label>
+            <input type =radio name = "tiposItemModificar" value = "PD"><br><br>
 
-        <label>Selección Única</label>
-        <input type =radio name = "tiposItemModificar" value = "S">
-        <label>Desarrollo</label>
-        <input type =radio name = "tiposItemModificar" value = "D">
-        <label>Práctica de Examen</label>
-        <input type =radio name = "tiposItemModificar" value = "P"><br><br>
+            <label>Inserte un ítem en formato LaTeX</label>
+            <textarea id = "descItemMod" name="descripcionItemModificar"> </textarea> <br>
 
-        <label>Inserte un ítem en formato LaTeX</label>
-        <textarea id = "descItemMod" name="descripcionItemModificar"> </textarea> <br>
+            <label>Puntaje </label>
+            <input id ="puntajeMod" type = text name="puntajeModificar"> <br>
 
-        <label>Puntaje </label>
-        <input id ="puntajeMod" type = text name="puntajeModificar"> <br>
+            <input type = submit name = "accioncruditems" value = "Modificar Item">
 
-        <input type = submit name = "accioncruditems" value = "Modificar Item">
-
-        <input type = submit name = "accioncruditems" value = "Eliminar Item">
-
+            <input type = submit name = "accioncruditems" value = "Eliminar Item">
+        </div>
     </form>
 
     <!-- Modal -->
