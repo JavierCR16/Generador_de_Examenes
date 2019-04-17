@@ -214,6 +214,65 @@ function procesarAjaxVerificarEdiciones(accion,idSugerencia,sugerencia,idItem){
     })
 }
 
+function procesarAjaxInformacionExamen(tipoExamen){
+    $.ajax({
+
+        url: "/loadInformacionExamen",
+        type: 'post',
+        data:JSON.stringify({tipoExamen:tipoExamen}),
+        contentType: 'application/json;charset=UTF-8',
+        dataType: "json",
+
+        success: function (datos) {
+            var indexItem = 0;
+            var cantItems = 0;
+            var tagPadre = $("#allfather");
+
+            tagPadre.empty();
+            console.log(datos["descripciones"]);
+            for(var i =0; i< datos["temas"].length;i++){
+
+                var l1Tema = "<li></li>";
+                var inputTemas = $("<input type=\"checkbox\" >").attr("onclick","OcultAcordion(" +JSON.stringify("subtemas"+i) +")");
+                var labelTemas = "<label for=\"tall\" class=\"custom-unchecked\">"+datos["temas"][i]["tema"]+"</label>";
+                var divTemas = $("<div class = \"w3-container w3-hide\"></div>").attr("id","subtemas"+i).append("<ul></ul>");
+
+                for(var j =0; j< datos["subtemas"][i].length;j++){
+                    var subtemaActual = datos["subtemas"][i][j];
+
+                    var l1Subtema = "<li></li>";
+                    var inputSubtemas = $("<input type=\"checkbox\" name = \"tall\" >").attr("onclick","OcultAcordion("+ JSON.stringify("items" +i +"-"+j)+")");
+
+                    var labelSubtemas = "<label for=\"tall\" class=\"custom-unchecked\">"+subtemaActual["subtema"]+"</label>";
+                    var divSubtemas = $("<div class = \"w3-container w3-hide\"></div>").attr("id","items"+i+"-"+j).append("<ul></ul>");
+
+                    for(var w = 0; w < datos["items"][indexItem].length; w++){
+                        var itemActual = datos["items"][indexItem][w];
+
+                        var l1Item = "<li></li>";
+                        var inputItems = $("<input type=\"checkbox\" name='items'>").attr("value",datos["descripcionItems"][cantItems]+","+
+                            itemActual["id"] +","+itemActual["tipo"]);
+                        var labelItems = "<label for=\"tall\" class=\"custom-unchecked\">"+itemActual["idLargo"] + "/Item"+ itemActual["id"]+ "</label>";
+
+                        divSubtemas.find("ul:last").append($(l1Item).append(inputItems).append(labelItems));
+
+                        cantItems+=1;
+                    }
+
+                    indexItem +=1;
+                    l1Subtema = $(l1Subtema).append(inputSubtemas).append(labelSubtemas).append(divSubtemas);
+                    divTemas.find("ul:first").append(l1Subtema);
+
+                }
+                l1Tema = $(l1Tema).append(inputTemas).append(labelTemas).append(divTemas);
+                tagPadre.append(l1Tema)
+            }
+
+
+        }
+    })
+}
+
 function obtenerSubtemas(selectEscogido, idObjHTML){
 
     var temaEscogido = selectEscogido.options[selectEscogido.selectedIndex].text;
@@ -470,4 +529,11 @@ function mostrarAddRespuestas(selectItems){
 
 }
 
+function loadInformacionExamen(){
+
+    var tipoExamen = $("input[name='tipoExamen']:checked").val();
+
+    procesarAjaxInformacionExamen(tipoExamen);
+
+}
 

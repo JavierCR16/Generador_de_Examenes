@@ -215,6 +215,10 @@ class Controlador:
 
         return GestorJSON.convertirListaAJSON(listaItems)
 
+    def convertirMatrixJSON(self,matriz):
+
+        return GestorJSON.convertirMatrixJSON(matriz)
+
     def convertirJson(self,objetoSimple):
 
         return GestorJSON.convertirJsonSingleObject(objetoSimple)

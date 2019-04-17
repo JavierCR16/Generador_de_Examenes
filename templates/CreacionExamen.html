@@ -126,14 +126,14 @@
                 <h3>Práctica de Examen (Desarrollo)</h3>
                 <input type = radio name = "tipoExamen" value="PD">
 
-                <button type="submit" >Continuar</button>
+                <button onclick="loadInformacionExamen()" type="button" >Continuar</button>
             </div>
         </div>
     </form>
     <form action="generarExamen" method="post">
         <div class="row">
             <div class= "col-md-6 w3-container divX" id="Temas_Subtemas">
-                <ul>
+                <ul id ="allfather">
                     {% set indexItem = [] %}
                     {% set cantItem = [] %}
                     {% if infoExamen is defined %}
