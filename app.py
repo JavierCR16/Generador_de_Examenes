@@ -419,7 +419,7 @@ def loadInformacionExamen():
 
     descripcionItems = [item["descripcion"] for lista in items for item in lista]
 
-    return jsonify({"temas":temas, "subtemas":subtemas,"items":items,"descripcionItems":descripcionItems})#Controller.convertirJson(descripcionItems)})
+    return jsonify({"temas":temas, "subtemas":subtemas,"items":items,"descripcionItems":descripcionItems})
 
 @app.route("/generarExamen",methods=['post'])
 def generarExamen():

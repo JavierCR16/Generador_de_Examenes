@@ -16,7 +16,7 @@ from Gestores import GestorExamenes
 #TODO EN UN FUTURO, QUE LE PUEDA CAMBIAR EL SUBTEMA ASOCIADO A UN ITEM,AHORITA SI SE EQUIVOCA DI QUE LO BORRE.
 #TODO ACOMODAR UN POCO EL CODIGO
 #TODO VER SI HAY UNA MEJOR MANERA PARA MANEJAR LOS USUARIOS Y HACER QUE EL ACCESO AL CONTROLADOR SEA SINCRONIZADO.
-#TODO Buscar cualquier usso que se haga de arreglos en un for y dejar setteado el valor que corresponde mediante loop.index0
+#TODO Buscar cualquier uso que se haga de arreglos en un for y dejar setteado el valor que corresponde mediante loop.index0
 #TODO QUITAR LO DE AM Y PM DEL INPUT DE TIPO TIME.
 #TODO ELIMINAR IMAGENES DE PREVIEW CADA CIERTO TIEMPO
 

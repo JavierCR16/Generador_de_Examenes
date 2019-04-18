@@ -1,9 +1,11 @@
-import os,glob,subprocess
+import os,subprocess
 
 def generarExamen(objEncabezado,listaItems,respuestas,tipoExamen,conSolucion,puntajes):
     header = r'''\documentclass{article}
     \usepackage{enumerate}
     \usepackage{xcolor}
+    \usepackage[utf8]{inputenc}
+    \usepackage[spanish]{babel}
     \begin{document}
     '''
 
@@ -15,7 +17,7 @@ def generarExamen(objEncabezado,listaItems,respuestas,tipoExamen,conSolucion,pun
 
     content = header + encabezado+body + footer
 
-    with open('myfile.tex','w') as f:
+    with open('myfile.tex','w',encoding='utf-8') as f:
          f.write(content)
 
     commandLine = subprocess.Popen(['pdflatex', 'myfile.tex'])
@@ -60,9 +62,9 @@ def generarStringDesarrollo(listaItems, listaRespuestas,conSolucion,puntajes):
 
 def generarStringEncabezado(objEncabezado,puntajes):
 
-    stringEncabezado = " \\paragraph{Instituto Tecnologico de Costa Rica \hfill   " + objEncabezado.getIdPeriodo() + ", " + \
-    objEncabezado.getAnno() + "}" + "\\paragraph{Escuela de Matematica   \hfill  Total: "+str(sum(puntajes))+" Puntos}" + \
-    "\\paragraph{Curso: Probabilidades  \hfill Tiempo: " + objEncabezado.getTiempo().split(":")[0] + " horas, " + \
+    stringEncabezado = "\\paragraph{Instituto Tecnológico de Costa Rica \\hfill   " + objEncabezado.getIdPeriodo() + ", " + \
+    objEncabezado.getAnno() + "}" + "\\paragraph{" + objEncabezado.getEscuela()+" \\hfill  Total: "+str(sum(puntajes))+" Puntos}" + \
+    "\\paragraph{Curso: "+ objEncabezado.getCurso()+ "\\hfill Tiempo: " + objEncabezado.getTiempo().split(":")[0] + " horas, " + \
     objEncabezado.getTiempo().split(":")[1] + " minutos} " + "\\paragraph{}" + \
     "\\centering{ " + objEncabezado.getIdTipoExamen() + "}" + "\\\\ \\hrulefill \\paragraph{INSTRUCCIONES: }" \
                        + objEncabezado.getInstrucciones() + "\\\\ \\hrulefill"

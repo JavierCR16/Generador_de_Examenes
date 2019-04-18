@@ -1,5 +1,4 @@
 import datetime
-#from sympy import preview
 from Gestores import GestorBase
 from Gestores import GestorCorreo
 from Gestores import GestorEncabezado
@@ -268,6 +267,9 @@ class Controlador:
     #Funciones Generar Examen
 
     def generarExamen(self,objEncabezado,items,respuestas,tipoExamen,conSolucion,puntajes):
+        objEncabezado.idPeriodo =  objEncabezado.getIdPeriodo().split('-')[1]
+        objEncabezado.idTipoExamen = objEncabezado.getIdTipoExamen().split('-')[1]
+        objEncabezado.anno = objEncabezado.getAnno().split("-")[0]
 
         GestorLaTeX.generarExamen(objEncabezado,items,respuestas,tipoExamen,conSolucion,puntajes)
 
