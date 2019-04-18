@@ -36,14 +36,18 @@
                 {% endfor %}
             </select>
         <h2>Subtema:</h2>
-            <select name = "SelectSubtemaEstadisticas" id="SelectSubtemaEstadisticas">
+            <select name = "SelectSubtemaEstadisticas" id="SelectSubtemaEstadisticas" onchange="obtenerItems(this,'parcial','SelectItemEstadiscias','descripcionDesplegar'
+            ,'SelectItemEstadiscias')">>
                 <option>Escoger Subtema</option>
             </select>
+
 
         <h2>Item</h2>
             <select name= "SelectItemEstadiscias" id="SelectItemEstadiscias">
                 <option>Escoger Item</option>
             </select>
+
+            <i id="descripcionDesplegar" class="fa fa-eye"></i>
 
 
 
