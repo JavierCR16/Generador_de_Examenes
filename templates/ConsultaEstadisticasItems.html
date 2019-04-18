@@ -16,5 +16,42 @@
 </head>
 <body>
 
+    <div class="row">
+        <div class="col-md-12 header">
+            <a href="OpcionesPrincipales.html"><i class="material-icons backA">chevron_left</i></a>
+            <h1>Gestión de Temas</h1>
+            <form id="formlogout" action="cerrarSesion" method="post">
+                <a href="javascript:$('#formlogout').submit();" data-toggle="SignOutTooltip" data-placement="bottom" title="Cerrar Sesión"><i class="material-icons signO">exit_to_app</i></a>
+            </form>
+        </div>
+    </div>
+
+    <div class = "datos">
+        <h2>Curso:</h2>
+            <select id="SelectCursoEstadisticas" ></select>
+        <h2>Tema:</h2>
+            <select name="SelectTemaEstadisticas" id="SelectTemaEstadisticas" onchange="obtenerSubtemas(this,'SelectSubtemaEstadisticas')">
+                {% for tema in Temas %}
+                    <option>{{ tema.getId() }} - {{ tema.getTema() }}</option>
+                {% endfor %}
+            </select>
+        <h2>Subtema:</h2>
+            <select name = "SelectSubtemaEstadisticas" id="SelectSubtemaEstadisticas" onchange="obtenerItems(this,'parcial','SelectItemEstadiscias','descripcionDesplegar'
+            ,'SelectItemEstadiscias')">>
+                <option>Escoger Subtema</option>
+            </select>
+
+
+        <h2>Item</h2>
+            <select name= "SelectItemEstadiscias" id="SelectItemEstadiscias">
+                <option>Escoger Item</option>
+            </select>
+
+            <i id="descripcionDesplegar" class="fa fa-eye"></i>
+
+
+
+    </div>
+
 </body>
 </html>

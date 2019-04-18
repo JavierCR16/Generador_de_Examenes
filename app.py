@@ -442,6 +442,13 @@ def generarExamen():
     return redirect(url_for('creacionExamen'))
 
 
+
+@app.route('/ConsultaEstadisticasItems.html')
+def ConsultaEstadisticasItems():
+    temas = Controller.obtenerTemas(session['user'],session['contrasenna'])
+
+    return render_template('ConsultaEstadisticasItems.html', Temas = temas)
+
 if __name__ == '__main__':
 
     app.run(host = '0.0.0.0')
