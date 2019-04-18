@@ -441,8 +441,6 @@ def generarExamen():
 
     return redirect(url_for('creacionExamen'))
 
-
-
 @app.route('/ConsultaEstadisticasItems.html')
 def ConsultaEstadisticasItems():
     temas = Controller.obtenerTemas(session['user'],session['contrasenna'])
