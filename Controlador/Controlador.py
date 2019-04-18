@@ -40,13 +40,21 @@ class Controlador:
 
         return listaItems
 
+    def filtrarItemsRespuestas(self,subtemaSeleccionado, tipoFiltrado, usuario, contrasenna):
+
+        idSubtema = subtemaSeleccionado.split("-")[0]
+
+        listaItems = GestorBase.filtrarItemsRespuestas(idSubtema,tipoFiltrado,usuario,contrasenna)
+
+        return listaItems
+
     def obtenerItemByID(self,itemSeleccionado,usuario,contrasenna):
 
         idItem = itemSeleccionado.split("/Item")[1]
 
         return GestorBase.obtenerInformacionItem(idItem,usuario,contrasenna)
 
-    def filtrarItemsSeleccion(self,subtemaRespuestas,usuario,contrasenna):
+    def filtrarItemsSeleccion(self,subtemaRespuestas,usuario,contrasenna): #FIXME NOT IN USE.
 
         idSubtema = subtemaRespuestas.split("-")[0]
 
@@ -167,12 +175,12 @@ class Controlador:
 
 
     #Funciones Gestion Respuestas
-    def agregarRespuestas(self,itemSeleccionado, tipoItem,listaRespuestas, respCorrecta,usuario,contrasenna):
+    def agregarRespuestas(self,itemSeleccionado,listaRespuestas, respCorrecta,usuario,contrasenna):
         idItem = itemSeleccionado.split("/Item")[1]
 
         objetoRespuesta = ObjetoRespuesta(idItem,listaRespuestas,int(respCorrecta))
 
-        GestorBase.agregarRespuestas(objetoRespuesta,tipoItem,usuario,contrasenna)
+        GestorBase.agregarRespuestas(objetoRespuesta,usuario,contrasenna)
 
     def obtenerRespuestasViejas(self,itemSeleccionado,usuario,contrasenna):
 
@@ -207,9 +215,17 @@ class Controlador:
 
         return GestorJSON.convertirListaAJSON(listaItems)
 
+    def convertirMatrixJSON(self,matriz):
+
+        return GestorJSON.convertirMatrixJSON(matriz)
+
     def convertirJson(self,objetoSimple):
 
         return GestorJSON.convertirJsonSingleObject(objetoSimple)
+
+    def convertirDictAObjeto(self,stringDict):
+
+        return GestorJSON.convertirDictAObjeto(stringDict)
 
     #Funciones Sugerencia y Verificacion Edicion
 
@@ -251,8 +267,8 @@ class Controlador:
 
     #Funciones Generar Examen
 
-    def generarExamen(self,objEncabezado,items,respuestas,tipoExamen,conSolucion):
+    def generarExamen(self,objEncabezado,items,respuestas,tipoExamen,conSolucion,puntajes):
 
-        GestorLaTeX.generarExamen(objEncabezado,items,respuestas,tipoExamen,conSolucion)
+        GestorLaTeX.generarExamen(objEncabezado,items,respuestas,tipoExamen,conSolucion,puntajes)
 
 

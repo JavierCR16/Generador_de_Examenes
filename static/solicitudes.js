@@ -21,10 +21,10 @@ function procesarAjaxSubtemas(tema,idObjHTML){
     })
 }
 
-function procesarAjaxItems(subtema,tipoFiltrado,idObjSelect,idPopDescripcion){
+function procesarAjaxItems(subtema,tipoFiltrado,idObjSelect,idPopDescripcion,url){
     $.ajax({
 
-        url: "/filtrarItems",
+        url: url,
         type: 'post',
         data:JSON.stringify({informacionSubtema:subtema,tipo:tipoFiltrado}),
         contentType: 'application/json;charset=UTF-8',
@@ -64,7 +64,9 @@ function procesarAjaxIndice(idItemSecreto,nuevoIndice, idSub,valorBoton,descripI
                 var puntaje = datos["items"][i]["puntaje"];
                 var indice = datos["items"][i]["indiceDiscriminacion"];
                 var idSubtema = datos["items"][i]["idSubtema"];
-                var boton = $('<button class="consult-button" onclick="verificarIndiceDiscriminacion(this,\''+ descripItems + '\' )"><i class="material-icons" style="font-size:20px;">info</i></button>');
+                var boton = $('<button class="consult-button"><i class="material-icons" style="font-size:20px;">info</i></button>').attr(
+                    "onclick","verificarIndiceDiscriminacion(this," + JSON.stringify(descripItems) +")"
+                );
 
 
                 tabla.append($('<tr>')
@@ -96,20 +98,26 @@ function procesarAjaxItemModificar(itemSeleccionado){
         success: function (datos) {
             descripcion.val(datos["informacionItem"]["descripcion"]);
             puntaje.val(datos["informacionItem"]["puntaje"]);
-            console.log(datos);
+
             for(i =0; i<tiposSelected.length;i++){
 
                 if(tiposSelected[i].value===datos["informacionItem"]["tipo"])
                     tiposSelected[i].checked = true
             }
 
+            $("#divModificarItem").removeAttr('hidden');
+
         }
     })
 }
 
-function procesarAjaxRespuestasViejas(itemSeleccionado){
+function procesarAjaxRespuestasViejas(itemSeleccionado,tipoItem){
     var radioRespuestas = $('[name = "Mrespuesta"]');
     var listaRespuestas = [$('#Mrespuesta1'),$('#Mrespuesta2'),$('#Mrespuesta3'),$('#Mrespuesta4')];
+    var respuestaDesarrollo = $("#respModDesarrollo");
+    var divModificarSel = $("#divrespModSelect");
+    var divModificarDes = $("#divrespModDesarrollo");
+    var botonModResp = $("#botonModResp");
 
     $.ajax({
 
@@ -120,19 +128,23 @@ function procesarAjaxRespuestasViejas(itemSeleccionado){
         dataType: "json",
 
         success: function (datos) {
-            if(datos["informacionItem"]["respuestas"].length !==0) {
-
-                for (i = 0; i < radioRespuestas.length; i++) {
+            if(tipoItem === "S" || tipoItem === "PS") {
+                for (i = 0; i < datos["informacionItem"]["respuestas"].length; i++) {
 
                     if (radioRespuestas[i].value === datos["informacionItem"]["respCorrecta"].toString()) {
                         radioRespuestas[i].checked = true;
                     }
                     listaRespuestas[i].val(datos["informacionItem"]["respuestas"][i]);
                 }
-                $("#respuestasModificar").removeAttr('hidden');
+                divModificarSel.removeAttr('hidden');
+                divModificarDes.attr('hidden', true);
             }
-            else
-                $("#respuestasModificar").attr("hidden",true);
+            else {
+                respuestaDesarrollo.val(datos["informacionItem"]["respuestas"][0]);
+                divModificarDes.removeAttr('hidden');
+                divModificarSel.attr('hidden', true);
+            }
+                botonModResp.removeAttr('hidden');
         }
     })
 }
@@ -148,7 +160,6 @@ function procesarAjaxEncabezado(curso,escuela,periodo,fecha,tiempo,tipo,instrucc
         dataType: "json",
 
         success: function (datos) {
-            console.log(datos);
             var bodyModalPreview = $("#previewEncabezadoModal");
             bodyModalPreview.find('img').remove();
 
@@ -175,7 +186,7 @@ function procesarAjaxSugerencias(nuevaEdicion,comentarios,idItem){
         dataType: "json",
 
         success: function (datos) {
-            console.log(datos["status"]);
+
             $("#modalSugerencia").modal('hide');
         }
     })
@@ -192,8 +203,67 @@ function procesarAjaxVerificarEdiciones(accion,idSugerencia,sugerencia,idItem){
         dataType: "json",
 
         success: function (datos) {
-            console.log(datos["status"]);
             $("#modalVerificacion").modal('hide');
+        }
+    })
+}
+
+function procesarAjaxInformacionExamen(tipoExamen){
+    $.ajax({
+
+        url: "/loadInformacionExamen",
+        type: 'post',
+        data:JSON.stringify({tipoExamen:tipoExamen}),
+        contentType: 'application/json;charset=UTF-8',
+        dataType: "json",
+
+        success: function (datos) {
+            var indexItem = 0;
+            var cantItems = 0;
+            var tagPadre = $("#allfather");
+
+            tagPadre.empty();
+            console.log(datos["descripcionItems"]);
+            for(var i =0; i< datos["temas"].length;i++){
+
+                var l1Tema = "<li></li>";
+                var inputTemas = $("<input type=\"checkbox\" >").attr("onclick","OcultAcordion(" +JSON.stringify("subtemas"+i) +")");
+                var labelTemas = "<label for=\"tall\" class=\"custom-unchecked\">"+datos["temas"][i]["tema"]+"</label>";
+                var divTemas = $("<div class = \"w3-container w3-hide\"></div>").attr("id","subtemas"+i).append("<ul></ul>");
+
+                for(var j =0; j< datos["subtemas"][i].length;j++){
+                    var subtemaActual = datos["subtemas"][i][j];
+
+                    var l1Subtema = "<li></li>";
+                    var inputSubtemas = $("<input type=\"checkbox\" name = \"tall\" >").attr("onclick","OcultAcordion("+ JSON.stringify("items" +i +"-"+j)+")");
+
+                    var labelSubtemas = "<label for=\"tall\" class=\"custom-unchecked\">"+subtemaActual["subtema"]+"</label>";
+                    var divSubtemas = $("<div class = \"w3-container w3-hide\"></div>").attr("id","items"+i+"-"+j).append("<ul></ul>");
+
+                    for(var w = 0; w < datos["items"][indexItem].length; w++){
+                        var itemActual = datos["items"][indexItem][w];
+
+                        var l1Item = "<li></li>";
+                        var inputItems = $("<input type=\"checkbox\" name='items'>").attr("value",datos["descripcionItems"][cantItems]+","+
+                            itemActual["id"] + ","+ itemActual["puntaje"]);
+                        var labelItems = "<label for=\"tall\" class=\"custom-unchecked\">"+itemActual["idLargo"] + "/Item"+ itemActual["id"]+ "</label>";
+
+                        var ojo = $("<i id=\"descripcionDesplegar\" class=\"fa fa-eye eyeI\"></i>").attr("onclick","descripcionItemsExamen(" + JSON.stringify(datos["descripcionItems"]) +","+ cantItems+")");
+                        divSubtemas.find("ul:last").append($(l1Item).append(inputItems).append(labelItems).append(ojo));
+
+                        cantItems+=1;
+                    }
+
+                    indexItem +=1;
+                    l1Subtema = $(l1Subtema).append(inputSubtemas).append(labelSubtemas).append(divSubtemas);
+                    divTemas.find("ul:first").append(l1Subtema);
+
+                }
+                l1Tema = $(l1Tema).append(inputTemas).append(labelTemas).append(divTemas);
+                tagPadre.append(l1Tema)
+            }
+
+
         }
     })
 }
@@ -205,11 +275,20 @@ function obtenerSubtemas(selectEscogido, idObjHTML){
     procesarAjaxSubtemas(temaEscogido, idObjHTML)
 }
 
-function obtenerItems(selectEscogido,tipoFiltrado ,idObjSelect,idPopDescripcion){
+function obtenerItems(selectEscogido,tipoFiltrado ,idSelectItems,idPopDescripcion){
 
     var subtemaEscogido = selectEscogido.options[selectEscogido.selectedIndex].text;
 
-    procesarAjaxItems(subtemaEscogido,tipoFiltrado,idObjSelect,idPopDescripcion)
+    procesarAjaxItems(subtemaEscogido,tipoFiltrado,idSelectItems,idPopDescripcion,"/filtrarItems")
+
+}
+
+function obtenerItemsRespuestas(selectEscogido, tipoFiltrado, idSelectItems, idPopDescripcion){
+
+    var subtemaEscogido = selectEscogido.options[selectEscogido.selectedIndex].text;
+
+    procesarAjaxItems(subtemaEscogido, tipoFiltrado, idSelectItems, idPopDescripcion, "/filtrarItemsRespuestas")
+
 
 }
 
@@ -222,9 +301,17 @@ function cargarDatosModificar(selectItem){
 }
 
 function cargarRespuestasModificar(selectItem){
-    var itemSeleccionado = selectItem.options[selectItem.selectedIndex].text;
+    if(selectItem.selectedIndex!== 0) {
+        var itemSeleccionado = selectItem.options[selectItem.selectedIndex].text;
+        var tipoItem = itemSeleccionado.split("/Item")[0].split("-")[2];
 
-    procesarAjaxRespuestasViejas(itemSeleccionado)
+        procesarAjaxRespuestasViejas(itemSeleccionado, tipoItem)
+    }
+    else{
+        $("#divrespModSelect").attr("hidden", true);
+        $("#divrespModDesarrollo").attr("hidden", true);
+        $("#botonModResp").attr("hidden",true);
+    }
 }
 
 function agregarIndiceDiscriminacion(descripItems) {
@@ -254,10 +341,11 @@ function modificarEliminarIndiceDiscriminacion(valorBoton,descripItems) {
     closeFormModDel()
 }
 
-function verificarIndiceDiscriminacion(botonClickeado,descripItems){
+function verificarIndiceDiscriminacion(botonClickeado,descripItems) {
     console.log(descripItems);
     descripItems = !(descripItems instanceof Array) ? descripItems.split(",") : descripItems;
     console.log(descripItems);
+
 
     var indice = $(botonClickeado).closest('tr').index();
     var filaTablaDiscriminacion = $("#tablaDiscriminacion tr").eq(indice+1).find('td');
@@ -424,21 +512,39 @@ function closeNav() {
 
 function mostrarAddRespuestas(selectItems){
 
+    var divRespAddSel = $("#divrespAddSelect");
+    var divRespAddDes = $("#divrespAddDesarrollo");
+    var botonAddResp = $("#botonAddResp");
+
     var item = $(selectItems).children("option:selected").val();
     var tipo = item.split("/Item")[0];
     tipo = tipo.split("-")[2];
 
-    if(tipo === "S" || tipo ==="PS") {
-        $("#respAddSelect").removeAttr("hidden");
-        $("#respAddDesarrollo").attr("hidden",true);
-    }
-    else {
-        $("#respAddDesarrollo").removeAttr("hidden");
-        $("#respAddSelect").attr("hidden",true);
-    }
+    if(selectItems.selectedIndex !== 0) {
 
-    $("#botonAddResp").removeAttr("hidden")
+        if (tipo === "S" || tipo === "PS") {
+            divRespAddSel.removeAttr("hidden");
+            divRespAddDes.attr("hidden", true);
+        } else {
+            divRespAddDes.removeAttr("hidden");
+            divRespAddSel.attr("hidden", true);
+        }
+
+        botonAddResp.removeAttr("hidden")
+    }
+    else{
+        divRespAddDes.attr("hidden", true);
+        divRespAddSel.attr("hidden", true);
+        botonAddResp.attr("hidden", true);
+    }
 
 }
 
+function loadInformacionExamen(){
+
+    var tipoExamen = $("input[name='tipoExamen']:checked").val();
+
+    procesarAjaxInformacionExamen(tipoExamen);
+
+}
 

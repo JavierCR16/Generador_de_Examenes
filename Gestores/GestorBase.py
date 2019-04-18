@@ -17,12 +17,8 @@ from Gestores import GestorExamenes
 #TODO ACOMODAR UN POCO EL CODIGO
 #TODO VER SI HAY UNA MEJOR MANERA PARA MANEJAR LOS USUARIOS Y HACER QUE EL ACCESO AL CONTROLADOR SEA SINCRONIZADO.
 #TODO Buscar cualquier usso que se haga de arreglos en un for y dejar setteado el valor que corresponde mediante loop.index0
-#TODO PONER TIPOS PARA LOS EXAMENES DE PRACTICA
-#TODO Revisar bug en funcion procesarajaxindice con las descripciones devueltas, no se esta escapando el backslash
 #TODO QUITAR LO DE AM Y PM DEL INPUT DE TIPO TIME.
 #TODO ELIMINAR IMAGENES DE PREVIEW CADA CIERTO TIEMPO
-#TODO REESTRUCTURAR LA PARTE DE RESPUESTAS, ABAJO IGUAL VIENE OTRO TODO DE ESO.
-#TODO ENVIAR PUNTAJE A GENERAR EXAMEN
 
 #FUNCIONES DE CONEXION Y QUERIES
 
@@ -198,13 +194,40 @@ def filtrarItems(idSubtema,tipoFiltrado,usuario,contrasenna):
                     nuevoItem = ObjetoItem(atributos[0], atributos[1],atributos[2],atributos[3],idSubtema,atributos[4],atributos[5])
                     listaItems += [nuevoItem]
         except:
-            print("Error al filtrar los subtemas de estudio")
+            print("Error al filtrar los items")
         finally:
             nuevaConexion.close()
 
     return listaItems
 
-def filtrarItemsSeleccion(idSubtema,usuario,contrasenna):
+def filtrarItemsRespuestas(idSubtema, tipoFiltrado, usuario, contrasenna):
+
+    nuevaConexion = establecerConexion(usuario,contrasenna)
+    listaItems = []
+
+    if(nuevaConexion != False):
+
+        try:
+            with nuevaConexion.cursor() as itemsRespuestas:
+                querySinRespuestas = "SELECT idItem,id, descripcion,tipo, puntaje, indiceDiscriminacion FROM Item WHERE idSubtema = %s AND idItem NOT IN (SELECT idItem FROM Respuestas)"
+                queryConRespuestas = "SELECT idItem,id, descripcion,tipo, puntaje, indiceDiscriminacion FROM Item WHERE idSubtema = %s AND idItem IN (SELECT idItem FROM Respuestas)"
+
+                itemsRespuestas.execute(querySinRespuestas,(idSubtema)) if tipoFiltrado == "SinResp" else  itemsRespuestas.execute(queryConRespuestas,(idSubtema))
+
+                for atributos in itemsRespuestas:
+                    nuevoItem = ObjetoItem(atributos[0], atributos[1],atributos[2],atributos[3],idSubtema,atributos[4],atributos[5])
+                    listaItems += [nuevoItem]
+
+        except Exception as e:
+            print(e)
+            print("Error al obtener los items")
+
+        finally:
+            nuevaConexion.close()
+
+    return listaItems
+
+def filtrarItemsSeleccion(idSubtema,usuario,contrasenna): #FIXME Not in use
     nuevaConexion = establecerConexion(usuario,contrasenna)
     listaItemsSeleccion = []
 
@@ -454,7 +477,7 @@ def obtenerIdFilaRespuestas(idItem,usuario,contrasenna):
 
     return idExtraido
 
-def agregarRespuestas(objetoRespuesta,tipoItem,usuario,contrasenna): #TODO MODIFICAR PARA QUE SE ADAPTE A SELECCION Y DESARROLLO
+def agregarRespuestas(objetoRespuesta,usuario,contrasenna):
 
     nuevaConexion = establecerConexion(usuario,contrasenna)
     cont = 1
@@ -527,7 +550,6 @@ def modificarRespuestas(objetoModRespuesta,usuario,contrasenna):
             print("Error al modificar una respuesta")
         finally:
             nuevaConexion.close()
-
 
 #AQUI EMPIEZA EL CRUD DE INDICE DE DISCRIMINACION
 
