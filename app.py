@@ -405,7 +405,7 @@ def creacionExamen():
 
     return render_template("CreacionExamen.html",encabezadosDict = encabezadosDict,encabezados = listaEncabezados)
 
-@app.route("/loadInformacionExamen",methods=['post'])#TODO MUY POSIBLEMENTE CON AJAX
+@app.route("/loadInformacionExamen",methods=['post'])
 def loadInformacionExamen():
     infoExamen = request.get_json()
 

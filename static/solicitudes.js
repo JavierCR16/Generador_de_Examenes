@@ -64,7 +64,9 @@ function procesarAjaxIndice(idItemSecreto,nuevoIndice, idSub,valorBoton,descripI
                 var puntaje = datos["items"][i]["puntaje"];
                 var indice = datos["items"][i]["indiceDiscriminacion"];
                 var idSubtema = datos["items"][i]["idSubtema"];
-                var boton = $('<button class="consult-button" onclick="verificarIndiceDiscriminacion(this,\''+ descripItems + '\' )"><i class="material-icons" style="font-size:20px;">info</i></button>');
+                var boton = $('<button class="consult-button"><i class="material-icons" style="font-size:20px;">info</i></button>').attr(
+                    "onclick","verificarIndiceDiscriminacion(this," + JSON.stringify(descripItems) +")"
+                );
 
 
                 tabla.append($('<tr>')
@@ -221,7 +223,7 @@ function procesarAjaxInformacionExamen(tipoExamen){
             var tagPadre = $("#allfather");
 
             tagPadre.empty();
-            console.log(datos["descripciones"]);
+            console.log(datos["descripcionItems"]);
             for(var i =0; i< datos["temas"].length;i++){
 
                 var l1Tema = "<li></li>";
@@ -246,7 +248,8 @@ function procesarAjaxInformacionExamen(tipoExamen){
                             itemActual["id"] + ","+ itemActual["puntaje"]);
                         var labelItems = "<label for=\"tall\" class=\"custom-unchecked\">"+itemActual["idLargo"] + "/Item"+ itemActual["id"]+ "</label>";
 
-                        divSubtemas.find("ul:last").append($(l1Item).append(inputItems).append(labelItems));
+                        var ojo = $("<i id=\"descripcionDesplegar\" class=\"fa fa-eye eyeI\"></i>").attr("onclick","descripcionItemsExamen(" + JSON.stringify(datos["descripcionItems"]) +","+ cantItems+")");
+                        divSubtemas.find("ul:last").append($(l1Item).append(inputItems).append(labelItems).append(ojo));
 
                         cantItems+=1;
                     }
@@ -338,8 +341,7 @@ function modificarEliminarIndiceDiscriminacion(valorBoton,descripItems) {
     closeFormModDel()
 }
 
-function verificarIndiceDiscriminacion(botonClickeado,descripItems)
-{
+function verificarIndiceDiscriminacion(botonClickeado,descripItems) {
     console.log(descripItems);
     descripItems = !(descripItems instanceof Array) ? descripItems.split(",") : descripItems;
     console.log(descripItems);

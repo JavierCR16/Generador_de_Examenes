@@ -17,7 +17,6 @@ from Gestores import GestorExamenes
 #TODO ACOMODAR UN POCO EL CODIGO
 #TODO VER SI HAY UNA MEJOR MANERA PARA MANEJAR LOS USUARIOS Y HACER QUE EL ACCESO AL CONTROLADOR SEA SINCRONIZADO.
 #TODO Buscar cualquier usso que se haga de arreglos en un for y dejar setteado el valor que corresponde mediante loop.index0
-#TODO Revisar bug en funcion procesarajaxindice con las descripciones devueltas, no se esta escapando el backslash
 #TODO QUITAR LO DE AM Y PM DEL INPUT DE TIPO TIME.
 #TODO ELIMINAR IMAGENES DE PREVIEW CADA CIERTO TIEMPO
 
