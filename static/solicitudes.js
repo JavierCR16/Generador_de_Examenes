@@ -251,7 +251,7 @@ function procesarAjaxInformacionExamen(tipoExamen){
 
                         var l1Item = "<li></li>";
                         var inputItems = $("<input type=\"checkbox\" name='items'>").attr("value",datos["descripcionItems"][cantItems]+","+
-                            itemActual["id"] +","+itemActual["tipo"]);
+                            itemActual["id"] + ","+ itemActual["puntaje"]);
                         var labelItems = "<label for=\"tall\" class=\"custom-unchecked\">"+itemActual["idLargo"] + "/Item"+ itemActual["id"]+ "</label>";
 
                         divSubtemas.find("ul:last").append($(l1Item).append(inputItems).append(labelItems));

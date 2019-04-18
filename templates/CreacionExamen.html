@@ -102,13 +102,13 @@
 
     <br>
 
-    <form action="loadInformacionExamen" method="post">
+    <form action="generarExamen" method="post">
         <div class="row">
             <div class= "col-md-6 w3-container divX" id="Encabezado y Tipo">
                 <select name="selectEncabezados" id="selectEncabezados" >
                     <option>Escoger Encabezado</option>
                     {% for encabezado in encabezados %}
-                        <option value="{{ encabezado }}">{{encabezado.getId()}}-{{ encabezado.getCurso()}}</option>
+                        <option value = "{{ encabezadosDict[loop.index0]}}">{{encabezado.getId()}}-{{ encabezado.getCurso()}}</option>
                     {% endfor %}
                 </select>
 
@@ -129,8 +129,7 @@
                 <button onclick="loadInformacionExamen()" type="button" >Continuar</button>
             </div>
         </div>
-    </form>
-    <form action="generarExamen" method="post">
+
         <div class="row">
             <div class= "col-md-6 w3-container divX" id="Temas_Subtemas">
                 <ul id ="allfather">

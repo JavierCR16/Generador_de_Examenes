@@ -223,6 +223,10 @@ class Controlador:
 
         return GestorJSON.convertirJsonSingleObject(objetoSimple)
 
+    def convertirDictAObjeto(self,stringDict):
+
+        return GestorJSON.convertirDictAObjeto(stringDict)
+
     #Funciones Sugerencia y Verificacion Edicion
 
     def enviarSugerencia(self,idItem,nuevaEdicion, comentarios, usuario,contrasenna):
@@ -263,8 +267,8 @@ class Controlador:
 
     #Funciones Generar Examen
 
-    def generarExamen(self,objEncabezado,items,respuestas,tipoExamen,conSolucion):
+    def generarExamen(self,objEncabezado,items,respuestas,tipoExamen,conSolucion,puntajes):
 
-        GestorLaTeX.generarExamen(objEncabezado,items,respuestas,tipoExamen,conSolucion)
+        GestorLaTeX.generarExamen(objEncabezado,items,respuestas,tipoExamen,conSolucion,puntajes)
 
 

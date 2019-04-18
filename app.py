@@ -1,5 +1,4 @@
 from flask import Flask, render_template,request,session,jsonify,redirect, url_for
-from werkzeug.utils import secure_filename
 from Controlador.Controlador import Controlador
 
 app = Flask(__name__)
@@ -427,16 +426,20 @@ def loadInformacionExamen():
 @app.route("/generarExamen",methods=['post'])
 def generarExamen():
 
-    objEncabezado = request.form.get("selectEncabezados")
+    objEncabezado= Controller.convertirDictAObjeto(request.form.get("selectEncabezados"))
+
     itemsSeleccionados = request.form.getlist("items")
 
     items = [item.split(",")[0] for item in itemsSeleccionados]
     idItems = [item.split(",")[1] for item in itemsSeleccionados]
-    tipoExamen = request.form.get("items").split(",")[2]
+    puntajes = [int(item.split(",")[2]) for item in itemsSeleccionados]
+
+    tipoExamen = request.form.get("tipoExamen")
+
     respuestas = Controller.obtenerRespuestasExamen(idItems,session['user'],session['contrasenna'])
     conSolucion = int(request.form.get("solucionado"))
 
-    Controller.generarExamen(objEncabezado,items,respuestas,tipoExamen,conSolucion)
+    Controller.generarExamen(objEncabezado,items,respuestas,tipoExamen,conSolucion,puntajes)
 
     return render_template("CreacionExamen.html")#, temas=temas), infoExamen=informacionExamen,
                            #descripItems=descripcionItems)

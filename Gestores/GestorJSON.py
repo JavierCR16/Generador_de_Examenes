@@ -1,4 +1,5 @@
 import json
+from Modelo.ObjetoEncabezado import ObjetoEncabezado
 
 def convertirListaAJSON(lista):
     arregloObjetos = []
@@ -21,3 +22,10 @@ def convertirMatrixJSON(matriz):
         filaNueva.clear()
 
     return matrizNueva
+
+def convertirDictAObjeto(stringDict):
+
+    diccionario = eval(stringDict)
+
+    return ObjetoEncabezado(**diccionario)
+
