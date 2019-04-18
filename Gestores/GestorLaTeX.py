@@ -51,7 +51,7 @@ def generarStringDesarrollo(listaItems, listaRespuestas,conSolucion,puntajes):
     finDesarrollo = "\\end{enumerate}"
 
     for index,item in enumerate(listaItems):
-        desarrollo+= "\\item "+item + "\\hfill" + str(puntajes[index])+"\n \\vspace{7cm} \n"
+        desarrollo+= "\\item "+item + "\\hfill" + "\\textbf{" + str(puntajes[index])+ " (Puntos)}"+"\n \\vspace{7cm} \n"
 
         if(conSolucion):
             desarrollo+= "\\paragraph{} "+listaRespuestas[index].getRespuestas()[0] +" \\vspace{7cm}"

@@ -20,7 +20,6 @@ from Gestores import GestorExamenes
 #TODO Revisar bug en funcion procesarajaxindice con las descripciones devueltas, no se esta escapando el backslash
 #TODO QUITAR LO DE AM Y PM DEL INPUT DE TIPO TIME.
 #TODO ELIMINAR IMAGENES DE PREVIEW CADA CIERTO TIEMPO
-#TODO ENVIAR PUNTAJE A GENERAR EXAMEN
 
 #FUNCIONES DE CONEXION Y QUERIES
 
@@ -479,7 +478,7 @@ def obtenerIdFilaRespuestas(idItem,usuario,contrasenna):
 
     return idExtraido
 
-def agregarRespuestas(objetoRespuesta,usuario,contrasenna): #TODO MODIFICAR PARA QUE SE ADAPTE A SELECCION Y DESARROLLO
+def agregarRespuestas(objetoRespuesta,usuario,contrasenna):
 
     nuevaConexion = establecerConexion(usuario,contrasenna)
     cont = 1
@@ -552,7 +551,6 @@ def modificarRespuestas(objetoModRespuesta,usuario,contrasenna):
             print("Error al modificar una respuesta")
         finally:
             nuevaConexion.close()
-
 
 #AQUI EMPIEZA EL CRUD DE INDICE DE DISCRIMINACION
 

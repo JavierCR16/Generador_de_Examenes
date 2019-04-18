@@ -126,31 +126,23 @@ function procesarAjaxRespuestasViejas(itemSeleccionado,tipoItem){
         dataType: "json",
 
         success: function (datos) {
-            if(datos["informacionItem"]["respuestas"].length !==0) {
+            if(tipoItem === "S" || tipoItem === "PS") {
+                for (i = 0; i < datos["informacionItem"]["respuestas"].length; i++) {
 
-                if(tipoItem === "S" || tipoItem === "PS") {
-                    for (i = 0; i < datos["informacionItem"]["respuestas"].length; i++) {
-
-                        if (radioRespuestas[i].value === datos["informacionItem"]["respCorrecta"].toString()) {
-                            radioRespuestas[i].checked = true;
-                        }
-                        listaRespuestas[i].val(datos["informacionItem"]["respuestas"][i]);
+                    if (radioRespuestas[i].value === datos["informacionItem"]["respCorrecta"].toString()) {
+                        radioRespuestas[i].checked = true;
                     }
-                    divModificarSel.removeAttr('hidden');
-                    divModificarDes.attr('hidden',true);
+                    listaRespuestas[i].val(datos["informacionItem"]["respuestas"][i]);
                 }
-                else{
-                    respuestaDesarrollo.val(datos["informacionItem"]["respuestas"][0]);
-                    divModificarDes.removeAttr('hidden');
-                    divModificarSel.attr('hidden',true);
-                }
-                botonModResp.removeAttr('hidden')
+                divModificarSel.removeAttr('hidden');
+                divModificarDes.attr('hidden', true);
             }
             else {
-                divModificarSel.attr("hidden", true);
-                divModificarDes.attr("hidden", true);
-                botonModResp.attr("hidden",true);
+                respuestaDesarrollo.val(datos["informacionItem"]["respuestas"][0]);
+                divModificarDes.removeAttr('hidden');
+                divModificarSel.attr('hidden', true);
             }
+                botonModResp.removeAttr('hidden');
         }
     })
 }
@@ -292,7 +284,8 @@ function obtenerItemsRespuestas(selectEscogido, tipoFiltrado, idSelectItems, idP
 
     var subtemaEscogido = selectEscogido.options[selectEscogido.selectedIndex].text;
 
-    procesarAjaxItems(subtemaEscogido,tipoFiltrado,idSelectItems,idPopDescripcion,"/filtrarItemsRespuestas")
+    procesarAjaxItems(subtemaEscogido, tipoFiltrado, idSelectItems, idPopDescripcion, "/filtrarItemsRespuestas")
+
 
 }
 
@@ -305,10 +298,17 @@ function cargarDatosModificar(selectItem){
 }
 
 function cargarRespuestasModificar(selectItem){
-    var itemSeleccionado = selectItem.options[selectItem.selectedIndex].text;
-    var tipoItem = itemSeleccionado.split("/Item")[0].split("-")[2];
+    if(selectItem.selectedIndex!== 0) {
+        var itemSeleccionado = selectItem.options[selectItem.selectedIndex].text;
+        var tipoItem = itemSeleccionado.split("/Item")[0].split("-")[2];
 
-    procesarAjaxRespuestasViejas(itemSeleccionado,tipoItem)
+        procesarAjaxRespuestasViejas(itemSeleccionado, tipoItem)
+    }
+    else{
+        $("#divrespModSelect").attr("hidden", true);
+        $("#divrespModDesarrollo").attr("hidden", true);
+        $("#botonModResp").attr("hidden",true);
+    }
 }
 
 function agregarIndiceDiscriminacion(descripItems) {
@@ -512,20 +512,29 @@ function mostrarAddRespuestas(selectItems){
 
     var divRespAddSel = $("#divrespAddSelect");
     var divRespAddDes = $("#divrespAddDesarrollo");
+    var botonAddResp = $("#botonAddResp");
+
     var item = $(selectItems).children("option:selected").val();
     var tipo = item.split("/Item")[0];
     tipo = tipo.split("-")[2];
 
-    if(tipo === "S" || tipo ==="PS") {
-        divRespAddSel.removeAttr("hidden");
-        divRespAddDes.attr("hidden",true);
-    }
-    else {
-        divRespAddDes.removeAttr("hidden");
-        divRespAddSel.attr("hidden",true);
-    }
+    if(selectItems.selectedIndex !== 0) {
 
-    $("#botonAddResp").removeAttr("hidden")
+        if (tipo === "S" || tipo === "PS") {
+            divRespAddSel.removeAttr("hidden");
+            divRespAddDes.attr("hidden", true);
+        } else {
+            divRespAddDes.removeAttr("hidden");
+            divRespAddSel.attr("hidden", true);
+        }
+
+        botonAddResp.removeAttr("hidden")
+    }
+    else{
+        divRespAddDes.attr("hidden", true);
+        divRespAddSel.attr("hidden", true);
+        botonAddResp.attr("hidden", true);
+    }
 
 }
 

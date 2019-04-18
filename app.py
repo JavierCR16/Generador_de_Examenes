@@ -182,7 +182,6 @@ def filtrarItemsRespuestas():
 
     return jsonify({'items':Controller.convertirItemsJson(listaItems), 'descripcionItems':Controller.convertirJson(descripcionesItems)})
 
-
 @app.route('/crudItemsModificar', methods = ['post'])
 def crudItemsModificar():
 
@@ -374,7 +373,6 @@ def aprobarRechazarSugerencia(): #1 = Aprobar, 0 = Rechazar
 
     return jsonify({"status":"Sugerencia Revisada"})
 
-
 #COMPARTIR EXAMENES
 @app.route('/CompartirExamenes.html')
 def compartirExamenes():
@@ -441,9 +439,7 @@ def generarExamen():
 
     Controller.generarExamen(objEncabezado,items,respuestas,tipoExamen,conSolucion,puntajes)
 
-    return render_template("CreacionExamen.html")#, temas=temas), infoExamen=informacionExamen,
-                           #descripItems=descripcionItems)
-
+    return redirect(url_for('creacionExamen'))
 
 
 if __name__ == '__main__':
