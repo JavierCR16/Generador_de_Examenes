@@ -108,16 +108,17 @@
     <br>
 
     <form action="generarExamen" method="post">
-        <div class="row">
-            <div class= "col-md-6 w3-container divX" id="Encabezado y Tipo">
-                <select name="selectEncabezados" id="selectEncabezados" >
-                    <option>Escoger Encabezado</option>
-                    {% for encabezado in encabezados %}
-                        <option value = "{{ encabezadosDict[loop.index0]}}">{{encabezado.getId()}}-{{ encabezado.getCurso()}}</option>
-                    {% endfor %}
-                </select>
+        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="false">
+            <div class="carousel-inner">
+                <div class= "col-md-6 w3-container divSlid carousel-item active" id="Encabezado y Tipo">
+                    <select name="selectEncabezados" id="selectEncabezados" >
+                        <option>Escoger Encabezado</option>
+                        {% for encabezado in encabezados %}
+                            <option value = "{{ encabezadosDict[loop.index0]}}">{{encabezado.getId()}}-{{ encabezado.getCurso()}}</option>
+                        {% endfor %}
+                    </select>
 
-                <i onclick="desplegarModalEncabezados({{ encabezadosDict }})" id="descripcionDesplegar" class="fa fa-eye eyeI"></i> <br>
+                    <i onclick="desplegarModalEncabezados({{ encabezadosDict }})" id="descripcionDesplegar" class="fa fa-eye eyeI"></i> <br>
 
                     <h2>Tipo de Prueba: </h2>
 
@@ -127,67 +128,75 @@
                     <h3>Desarrollo</h3>
                     <input type = radio name = "tipoExamen" value="D">
 
-                <h3>Práctica de Examen (Selección Única)</h3>
-                <input type = radio name = "tipoExamen" value="PS">
+                    <h3>Práctica de Examen (Selección Única)</h3>
+                    <input type = radio name = "tipoExamen" value="PS">
 
-                <h3>Práctica de Examen (Desarrollo)</h3>
-                <input type = radio name = "tipoExamen" value="PD">
+                    <h3>Práctica de Examen (Desarrollo)</h3>
+                    <input type = radio name = "tipoExamen" value="PD">
 
-                <button onclick="loadInformacionExamen()" type="button" >Continuar</button>
+                    <br>
+                    <button onclick="loadInformacionExamen()" type="button" >Continuar</button>
+                </div>
+
+                <div class= "col-md-6 w3-container divSlid carousel-item" id="Temas_Subtemas">
+                    <ul id ="allfather">
+                        {% set indexItem = [] %}
+                        {% set cantItem = [] %}
+                        {% if infoExamen is defined %}
+                            {% for tema in infoExamen[0]%}
+                                <li>
+                                    <input type="checkbox" onclick="OcultAcordion('subtemas{{loop.index0}}')">
+                                    <label for="tall" class="custom-unchecked">{{tema.getTema()}}</label>
+                                    <div class = "w3-container w3-hide" id = "subtemas{{loop.index0}}">
+                                        <ul>
+                                            {% set loopTema = loop.index0%}
+                                            {% set subtemasActuales = infoExamen[1][loopTema] %}
+                                            {% for subtema in subtemasActuales %}
+                                                <li>
+                                                    <input type="checkbox" name="tall" onclick="OcultAcordion('items{{loopTema}}-{{loop.index0}}')" >
+                                                    <label for="tall" class="custom-unchecked">{{subtema.getSubtema()}}</label>
+
+                                                    <div class = "w3-container w3-hide" id ="items{{loopTema}}-{{loop.index0}}">
+                                                        <ul>
+                                                            {% set itemsActuales = infoExamen[2][indexItem|length] %}
+                                                            {% for item in itemsActuales %}
+                                                                <li>
+                                                                    <input type="checkbox" value = "{{descripItems[cantItem|length]}},{{item.getId()}},{{item.getTipo()}}" name="items">
+                                                                    <label for="tall" class="custom-unchecked">{{item.getIdLargo()}}/Item{{item.getId()}}</label>
+                                                                    <i onclick="descripcionItemsExamen({{descripItems}},{{ cantItem|length }})" id="descripcionDesplegar" class="fa fa-eye eyeI"></i>
+                                                                </li>
+                                                                {% if cantItem.append(1)%} {% endif %}
+                                                            {% endfor %}
+                                                        </ul>
+                                                    </div>
+
+                                                </li>
+                                                {% if indexItem.append(1)%} {% endif %}
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+
+                                </li>
+
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </div>
+
+                <div class= "col-md-6 w3-container divSlid carousel-item" id="Generar PDF">
+                    <button style="height: 40px;" name = "solucionado" type="submit" value="1">Generar Examen Con Solución</button>
+                    <button style="height: 40px;" name = "solucionado" type ="submit" value = "0">Generar Examen Sin Solución</button>
+                </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class= "col-md-6 w3-container divX" id="Temas_Subtemas">
-                <ul id ="allfather">
-                    {% set indexItem = [] %}
-                    {% set cantItem = [] %}
-                    {% if infoExamen is defined %}
-                        {% for tema in infoExamen[0]%}
-                            <li>
-                                <input type="checkbox" onclick="OcultAcordion('subtemas{{loop.index0}}')">
-                                <label for="tall" class="custom-unchecked">{{tema.getTema()}}</label>
-                                <div class = "w3-container w3-hide" id = "subtemas{{loop.index0}}">
-                                    <ul>
-                                        {% set loopTema = loop.index0%}
-                                        {% set subtemasActuales = infoExamen[1][loopTema] %}
-                                        {% for subtema in subtemasActuales %}
-                                            <li>
-                                                <input type="checkbox" name="tall" onclick="OcultAcordion('items{{loopTema}}-{{loop.index0}}')" >
-                                                <label for="tall" class="custom-unchecked">{{subtema.getSubtema()}}</label>
-
-                                                <div class = "w3-container w3-hide" id ="items{{loopTema}}-{{loop.index0}}">
-                                                    <ul>
-                                                        {% set itemsActuales = infoExamen[2][indexItem|length] %}
-                                                        {% for item in itemsActuales %}
-                                                            <li>
-                                                                <input type="checkbox" value = "{{descripItems[cantItem|length]}},{{item.getId()}},{{item.getTipo()}}" name="items">
-                                                                <label for="tall" class="custom-unchecked">{{item.getIdLargo()}}/Item{{item.getId()}}</label>
-                                                                <i onclick="descripcionItemsExamen({{descripItems}},{{ cantItem|length }})" id="descripcionDesplegar" class="fa fa-eye eyeI"></i>
-                                                            </li>
-                                                            {% if cantItem.append(1)%} {% endif %}
-                                                        {% endfor %}
-                                                    </ul>
-                                                </div>
-
-                                            </li>
-                                            {% if indexItem.append(1)%} {% endif %}
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-
-                            </li>
-
-                        {% endfor %}
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-        <div class="row">
-            <div class= "col-md-6 w3-container divX" id="Generar PDF">
-                <button style="height: 40px;" name = "solucionado" type="submit" value="1">Generar Examen Con Solución</button>
-                <button style="height: 40px;" name = "solucionado" type ="submit" value = "0">Generar Examen Sin Solución</button>
-            </div>
+            <a class="carousel-control-prev aSL" href="#carouselExampleControls" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next aSR" href="#carouselExampleControls" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
         </div>
     </form>
 
