@@ -17,6 +17,7 @@
 <body>
 
     <script>
+        {# Tree #}
         $(function() {
 
             $('input[type="checkbox"]').change(checkboxChanged);
@@ -84,9 +85,14 @@
                 }
             }
         });
+
+        {#$('input[name=tipoExamen]').change(function(){#}
+        {#    $('#infoExamen').submit();#}
+        {# CERRAR LLAVES #}
+
     </script>
 
-    {#    <img style= "width: auto; height:auto; opacity: 0.2; z-index:-1;" src="../static/bkg.jpg">#}
+    <img style= "width: auto; height:auto; opacity: 0.2; z-index:-1;" src="../static/bkg.jpg">
 
 
     <div class="row">
@@ -98,7 +104,6 @@
             </form>
         </div>
     </div>
-    <br>
 
     <br>
 
@@ -114,11 +119,13 @@
 
                 <i onclick="desplegarModalEncabezados({{ encabezadosDict }})" id="descripcionDesplegar" class="fa fa-eye eyeI"></i> <br>
 
-                <h3>Selección Única</h3>
-                <input type = radio name = "tipoExamen" value="S">
+                    <h2>Tipo de Prueba: </h2>
 
-                <h3>Desarrollo</h3>
-                <input type = radio name = "tipoExamen" value="D">
+                    <h3>Selección Única</h3>
+                    <input type = radio name = "tipoExamen" value="S">
+
+                    <h3>Desarrollo</h3>
+                    <input type = radio name = "tipoExamen" value="D">
 
                 <h3>Práctica de Examen (Selección Única)</h3>
                 <input type = radio name = "tipoExamen" value="PS">
