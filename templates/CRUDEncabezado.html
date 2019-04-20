@@ -16,7 +16,7 @@
 </head>
 <body>
 
-    {#    <img style= "width: auto; height:auto; opacity: 0.2; z-index:-1;" src="../static/bkg.jpg">#}
+{#    <img class= "imgs" src="../static/bkg.jpg">#}
 
 
     <div class="row">
@@ -31,47 +31,42 @@
     <br>
 
     <form method="post" action="guardarEncabezado" name="formEncabezado">
+        <div class = "col-md-6 w3-container divs">
+            <div>
+                <h2>Instrucciones de examen</h2>
+                <!-- Agregar instrucciones -->
 
-        <div style=".." >
-            <h2>Instrucciones de examen</h2>
-            <!-- Agregar instrucciones -->
+                <textarea rows="6" id="instruccionesEncabezado" name="txtInstrucciones" placeholder="INSTRUCCIONES:"> </textarea>
 
-            <textarea rows="6" id="instruccionesEncabezado" name="txtInstrucciones" placeholder="INSTRUCCIONES:"> </textarea>
+                <h3>Periodo:</h3>
+                <select id="selectPeriodo" name="selectPeriodo">
+                    {% for periodo in periodos  %}
+                        <option>{{ periodo.getId() }}-{{periodo.getDescPeriodo()}}  </option>
+                    {% endfor %}
+                </select>
 
-            <h3>Periodo:</h3>
-            <select id="selectPeriodo" name="selectPeriodo">
-                {% for periodo in periodos  %}
-                    <option>{{ periodo.getId() }}-{{periodo.getDescPeriodo()}}  </option>
-                {% endfor %}
-            </select>
+                <h3>Año:</h3>
+                <input id="fechaEncabezado" type="number" min="1900" max="4000" step="1" name = "inputFecha" />
 
-            <h3>Fecha:</h3>
-            <input id="fechaEncabezado" type="number" min="1900" max="4000" step="1" name = "inputFecha" />
+                <h3>Duración:</h3>
+                <input id = "tiempoEncabezado" type= "time" name = inputTiempo>
 
-            <h3>Tiempo</h3>
-            <input id = "tiempoEncabezado" type= "time" name = inputTiempo>
+                <h3>Tipo</h3>
+                <select id ="selectTipo" name = selectTipo>
+                    {% for tipo in tiposExamen  %}
+                        <option>{{ tipo.getId() }}-{{tipo.getDescTipo()}}  </option>
+                    {% endfor %}
+                </select>
 
-            <h3>Tipo</h3>
-            <select id ="selectTipo" name = selectTipo>
-                {% for tipo in tiposExamen  %}
-                    <option>{{ tipo.getId() }}-{{tipo.getDescTipo()}}  </option>
-                {% endfor %}
-            </select>
+            </div>
 
+            <div id = Botones>
+
+                <button onclick="previewEncabezado()" type="button" id="botonPreview" value="PreviewEncabezado">Preview</button>
+
+                <button type="submit" class="btn btn-primary" id = "botonGuardar" name="AccionEncabezado" value="GuardarEncabezado" >Guardar</button>
+            </div>
         </div>
-
-
-        <div id="Bottom">
-
-        </div>
-
-        <div id = Botones>
-
-            <button onclick="previewEncabezado()" type="button" id="botonPreview" value="PreviewEncabezado">Preview</button>
-
-            <button type="submit" class="btn btn-primary" id = "botonGuardar" name="AccionEncabezado" value="GuardarEncabezado" >Guardar</button>
-        </div>
-
     </form>
 
     <div class="modal fade" id="previsualizationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
