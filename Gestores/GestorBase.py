@@ -754,7 +754,7 @@ def ObtenerPromSubtema(usuario,contrasenna,idSubtema):
 
                 queryNombreCompleto = "SELECT AVG(indiceDiscriminacion) FROM item WHERE idSubtema = %s"
 
-                nombreCompleto.execute(queryNombreCompleto, (idSubtema))
+                Consulta.execute(queryNombreCompleto, (idSubtema))
 
                 for atributos in Consulta:
                     promedio = atributos[0]
@@ -779,14 +779,14 @@ def ObtenerCantVecesItem(usuario,contrasenna,idItem):
 
                 queryNombreCompleto = "SELECT COUNT(*) FROM itemsexamen WHERE itemsexamen.idItem = %s"
 
-                nombreCompleto.execute(queryNombreCompleto, (idItem))
+                Consulta.execute(queryNombreCompleto, (idItem))
 
                 for atributos in Consulta:
                     cant = atributos[0]
 
         except Exception as e:
             print(e)
-            print("Error al obtener el promedio de Indice de Discriminación de Subtema")
+            print("Error al obtener el cantidad de veces usado el item")
 
         finally:
             nuevaConexion.close()
