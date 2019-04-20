@@ -743,4 +743,53 @@ def getNombreUsuario(usuario,contrasenna):
 
     return nombreUsuario
 
+def ObtenerPromSubtema(usuario,contrasenna,idSubtema):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
+    promedio= 0
+
+    if (nuevaConexion != False):
+
+        try:
+            with nuevaConexion.cursor() as Consulta:
+
+                queryNombreCompleto = "SELECT AVG(indiceDiscriminacion) FROM item WHERE idSubtema = %s"
+
+                nombreCompleto.execute(queryNombreCompleto, (idSubtema))
+
+                for atributos in Consulta:
+                    promedio = atributos[0]
+
+        except Exception as e:
+            print(e)
+            print("Error al obtener el promedio de Indice de Discriminación de Subtema")
+
+        finally:
+            nuevaConexion.close()
+
+    return promedio
+
+def ObtenerCantVecesItem(usuario,contrasenna,idItem):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
+    cant= 0
+
+    if (nuevaConexion != False):
+
+        try:
+            with nuevaConexion.cursor() as Consulta:
+
+                queryNombreCompleto = "SELECT COUNT(*) FROM itemsexamen WHERE itemsexamen.idItem = %s"
+
+                nombreCompleto.execute(queryNombreCompleto, (idItem))
+
+                for atributos in Consulta:
+                    cant = atributos[0]
+
+        except Exception as e:
+            print(e)
+            print("Error al obtener el promedio de Indice de Discriminación de Subtema")
+
+        finally:
+            nuevaConexion.close()
+
+    return cant
 
