@@ -64,6 +64,43 @@
 	background-color: white;
 	-webkit-border-radius: 15px;
 	text-align: center;
+	margin-bottom: 5%;
+}
+
+.divsL {
+	padding: 2% 2% 2% 2%;
+	top: 20%;
+	height: auto;
+	left: 5%;
+	position: absolute;
+	background-color: white;
+	-webkit-border-radius: 15px;
+	text-align: center;
+	margin-bottom: 5%;
+}
+
+.divsR {
+	padding: 2% 2% 2% 2%;
+	top: 20%;
+	height: auto;
+	right: 5%;
+	position: absolute;
+	background-color: white;
+	-webkit-border-radius: 15px;
+	text-align: center;
+	margin-bottom: 5%;
+}
+
+.divsG {
+	padding: 2% 2% 2% 2%;
+	top: 20%;
+	height: auto;
+	left: 18%;
+	position: absolute;
+	background-color: white;
+	-webkit-border-radius: 15px;
+	text-align: center;
+	margin-bottom: 5%;
 }
 
 .w3-container.divSlid {
@@ -87,8 +124,16 @@
 	position: fixed;
 }
 
+.imgs {
+	width: auto;
+	height:auto;
+	opacity: 0.2;
+	z-index:-1;
+}
+
 html, body {
-	height: 100%;
+	min-height: 100%;
+	height: auto;
 	overflow-y: auto;
 	overflow-x: hidden;
 }
@@ -128,6 +173,7 @@ h3,label {
 
 input[type=text], select, textarea,  input[type=file] , input[type=number], input[type=time], input[type=email], input[type=password]{
 	font-family: 'Montserrat', sans-serif;
+	font-size: 2.5vh;
 	background-color: white;
 	color: #0a86f0;
 	position: relative;
@@ -161,6 +207,7 @@ input[type=radio]:hover, input[type=checkbox]:hover{
 
 button:not(#aFalse):not(#titulo), input[type="submit"]{
 	font-family: 'Montserrat', sans-serif;
+	font-size: 2.5vh;
 	background-color: #00457c;
 	color: white;
 	border: 1px solid white;
@@ -207,13 +254,12 @@ button:not(#aFalse):not(#titulo):hover, input[type=submit]:hover{
 }
 
 table {
-	font-family: 'Montserrat', sans-serif;
-	border-collapse: collapse;
-	width: 50%;
-	margin: 25px 5px;
-	margin-left:25%;
-	margin-right:25%;
-	color: #00457c;
+font-family: 'Montserrat', sans-serif;
+border-collapse: collapse;
+width: 80%;
+margin: 25px 5px;
+margin-left: 10.5%;
+color: #00457c;
 }
 
 th, td {
@@ -249,7 +295,7 @@ tr:hover {
 	text-decoration: none;
 	padding: 8px 8px 8px 32px;
 	border: 0px solid transparent;
-	font-size: 3vh;
+	font-size: 4vh;
 	color: #818181;
 	transition: 0.3s;
 }
@@ -277,7 +323,7 @@ tr:hover {
 	font-family: 'Montserrat', sans-serif;
 	padding: 8px 8px 8px 32px;
 	text-decoration: none;
-	font-size: 3vh;
+	font-size: 4vh;
 	color: #818181;
 	display: block;
 	transition: 0.3s;

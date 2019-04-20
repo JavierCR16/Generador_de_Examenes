@@ -18,7 +18,7 @@
 
 <body>
 
-    {#    <img style= "width: auto; height:auto; opacity: 0.2; z-index:-1;" src="../static/bkg.jpg">#}
+{#    <img class= "imgs" src="../static/bkg.jpg">#}
 
 
     <div class="row">
@@ -32,49 +32,53 @@
     </div>
     <br>
 
+    <div class="row">
+        <div class = "col-md-4 w3-container divsL">
+            <form action="BuscarSubtemasItems" method="post">
+                <label>Tema:</label>
 
-    <div>
-        <form action="BuscarSubtemasItems" method="post">
-            <label>Tema:</label>
+                <select onchange="obtenerSubtemas(this,'subtemaIndDiscriminacion')" name="selectBuscarTemaIndDis">
+                    <option>Escoger Tema</option>
+                    {% for tema in temas %}
+                        <option> {{ tema.getId()}}-{{tema.getTema()}}</option>
+                    {% endfor %}
+                </select>
 
-            <select onchange="obtenerSubtemas(this,'subtemaIndDiscriminacion')" name="selectBuscarTemaIndDis">
-                <option>Escoger Tema</option>
-                {% for tema in temas %}
-                    <option> {{ tema.getId()}}-{{tema.getTema()}}</option>
-                {% endfor %}
-            </select>
+                <label>Subtema:</label>
 
-            <label>Subtema:</label>
+                <select id = "subtemaIndDiscriminacion" name="subtemaIndice">
 
-            <select id = "subtemaIndDiscriminacion" name="subtemaIndice">
+                </select>
 
-            </select>
+                <input class="btnSearch" type="submit" value="Buscar">
+            </form>
+        </div>
 
-            <input class="btnSearch" type="submit" value="Buscar">
-        </form>
-        <table id= "tablaDiscriminacion" class="TablaIndice">
-            <thead>
-            <tr>
-                <td>Identificador</td>
-                <td>Tipo</td>
-                <td>Puntaje</td>
-                <td>Índice de Discriminación</td>
-                <td>Consulta</td>
-            </tr>
-            </thead>
-            <tbody>
-            {% for item in itemsFiltroIndice %}
+        <div class = "col-md-6 w3-container divsR">
+            <table id= "tablaDiscriminacion" class="TablaIndice">
+                <thead>
                 <tr>
-                    <td>{{item.getIdLargo()}}/Item{{ item.getId()}}</td>
-                    <td>{{ item.getTipo() }}</td>
-                    <td>{{ item.getPuntaje() }}</td>
-                    <td>{{ item.getIndice() }}</td>
-                    <td hidden>{{ item.getIdSubtema() }}</td>
-                    <td> <button class="consult-button" onclick="verificarIndiceDiscriminacion(this,{{descripItems}})"><i class="material-icons" style="font-size: 20px;">info</i> </button></td>
+                    <td>Identificador</td>
+                    <td>Tipo</td>
+                    <td>Puntaje</td>
+                    <td>Índice de Discriminación</td>
+                    <td>Consulta</td>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                {% for item in itemsFiltroIndice %}
+                    <tr>
+                        <td>{{item.getIdLargo()}}/Item{{ item.getId()}}</td>
+                        <td>{{ item.getTipo() }}</td>
+                        <td>{{ item.getPuntaje() }}</td>
+                        <td>{{ item.getIndice() }}</td>
+                        <td hidden>{{ item.getIdSubtema() }}</td>
+                        <td> <button class="consult-button" onclick="verificarIndiceDiscriminacion(this,{{descripItems}})"><i class="material-icons" style="font-size: 20px;">info</i> </button></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <div class="modal fade" id="modalAgregarIndice" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

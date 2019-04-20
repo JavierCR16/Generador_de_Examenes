@@ -16,7 +16,7 @@
 </head>
 <body>
 
-    {#    <img style= "width: auto; height:auto; opacity: 0.2; z-index:-1;" src="../static/bkg.jpg">#}
+    {#    <img class= "imgs" src="../static/bkg.jpg">#}
 
 
     <div class="row">
@@ -28,10 +28,10 @@
             </form>
         </div>
     </div>
-    <br>
 
     <form enctype="multipart/form-data" action="enviarCorreo" method="post">
-        <table>
+        <div class = "col-md-6 w3-container divsL">
+            <table>
             <thead>
             <tr>
                 <td>Nombre</td>
@@ -53,17 +53,19 @@
             </tbody>
 
         </table>
+        </div>
 
+        <div class = "col-md-4 w3-container divsR">
+            <h2>Asunto</h2>
+            <input type = text name ="asunto"> <br>
 
-        <h1>Asunto</h1>
-        <input type = text name ="asunto"> <br>
+            <h2>Cuerpo</h2>
+            <textarea name = "cuerpoCorreo"> </textarea>
 
-        <h1>Cuerpo</h1>
-        <textarea name = "cuerpoCorreo"> </textarea>
+            <input accept=".exam" id ="archivoExamen" name="archivoExamen" type="file" multiple="multiple" >
 
-        <button type="submit">Enviar Examen</button>
-
-        <input accept=".exam" id ="archivoExamen" name="archivoExamen" type="file" multiple="multiple" >
+            <button type="submit">Enviar Examen</button>
+        </div>
     </form>
 </body>
 </html>

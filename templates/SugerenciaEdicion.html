@@ -16,7 +16,7 @@
 </head>
 <body>
 
-    {#    <img style= "width: auto; height:auto; opacity: 0.2; z-index:-1;" src="../static/bkg.jpg">#}
+    {#    <img class= "imgs" src="../static/bkg.jpg">#}
 
 
     <div class="row">
@@ -30,7 +30,7 @@
     </div>
     <br>
 
-    <div>
+    <div class = "col-md-4 w3-container divsL">
         <form action="buscarItemsSugerencia" method="post">
             <label>Tema:</label>
 
@@ -49,6 +49,8 @@
 
             <input name = "buscarItems" class="btnSearch" type="submit" value="Buscar">
         </form>
+    </div>
+    <div class = "col-md-6 w3-container divsR">
         <table id= "tablaSugerencia" class="TablaSugerencia">
             <thead>
             <tr>
