@@ -453,7 +453,7 @@ def ObtenerEstadisticas():
     idTema = infoEstadisticas["idTema"]
     idSubtema= infoEstadisticas["idsubTema"]
     idItem = infoEstadisticas["idItem"]
-
+    print(idTema,idSubtema,idItem)
     estadisticas = Controller.obtenerEstadisticas(session['user'],session['contrasenna'],idTema,idSubtema)
 
 
