@@ -17,116 +17,126 @@
 </head>
 <body>
 
-    {#    <img class= "imgs" src="../static/bkg.jpg">#}
+    <img class= "imgs" src="../static/bkg.jpg">
 
 
-    <div class="row">
-        <div class="col-md-12 header">
-            <a href="OpcionesPrincipales.html"><i class="material-icons backA">chevron_left</i></a>
-            <h1>Gestión de Respuestas</h1>
-            <form id="formlogout" action="cerrarSesion" method="post">
-                <a href="javascript:$('#formlogout').submit();" data-toggle="SignOutTooltip" data-placement="bottom" title="Cerrar Sesión"><i class="material-icons signO">exit_to_app</i></a>
-            </form>
-        </div>
+    <div class="col-md-12 header">
+        <a href="OpcionesPrincipales.html"><i class="material-icons backA">chevron_left</i></a>
+        <h1>Gestión de Respuestas</h1>
+        <form id="formlogout" action="cerrarSesion" method="post">
+            <a href="javascript:$('#formlogout').submit();" data-toggle="SignOutTooltip" data-placement="bottom" title="Cerrar Sesión"><i class="material-icons signO">exit_to_app</i></a>
+        </form>
     </div>
-    <br>
 
-    <div>
-        <form action="crudRespuestasAgregar" method="post">
-            <label>Tema</label>
-            <select onchange="obtenerSubtemas(this,'selectSubAgregarResp')" name="selectTemaRespAgregar">
-                <option>Escoger Tema</option>
+    <div class= "col-md-6 w3-container divs">
+        <nav class = "nav-justified">
+            <div class="nav nav-tabs navs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-AgregarRespuestas-tab" data-toggle="tab" href="#nav-AgregarRespuestas" role="tab" aria-controls="nav-AgregarRespuestas" aria-selected="true">Agregar Respuestas</a>
+                <a class="nav-item nav-link" id="nav-ModificarEliminarRespuestas-tab" data-toggle="tab" href="#nav-ModificarEliminarRespuestas" role="tab" aria-controls="nav-ModificarEliminarRespuestas" aria-selected="false">Gestión Respuestas</a>
+            </div>
+        </nav>
 
-                {% for tema in temas %}
-                    <option> {{ tema.getId()}}-{{tema.getTema()}} </option>
-                {% endfor %}
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane tabs fade show active" id="nav-AgregarRespuestas" role="tabpanel" aria-labelledby="nav-AgregarRespuestas-tab">
+                <form action="crudRespuestasAgregar" method="post">
+                    <label>Tema</label>
+                    <select onchange="obtenerSubtemas(this,'selectSubAgregarResp')" name="selectTemaRespAgregar">
+                        <option>Escoger Tema</option>
 
-            </select><br>
+                        {% for tema in temas %}
+                            <option> {{ tema.getId()}}-{{tema.getTema()}} </option>
+                        {% endfor %}
 
-            <label>Subtemas</label>
+                    </select><br>
 
-            <select id = "selectSubAgregarResp" name="selectSubAgregarResp" onchange="obtenerItemsRespuestas(this,'SinResp','selectItemRespAgregar','despDescAddResp')">
+                    <label>Subtemas</label>
 
-            </select><br>
+                    <select id = "selectSubAgregarResp" name="selectSubAgregarResp" onchange="obtenerItemsRespuestas(this,'SinResp','selectItemRespAgregar','despDescAddResp')">
 
-            <label>Ítems</label>
+                    </select><br>
 
-            <select onchange="mostrarAddRespuestas(this)" id = "selectItemRespAgregar" name = "selectItemRespAgregar">
+                    <label>Ítems</label>
 
-            </select><br>
+                    <select onchange="mostrarAddRespuestas(this)" id = "selectItemRespAgregar" name = "selectItemRespAgregar">
 
-            <i id="despDescAddResp" class="fa fa-eye"></i> <br>
+                    </select><br>
 
-            <h1>Respuestas</h1>
-                <div hidden id = "divrespAddSelect">
-                    <input type="text" name="Arespuesta1" placeholder="respuesta1">
-                    <input type="radio" name="Arespuesta" value=1 checked><br>
-                    <input type="text" name="Arespuesta2" placeholder="respuesta2">
-                    <input type="radio" name="Arespuesta" value=2><br>
-                    <input type="text" name="Arespuesta3" placeholder="respuesta3">
-                    <input type="radio" name="Arespuesta" value=3><br>
-                    <input type="text" name="Arespuesta4" placeholder="respuesta4">
-                    <input type="radio" name="Arespuesta" value=4><br>
+                    <i id="despDescAddResp" class="fa fa-eye"></i> <br>
+
+                    <h2>Respuestas</h2>
+                    <div hidden id = "divrespAddSelect">
+                        <input type="text" name="Arespuesta1" placeholder="respuesta1">
+                        <input type="radio" name="Arespuesta" value=1 checked><br>
+                        <input type="text" name="Arespuesta2" placeholder="respuesta2">
+                        <input type="radio" name="Arespuesta" value=2><br>
+                        <input type="text" name="Arespuesta3" placeholder="respuesta3">
+                        <input type="radio" name="Arespuesta" value=3><br>
+                        <input type="text" name="Arespuesta4" placeholder="respuesta4">
+                        <input type="radio" name="Arespuesta" value=4><br>
+
+                    </div>
+
+                    <div hidden id = "divrespAddDesarrollo">
+                        <textarea name = "respAddDesarrollo"> </textarea>
+                    </div>
+
+                    <input hidden id="botonAddResp" name = "respuestasAdd" class="btnSearch" type="submit" value="Agregar Respuestas">
+                </form>
+            </div>
+            <div class="tab-pane tabs fade" id="nav-ModificarEliminarRespuestas" role="tabpanel" aria-labelledby="nav-ModificarEliminarRespuestas-tab">
+                <form action="crudRespuestasModificar" method="post">
+                <label>Tema</label>
+                <select onchange="obtenerSubtemas(this,'selectSubModificarResp')" name="selectTemaRespModificar">
+                    <option>Escoger Tema</option>
+
+                    {% for tema in temas %}
+                        <option> {{tema.getId()}}-{{tema.getTema()}}</option>
+                    {% endfor %}
+
+                </select><br>
+
+                <label>Subtemas</label>
+
+                <select id="selectSubModificarResp" name="selectSubModificarResp" onchange="obtenerItemsRespuestas(this,'ConResp','selectItemRespModificar',
+                    'despDescModResp')">
+
+                </select><br>
+
+                <label>Ítems</label>
+                <select onchange="cargarRespuestasModificar(this)" id = "selectItemRespModificar" name = "selectItemRespModificar">
+
+                </select><br></select>
+
+                <i id="despDescModResp" class="fa fa-eye"></i> <br><br>
+
+                <div id="divrespModSelect" hidden>
+                    <h1>Respuestas</h1>
+                    <input id ="Mrespuesta1" type="text" name="Mrespuesta1" placeholder="respuesta1">
+
+                    <input type="radio" name="Mrespuesta" value=1><br>
+
+                    <input id ="Mrespuesta2" type="text" name="Mrespuesta2" placeholder="respuesta2">
+
+                    <input type="radio" name="Mrespuesta" value=2><br>
+
+                    <input id ="Mrespuesta3" type="text" name="Mrespuesta3" placeholder="respuesta3">
+
+                    <input type="radio" name="Mrespuesta" value=3><br>
+
+                    <input id ="Mrespuesta4" type="text" name="Mrespuesta4" placeholder="respuesta4">
+
+                    <input type="radio" name="Mrespuesta" value=4><br>
 
                 </div>
 
-                <div hidden id = "divrespAddDesarrollo">
-                    <textarea name = "respAddDesarrollo"> </textarea>
+                <div id = "divrespModDesarrollo" hidden>
+                    <textarea id = "respModDesarrollo" name = "respModDesarrollo" ></textarea>
                 </div>
 
-                <input hidden id="botonAddResp" name = "respuestasAdd" class="btnSearch" type="submit" value="Agregar Respuestas">
-        </form>
-        <form action="crudRespuestasModificar" method="post">
-            <label>Tema</label>
-            <select onchange="obtenerSubtemas(this,'selectSubModificarResp')" name="selectTemaRespModificar">
-                <option>Escoger Tema</option>
-
-                {% for tema in temas %}
-                    <option> {{tema.getId()}}-{{tema.getTema()}}</option>
-                {% endfor %}
-
-            </select><br>
-
-            <label>Subtemas</label>
-
-            <select id="selectSubModificarResp" name="selectSubModificarResp" onchange="obtenerItemsRespuestas(this,'ConResp','selectItemRespModificar',
-                'despDescModResp')">
-
-            </select><br>
-
-            <label>Ítems</label>
-            <select onchange="cargarRespuestasModificar(this)" id = "selectItemRespModificar" name = "selectItemRespModificar">
-
-            </select><br></select>
-
-            <i id="despDescModResp" class="fa fa-eye"></i> <br><br>
-
-            <div id="divrespModSelect" hidden>
-                <h1>Respuestas</h1>
-                <input id ="Mrespuesta1" type="text" name="Mrespuesta1" placeholder="respuesta1">
-
-                <input type="radio" name="Mrespuesta" value=1><br>
-
-                <input id ="Mrespuesta2" type="text" name="Mrespuesta2" placeholder="respuesta2">
-
-                <input type="radio" name="Mrespuesta" value=2><br>
-
-                <input id ="Mrespuesta3" type="text" name="Mrespuesta3" placeholder="respuesta3">
-
-                <input type="radio" name="Mrespuesta" value=3><br>
-
-                <input id ="Mrespuesta4" type="text" name="Mrespuesta4" placeholder="respuesta4">
-
-                <input type="radio" name="Mrespuesta" value=4><br>
-
+                <input hidden id = "botonModResp" name = "respuestasMod" class="btnSearch" type="submit" value="Modificar Respuestas">
+            </form>
             </div>
-
-            <div id = "divrespModDesarrollo" hidden>
-                <textarea id = "respModDesarrollo" name = "respModDesarrollo" ></textarea>
-            </div>
-
-            <input hidden id = "botonModResp" name = "respuestasMod" class="btnSearch" type="submit" value="Modificar Respuestas">
-        </form>
+        </div>
     </div>
 
     <!-- Modal -->

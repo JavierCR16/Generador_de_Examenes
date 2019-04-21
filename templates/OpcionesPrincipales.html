@@ -35,15 +35,13 @@
         <a href="ConsultaEstadisticasItems.html">Consulta de Estadisticas de Items</a>
     </div>
 
-{#    <img class= "imgs" src="../static/bkg.jpg">#}
+    <img class= "imgs" src="../static/bkg.jpg">
 
-    <div class="row">
-        <div class="col-md-12 header">
-            <h1>Bienvenido, {{nombre}}!</h1>
-            <form id="formlogout" action="cerrarSesion" method="post">
-                <a href="javascript:$('#formlogout').submit();" data-toggle="SignOutTooltip" data-placement="bottom" title="Cerrar Sesión"><i class="material-icons signO">exit_to_app</i></a>
-            </form>
-        </div>
+    <div class="col-md-12 header">
+        <h1>Bienvenido, {{nombre}}!</h1>
+        <form id="formlogout" action="cerrarSesion" method="post">
+            <a href="javascript:$('#formlogout').submit();" data-toggle="SignOutTooltip" data-placement="bottom" title="Cerrar Sesión"><i class="material-icons signO">exit_to_app</i></a>
+        </form>
     </div>
 
     <button class= "titulo" id= "titulo" onclick="openNav()">
@@ -53,7 +51,7 @@
     </button>
 
     <div class="footer">
-        <img style = " width: 50%; height: 40%;" src="../static/TEC.png" alt="Tecnológico de Costa Rica">
+        <img class = "logoTitulo" src="../static/TEC.png" alt="Tecnológico de Costa Rica">
     </div>
 
     <script>

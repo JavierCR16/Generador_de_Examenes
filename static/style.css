@@ -3,7 +3,7 @@
 	top: 0;
 	width: 100%;
 	text-align: center;
-	background-color: rgb(256, 256, 256, 0.5);
+	background-color: rgb(256, 256, 256, 0.65);
 	padding: 1% 1% 0% 1%;
 }
 
@@ -57,8 +57,10 @@
 
 .divs {
 	padding: 2% 2% 2% 2%;
-	top: 20%;
+	top: 15%;
 	height: auto;
+	max-height: 80%;
+	overflow: auto;
 	left: 25%;
 	position: absolute;
 	background-color: white;
@@ -69,8 +71,10 @@
 
 .divsL {
 	padding: 2% 2% 2% 2%;
-	top: 20%;
+	top: 15%;
 	height: auto;
+	max-height: 80%;
+	overflow: auto;
 	left: 5%;
 	position: absolute;
 	background-color: white;
@@ -81,8 +85,10 @@
 
 .divsR {
 	padding: 2% 2% 2% 2%;
-	top: 20%;
+	top: 15%;
 	height: auto;
+	max-height: 80%;
+	overflow: auto;
 	right: 5%;
 	position: absolute;
 	background-color: white;
@@ -93,8 +99,10 @@
 
 .divsG {
 	padding: 2% 2% 2% 2%;
-	top: 20%;
+	top: 15%;
 	height: auto;
+	max-height: 80%;
+	overflow: auto;
 	left: 18%;
 	position: absolute;
 	background-color: white;
@@ -103,10 +111,21 @@
 	margin-bottom: 5%;
 }
 
+.navs{
+
+}
+
+.tab-pane.tabs {
+	padding: 5% 2% 2% 2%;
+	left: 30%;
+}
+
 .w3-container.divSlid {
 	padding: 2% 2% 2% 2%;
-	top: 20%;
+	top: 15%;
 	height: auto;
+	max-height: 80%;
+	overflow: auto;
 	left: 25%;
 	position: fixed;
 	background-color: white;
@@ -125,17 +144,15 @@
 }
 
 .imgs {
-	width: auto;
-	height:auto;
+	width: 100%;
 	opacity: 0.2;
 	z-index:-1;
 }
 
 html, body {
-	min-height: 100%;
-	height: auto;
-	overflow-y: auto;
-	overflow-x: hidden;
+	margin: 0;
+	height: 100%;
+	overflow: hidden;
 }
 
 body {
@@ -253,13 +270,16 @@ button:not(#aFalse):not(#titulo):hover, input[type=submit]:hover{
 	border: 1px solid white;
 }
 
+.logoTitulo{
+	width: 50%;
+	height: 40%;
+}
+
 table {
-font-family: 'Montserrat', sans-serif;
-border-collapse: collapse;
-width: 80%;
-margin: 25px 5px;
-margin-left: 10.5%;
-color: #00457c;
+	font-family: 'Montserrat', sans-serif;
+	border-collapse: collapse;
+	width: 90%;
+	color: #00457c;
 }
 
 th, td {
@@ -317,6 +337,11 @@ tr:hover {
 	padding: 2% 2% 2% 2%;
 }
 
+.logoLogIn{
+	width: 40%;
+	height: 30%;
+}
+
 /*SideNav*/
 
 .sidenav a{
@@ -342,7 +367,9 @@ tr:hover {
 	margin-left: 50px;
 }
 
-@media screen and (max-height: 450px) {
+@media screen and (max-height: 750px) {
 	.sidenav {padding-top: 15px;}
 	.sidenav a {font-size: 4vh;}
+	.LogIn {max-width: 60%; left: 20%;}
+	.logoLogIn {width: 80%;}
 }

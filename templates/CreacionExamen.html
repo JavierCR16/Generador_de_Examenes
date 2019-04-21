@@ -92,20 +92,21 @@
 
     </script>
 
-{#    <img class= "imgs" src="../static/bkg.jpg">#}
-
-
-    <div class="row">
-        <div class="col-md-12 header">
-            <a href="OpcionesPrincipales.html"><i class="material-icons backA">chevron_left</i></a>
-            <h1>Creación de Exámen</h1>
-            <form id="formlogout" action="cerrarSesion" method="post">
-                <a href="javascript:$('#formlogout').submit();" data-toggle="SignOutTooltip" data-placement="bottom" title="Cerrar Sesión"><i class="material-icons signO">exit_to_app</i></a>
-            </form>
-        </div>
+    <div id= "alertGenerado" style="display: none;" class="alert alert-success alert-dismissable" role="alert">
+      Generado con Éxito
     </div>
 
-    <br>
+    <img class= "imgs" src="../static/bkg.jpg">
+
+
+    <div class="col-md-12 header">
+        <a href="OpcionesPrincipales.html"><i class="material-icons backA">chevron_left</i></a>
+        <h1>Creación de Exámen</h1>
+        <form id="formlogout" action="cerrarSesion" method="post">
+            <a href="javascript:$('#formlogout').submit();" data-toggle="SignOutTooltip" data-placement="bottom" title="Cerrar Sesión"><i class="material-icons signO">exit_to_app</i></a>
+        </form>
+    </div>
+
 
     <form action="generarExamen" method="post">
         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="false">
@@ -184,8 +185,13 @@
                 </div>
 
                 <div class= "col-md-6 w3-container divSlid carousel-item" id="Generar PDF">
-                    <button style="height: 40px;" name = "solucionado" type="submit" value="1">Generar Examen Con Solución</button>
-                    <button style="height: 40px;" name = "solucionado" type ="submit" value = "0">Generar Examen Sin Solución</button>
+                    <button name = "solucionado" type="submit" value="1" onclick="$('#alertGenerado').alert()">Generar Examen Con Solución</button>
+                    <a href= "../static/TEC.png" download><i class="fas fa-file-download"></i></a>
+
+                    <br>
+
+                    <button name = "solucionado" type ="submit" value = "0" onclick="$('#alertGenerado').alert()">Generar Examen Sin Solución</button>
+                    <a href= "../static/TEC.png" download><i class="fas fa-file-download"></i><a/>
                 </div>
             </div>
 
