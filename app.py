@@ -447,6 +447,18 @@ def ConsultaEstadisticasItems():
 
     return render_template('ConsultaEstadisticasItems.html', Temas = temas)
 
+@app.route('/ObtenerEstadisticas',methods= ['post'])
+def ObtenerEstadisticas():
+    infoEstadisticas = request.get_json()
+    idTema = infoEstadisticas["idTema"]
+    idSubtema= infoEstadisticas["idsubTema"]
+    idItem = infoEstadisticas["idItem"]
+
+    estadisticas = Controller.obtenerEstadisticas(session['user'],session['contrasenna'],idTema,idSubtema)
+
+
+    return jsonify({"idTema":idTema,"idSubtema":idSubtema,"cantVeces":estadisticas[0],"PromedioSubtema":estadisticas[1]})
+
 if __name__ == '__main__':
 
     app.run(host = '0.0.0.0')

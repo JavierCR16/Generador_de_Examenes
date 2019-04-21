@@ -273,4 +273,12 @@ class Controlador:
 
         GestorLaTeX.generarExamen(objEncabezado,items,respuestas,tipoExamen,conSolucion,puntajes)
 
+    #Funciones Estadisticas
 
+    def obtenerEstadisticas(self,usuario,contrasenna,idSubtema,idItem):
+        estadisticas = []
+        cantVeces = GestorBase.ObtenerCantVecesItem(usuario, contrasenna, idItem)
+        promSubtema= GestorBase.ObtenerPromSubtema(usuario, contrasenna,idSubtema)
+        estadisticas.append(cantVeces)
+        estadisticas.append(promSubtema)
+        return estadisticas

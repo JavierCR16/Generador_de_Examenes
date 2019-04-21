@@ -548,3 +548,43 @@ function loadInformacionExamen(){
 
 }
 
+function ObtenerDatosdeEstadistica() {
+
+    var TemaDOM = document.getElementById("SelectTemaEstadisticas");
+    var tema = TemaDOM.options[TemaDOM.selectedIndex].text;
+    var idtema = tema.split('-')[0]
+
+    var SubTemaDOM = document.getElementById("SelectSubtemaEstadisticas");
+    var subTema = SubTemaDOM.options[SubTemaDOM.selectedIndex].text;
+    var idsubTema = subTema.split('-')[0]
+
+    var itemDOM = document.getElementById("SelectItemEstadisticas");
+    var item = itemDOM.options[itemDOM.selectedIndex].text;
+    var iditem = item.split('-')[0]
+
+    obtenerAjaxEstadisticas(idtema,idsubTema,iditem)
+}
+
+function obtenerAjaxEstadisticas(idTema,idsubTema,idItem) {
+    $.ajax({
+
+        url: "/ObtenerEstadisticas",
+        type: 'post',
+        data:JSON.stringify({idTema:idTema,idsubTema:idsubTema,idItem:idItem}),
+        contentType: 'application/json;charset=UTF-8',
+        dataType: "json",
+        success: function (datos) {
+            var bodyModalEstadisticas = $("#VistaEstadisticas");
+            bodyModalEstadisticas.find('h2').remove();
+
+            bodyModalEstadisticas.append("<h2>Cantidad de veces usado:" + datos["cantVeces"]+ "</h2>");
+            bodyModalEstadisticas.append("<h2>Promedio de indice de Discriminación del subtema:" + datos["PromedioSubtema"]+ "</h2>");
+
+            var modalEstadisticas = $("#estadisticasModal");
+
+            modalEstadisticas.modal({
+                show:true
+            });
+        }
+    })
+}

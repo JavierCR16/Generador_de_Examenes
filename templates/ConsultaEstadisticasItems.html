@@ -31,6 +31,7 @@
             <select id="SelectCursoEstadisticas" ></select>
         <h2>Tema:</h2>
             <select name="SelectTemaEstadisticas" id="SelectTemaEstadisticas" onchange="obtenerSubtemas(this,'SelectSubtemaEstadisticas')">
+                <option>Seleccionar Tema</option>
                 {% for tema in Temas %}
                     <option>{{ tema.getId() }} - {{ tema.getTema() }}</option>
                 {% endfor %}
@@ -43,7 +44,7 @@
 
 
         <h2>Item</h2>
-            <select name= "SelectItemEstadiscias" id="SelectItemEstadiscias">
+            <select name= "SelectItemEstadisticas" id="SelectItemEstadisticas">
                 <option>Escoger Item</option>
             </select>
 
@@ -52,27 +53,28 @@
 
     <div id=Botones>
 
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+        <button onclick="ObtenerDatosdeEstadistica()" type="button" id="botonEstadisticas" >Mostrar Estadisticas</button>
     </div>
 
         <div class="modal fade" id="estadisticasModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Previsualización de Encabezado</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div id = "VistaEstadisticas" class="modal-body">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Estadisticas</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div id = "VistaEstadisticas" class="modal-body">
 
-                </div>
-                <div class="modal-footer">
+                    </div>
+
+                    <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
 </body>
 </html>
