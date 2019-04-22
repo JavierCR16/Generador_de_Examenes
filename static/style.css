@@ -367,7 +367,7 @@ tr:hover {
 	margin-left: 50px;
 }
 
-@media screen and (max-height: 750px) {
+@media screen and (max-height: 650px) {
 	.sidenav {padding-top: 15px;}
 	.sidenav a {font-size: 4vh;}
 	.LogIn {max-width: 60%; left: 20%;}

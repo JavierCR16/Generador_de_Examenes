@@ -20,6 +20,7 @@ from Modelo.ObjetoUsuario import ObjetoUsuario
 from Modelo.ObjetoEncabezado import ObjetoEncabezado
 from Modelo.ObjetoRespuesta import ObjetoRespuesta
 from Modelo.ObjetoSugerencia import ObjetoSugerencia
+from Modelo.ObjetoExamen import ObjetoExamen
 
 class Controlador:
 
@@ -172,7 +173,6 @@ class Controlador:
 
         return GestorBase.cargarEncabezados(usuario,contrasenna)
 
-
     #Funciones Gestion Respuestas
     def agregarRespuestas(self,itemSeleccionado,listaRespuestas, respCorrecta,usuario,contrasenna):
         idItem = itemSeleccionado.split("/Item")[1]
@@ -272,6 +272,13 @@ class Controlador:
         objEncabezado.anno = objEncabezado.getAnno().split("-")[0]
 
         GestorLaTeX.generarExamen(objEncabezado,items,respuestas,tipoExamen,conSolucion,puntajes)
+
+    def guardarExamen(self,encabezado,tipoExamen,archivoPDF,usuario,contrasenna):
+
+        fechaCreacion = 2
+        objetoExamen = ObjetoExamen(None,encabezado.split("-")[0],tipoExamen,fechaCreacion,usuario,archivoPDF)
+
+        GestorBase.guardarExamen(objetoExamen,usuario,contrasenna)
 
     #Funciones Estadisticas
 

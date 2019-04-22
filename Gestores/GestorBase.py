@@ -18,7 +18,14 @@ from Gestores import GestorExamenes
 #TODO VER SI HAY UNA MEJOR MANERA PARA MANEJAR LOS USUARIOS Y HACER QUE EL ACCESO AL CONTROLADOR SEA SINCRONIZADO.
 #TODO Buscar cualquier uso que se haga de arreglos en un for y dejar setteado el valor que corresponde mediante loop.index0
 #TODO QUITAR LO DE AM Y PM DEL INPUT DE TIPO TIME.
-#TODO ELIMINAR IMAGENES DE PREVIEW CADA CIERTO TIEMPO
+
+#TODO VER LO DEL API DEL GMAIL PARA ENVIAR CORREO
+#TODO CAMBIAR CAMPOS EN LA BASE DE DATOS EN LA PARTE DEL EXAMEN. GUARDAR EN UN CAMPO EL ARCHIVO DEL EXAMEN SOLO SI ESTE ES UN EXAMEN COMPLETO.
+#TODO HACER EN LA PARTE DE FILTRADO QUE SE DESCARGUE EL EXAMEN EN FORMATO PDF.
+#TODO VALIDACIONES, CAMPOS COMPLETOS, MOSTRAR MENSAJES DE EXITO.
+#TODO REVISAR LOS MODALS, QUE ESTAN MEDIOS DESPICHADOS, ACOMODAR PARA QUE LA INFO SALGA ACACHETIN
+#TODO VER LO DE LOS BORRADORES
+
 
 #FUNCIONES DE CONEXION Y QUERIES
 
@@ -716,6 +723,32 @@ def loadInformacionGenerarExamen(tipoExamen,usuario,contrasenna):
             nuevaConexion.close()
 
     return temas,subtemas,items
+
+def guardarExamen(objetoExamen, usuario, contrasenna):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
+
+    if(nuevaConexion != False):
+
+        try:
+            with nuevaConexion.cursor() as guardarExamen:
+                guardarExamenStatement = "INSERT INTO Examen (idEncabezado,modalidadExamen,fechaCreacion,usuarioCreador,archivoExamen) VALUES " \
+                                   "(%s, %s, %s, %s, %s)"
+                guardarItemsStatement = "INSERT INTO ItemsExamen VALUES(%s, %s)"
+
+                guardarExamen.execute(guardarExamenStatement,(objetoExamen.getEncabezado(),objetoExamen.getModalidadExamen(),
+                                                        objetoExamen.getFechaCreacion(),objetoExamen.getCreador(),
+                                                        objetoExamen.getArchivoExamen()))
+                idExamen = guardarExamen.lastrowid
+
+                tuplasItemsExamen = [(idExamen,idItem) for idItem in objetoExamen.getItems()]
+                guardarExamen.executemany(guardarItemsStatement,tuplasItemsExamen)
+
+        except Exception as e:
+            print(e)
+            print("Error al guardar el examen")
+
+        finally:
+            nuevaConexion.close()
 
 #Funciones Correo
 

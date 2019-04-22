@@ -1,11 +1,12 @@
 import datetime
 from sympy import preview
+import os
 
 
 
 def previewEncabezado(ObjetoEncabezado,usuario):#TODO VER COMO SE INCLUYEN PAQUETES PARA QUE SE PUEDA USAR EN ESPANNOL
 
-    print("Tiempo:" ,ObjetoEncabezado.getTiempo())
+    eliminarArchivosPreview(usuario)
 
     LatexWords = " \\paragraph{Instituto Tecnologico de Costa Rica \hfill   "+ ObjetoEncabezado.getIdPeriodo() + ", " + \
                     ObjetoEncabezado.getAnno() + "}" + "\\paragraph{Escuela de Matematica   \hfill  Total: 0 puntos}" + \
@@ -16,3 +17,11 @@ def previewEncabezado(ObjetoEncabezado,usuario):#TODO VER COMO SE INCLUYEN PAQUE
     preview(LatexWords , viewer = "file",filename= "static/" +nombreImagen)
 
     return nombreImagen
+
+def eliminarArchivosPreview(nombreUsuario):
+
+    for file in os.listdir("static"):
+        if file.startswith(nombreUsuario):
+            os.remove("static/"+file)
+
+
