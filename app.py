@@ -442,8 +442,29 @@ def generarExamen():
 
     nombrePDF = Controller.generarExamen(objEncabezado,items,respuestas,tipoExamen,conSolucion,puntajes)
 
-    return jsonify({"success":1,"archivoPDF":nombrePDF})     #redirect(url_for('creacionExamen'))
+    Controller.guardarExamen(objEncabezado.getId(),tipoExamen,"static/"+nombrePDF,idItems,session['user'],session['contrasenna'])
 
+    return jsonify({"success":1,"archivoPDF":nombrePDF})
+
+@app.route("/FiltrarExamenes.html")
+def filtrarExamenes():
+
+    listaExamenes = Controller.obtenerExamenes(session['user'],session['contrasenna'])
+
+    return render_template("FiltrarExamenes.html",examenes = listaExamenes)
+
+@app.route("/descargarExamen", methods=['post'])
+def descargarExamen():
+
+    descargaInfo = request.get_json()
+
+    idExamen = descargaInfo["idExamen"]
+
+    nombreExamen = Controller.descargarExamen(idExamen,session['user'],session['contrasenna'])
+
+    return jsonify({"success":1,"nombreExamen":nombreExamen})
+
+#ESTADISTICAS
 @app.route('/ConsultaEstadisticasItems.html')
 def ConsultaEstadisticasItems():
     temas = Controller.obtenerTemas(session['user'],session['contrasenna'])

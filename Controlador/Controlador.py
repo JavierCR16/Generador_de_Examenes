@@ -273,12 +273,24 @@ class Controlador:
 
         return GestorLaTeX.generarExamen(objEncabezado,items,respuestas,tipoExamen,conSolucion,puntajes)
 
-    def guardarExamen(self,encabezado,tipoExamen,archivoPDF,usuario,contrasenna):
+    def guardarExamen(self,encabezado,tipoExamen,archivoPDF,idItems,usuario,contrasenna):
 
-        fechaCreacion = 2
-        objetoExamen = ObjetoExamen(None,encabezado.split("-")[0],tipoExamen,fechaCreacion,usuario,archivoPDF)
+        fechaCreacion = datetime.datetime.now()
+        fechaParseada = str(fechaCreacion.strftime("%Y/%m/%d"))
+
+        with open(archivoPDF,'rb') as f: archivoPDF= f.read()
+
+        objetoExamen = ObjetoExamen(None,encabezado,tipoExamen,fechaParseada,usuario,archivoPDF,idItems)
 
         GestorBase.guardarExamen(objetoExamen,usuario,contrasenna)
+
+    def obtenerExamenes(self,usuario,contrasenna):
+
+        return GestorBase.obtenerExamenes(usuario,contrasenna)
+
+    def descargarExamen(self,idExamen,usuario,contrasenna):
+
+        return GestorBase.descargarExamen(idExamen,usuario,contrasenna)
 
     #Funciones Estadisticas
 

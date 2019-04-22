@@ -1,4 +1,5 @@
 import pymysql
+import datetime
 from Modelo.ObjetoItem import ObjetoItem
 from Modelo.ObjetoSubtema import ObjetoSubtema
 from Modelo.ObjetoTema import ObjetoTema
@@ -8,6 +9,7 @@ from Modelo.ObjetoUsuario import ObjetoUsuario
 from Modelo.ObjetoRespuesta import ObjetoRespuesta
 from Modelo.ObjetoEncabezado import ObjetoEncabezado
 from Modelo.ObjetoVerificacionSugerencia import ObjetoVerificacionSugerencia
+from Modelo.ObjetoExamen import ObjetoExamen
 from Gestores import GestorExamenes
 
 #TODO AGREGAR A LA SECCION DE ENCABEZADO (BASE Y SISTEMA), LA OPCION DE METER ESCUELA Y CURSO.
@@ -20,7 +22,6 @@ from Gestores import GestorExamenes
 #TODO QUITAR LO DE AM Y PM DEL INPUT DE TIPO TIME.
 
 #TODO VER LO DEL API DEL GMAIL PARA ENVIAR CORREO
-#TODO CAMBIAR CAMPOS EN LA BASE DE DATOS EN LA PARTE DEL EXAMEN. GUARDAR EN UN CAMPO EL ARCHIVO DEL EXAMEN SOLO SI ESTE ES UN EXAMEN COMPLETO.
 #TODO HACER EN LA PARTE DE FILTRADO QUE SE DESCARGUE EL EXAMEN EN FORMATO PDF.
 #TODO VALIDACIONES, CAMPOS COMPLETOS, MOSTRAR MENSAJES DE EXITO.
 #TODO REVISAR LOS MODALS, QUE ESTAN MEDIOS DESPICHADOS, ACOMODAR PARA QUE LA INFO SALGA ACACHETIN
@@ -743,12 +744,67 @@ def guardarExamen(objetoExamen, usuario, contrasenna):
                 tuplasItemsExamen = [(idExamen,idItem) for idItem in objetoExamen.getItems()]
                 guardarExamen.executemany(guardarItemsStatement,tuplasItemsExamen)
 
+                nuevaConexion.commit()
         except Exception as e:
             print(e)
             print("Error al guardar el examen")
 
         finally:
             nuevaConexion.close()
+
+def obtenerExamenes(usuario,contrasenna):
+
+    nuevaConexion = establecerConexion(usuario,contrasenna)
+    listaExamenes = []
+    if(nuevaConexion != False):
+
+        try:
+            with nuevaConexion.cursor() as examenes:
+
+                queryExamenes = "SELECT Enc.curso, Enc.escuela, Per.descPeriodo, Tip.descTipo, Exa.id,Exa.modalidadExamen, " \
+                                "Exa.fechaCreacion, Usu.nombreCompleto FROM Encabezado Enc, Periodo Per, TipoExamen Tip, Examen Exa, Usuario Usu " \
+                                "WHERE Exa.idEncabezado = Enc.id AND Exa.usuarioCreador = Usu.correo AND Enc.idPeriodo = Per.id AND Enc.idtipoexamen = Tip.id"
+
+                for atributos in queryExamenes:
+                    id = atributos[4]
+                    encabezado = ObjetoEncabezado(None,atributos[0],atributos[1],None,None,None,atributos[2],atributos[3])
+                    listaExamenes.append(ObjetoExamen(id,encabezado,atributos[5],atributos[6],atributos[7],None,None))
+
+        except Exception as e:
+            print(e)
+            print("Error al obtener los examenes")
+
+        finally:
+            nuevaConexion.close()
+
+    return listaExamenes
+
+def descargarExamen(idExamen, usuario, contrasenna):
+
+    nuevaConexion = establecerConexion(usuario,contrasenna)
+
+    fechaDescarga = datetime.datetime.now()
+    nombreArchivo = "static/Examen-"+str(idExamen)+fechaDescarga.strftime("%Y-%m-%d_%H-%M-%S")+".pdf"
+
+    if(nuevaConexion != False):
+
+        try:
+            with nuevaConexion.cursor() as descargaExamen:
+                queryDescargar = "SELECT archivoExamen FROM Examen WHERE id =%s"
+
+                descargaExamen.execute(queryDescargar,(idExamen))
+
+                for tupla in descargaExamen:
+                    with open(nombreArchivo,'wb') as f: f.write(tupla[0])
+
+        except Exception as e:
+            print(e)
+            print("Error al descargar el examen")
+
+        finally:
+            nuevaConexion.close()
+
+    return nombreArchivo
 
 #Funciones Correo
 

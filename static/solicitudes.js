@@ -283,9 +283,28 @@ function procesarAjaxGenerarExamen(encabezado,tipoExamen,conSolucion,itemsSelecc
                 var retVal = confirm("¿Desea descargar el examen en formato PDF? De igual forma puede descargarlo en la sección de Filtrado de Exámenes");
                 if( retVal === true ) { //../static/
                     $("#secretDownload").attr("href","../static/"+datos["archivoPDF"])[0].click();
-                } else {
-                    window.location.href = "CreacionExamen.html";
                 }
+
+                window.location.href = "CreacionExamen.html";
+            }
+        }
+    })
+}
+
+function procesarAjaxDescargarExamen(idExamen){
+    $.ajax({
+
+        url: "/descargarExamen",
+        type: 'post',
+        data:JSON.stringify({idExamen:idExamen}),
+        contentType: 'application/json;charset=UTF-8',
+        dataType: "json",
+
+        success: function (datos) {
+            if(datos["success"]){
+
+                $("#downloadExamen").attr("href","../static/"+datos["nombreExamen"])[0].click();
+
             }
         }
     })
@@ -628,5 +647,13 @@ function generarExamen(botonSeleccionado){
 
     procesarAjaxGenerarExamen(encabezado,tipoExamen,conSolucion,itemsSeleccionados);
 
+
+}
+
+function descargarExamen(){
+
+    var idExamen = 3;
+
+    procesarAjaxDescargarExamen(idExamen);
 
 }
