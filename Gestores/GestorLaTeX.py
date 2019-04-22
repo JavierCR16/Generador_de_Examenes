@@ -1,4 +1,4 @@
-import os,subprocess
+import os,subprocess,datetime
 
 def generarExamen(objEncabezado,listaItems,respuestas,tipoExamen,conSolucion,puntajes):
     header = r'''\documentclass{article}
@@ -12,20 +12,28 @@ def generarExamen(objEncabezado,listaItems,respuestas,tipoExamen,conSolucion,pun
     footer = r'''\end{document}'''
 
     encabezado = generarStringEncabezado(objEncabezado,puntajes)
+
     body = generarStringSeleccionUnica(listaItems,respuestas,conSolucion,puntajes) \
         if tipoExamen == "S" else generarStringDesarrollo(listaItems,respuestas,conSolucion,puntajes)
 
     content = header + encabezado+body + footer
 
-    with open('myfile.tex','w',encoding='utf-8') as f:
+    fechaActual =datetime.datetime.now()
+
+    identificadorExamen = objEncabezado.getCurso()+"_"+objEncabezado.getIdPeriodo()+"_"+objEncabezado.getAnno()+"_"\
+                          + str(fechaActual.strftime("%Y-%m-%d_%H-%M-%S"))
+
+    with open("static/" +identificadorExamen +".tex",'w',encoding='utf-8') as f:
          f.write(content)
 
-    commandLine = subprocess.Popen(['pdflatex', 'myfile.tex'])
+    commandLine = subprocess.Popen(['pdflatex','-output-directory', "static/","static/" +identificadorExamen])
     commandLine.communicate()
 
-    os.unlink('myfile.aux')
-    os.unlink('myfile.log')
-    os.unlink('myfile.tex')
+    os.unlink("static/" +identificadorExamen +'.aux')
+    os.unlink("static/" +identificadorExamen +'.log')
+    os.unlink("static/" +identificadorExamen +'.tex')
+
+    return identificadorExamen + ".pdf"
 
 def generarStringSeleccionUnica(listaItems,listaRespuestas,conSolucion,puntajes):
     seleccion = "\\begin{enumerate}\n"

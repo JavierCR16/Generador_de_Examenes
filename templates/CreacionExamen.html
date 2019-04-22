@@ -141,13 +141,12 @@
                 </div>
 
                 <div class= "col-md-6 w3-container divSlid carousel-item" id="Generar PDF">
-                    <button name = "solucionado" type="submit" value="1" onclick="$('#alertGenerado').alert()">Generar Examen Con Solución</button>
-                    <a href= "../static/TEC.png" download><i class="fas fa-file-download"></i></a>
+                    <button name = "solucionado" type="button" value="1" onclick="generarExamen(this)">Generar Examen Con Solución</button>
+                    <a id ="secretDownload" hidden download><i class="fas fa-file-download"></i></a>
 
                     <br>
 
-                    <button name = "solucionado" type ="submit" value = "0" onclick="$('#alertGenerado').alert()">Generar Examen Sin Solución</button>
-                    <a href= "../static/TEC.png" download><i class="fas fa-file-download"></i><a/>
+                    <button name = "solucionado" type ="button" value = "0" onclick="generarExamen(this)">Generar Examen Sin Solución</button>
                 </div>
             </div>
 

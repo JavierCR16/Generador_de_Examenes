@@ -424,22 +424,25 @@ def loadInformacionExamen():
 @app.route("/generarExamen",methods=['post'])
 def generarExamen():
 
-    objEncabezado= Controller.convertirDictAObjeto(request.form.get("selectEncabezados"))
+    informacionExamen = request.get_json()
 
-    itemsSeleccionados = request.form.getlist("items")
+    objEncabezado= Controller.convertirDictAObjeto(informacionExamen["encabezado"])
+
+    itemsSeleccionados = informacionExamen["items"]
 
     items = [item.split(",")[0] for item in itemsSeleccionados]
     idItems = [item.split(",")[1] for item in itemsSeleccionados]
     puntajes = [int(item.split(",")[2]) for item in itemsSeleccionados]
 
-    tipoExamen = request.form.get("tipoExamen")
+    tipoExamen = informacionExamen["tipoExamen"]
 
     respuestas = Controller.obtenerRespuestasExamen(idItems,session['user'],session['contrasenna'])
-    conSolucion = int(request.form.get("solucionado"))
 
-    Controller.generarExamen(objEncabezado,items,respuestas,tipoExamen,conSolucion,puntajes)
+    conSolucion = int(informacionExamen["solucionado"])
 
-    return redirect(url_for('creacionExamen'))
+    nombrePDF = Controller.generarExamen(objEncabezado,items,respuestas,tipoExamen,conSolucion,puntajes)
+
+    return jsonify({"success":1,"archivoPDF":nombrePDF})     #redirect(url_for('creacionExamen'))
 
 @app.route('/ConsultaEstadisticasItems.html')
 def ConsultaEstadisticasItems():

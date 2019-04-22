@@ -271,7 +271,7 @@ class Controlador:
         objEncabezado.idTipoExamen = objEncabezado.getIdTipoExamen().split('-')[1]
         objEncabezado.anno = objEncabezado.getAnno().split("-")[0]
 
-        GestorLaTeX.generarExamen(objEncabezado,items,respuestas,tipoExamen,conSolucion,puntajes)
+        return GestorLaTeX.generarExamen(objEncabezado,items,respuestas,tipoExamen,conSolucion,puntajes)
 
     def guardarExamen(self,encabezado,tipoExamen,archivoPDF,usuario,contrasenna):
 
