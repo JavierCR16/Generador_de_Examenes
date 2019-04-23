@@ -27,7 +27,6 @@ from Gestores import GestorExamenes
 #TODO REVISAR LOS MODALS, QUE ESTAN MEDIOS DESPICHADOS, ACOMODAR PARA QUE LA INFO SALGA ACACHETIN
 #TODO VER LO DE LOS BORRADORES
 
-
 #FUNCIONES DE CONEXION Y QUERIES
 
 def establecerConexion(usuario,password):#usuario,password):

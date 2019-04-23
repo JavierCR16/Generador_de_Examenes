@@ -291,6 +291,27 @@ function procesarAjaxGenerarExamen(encabezado,tipoExamen,conSolucion,itemsSelecc
     })
 }
 
+function procesarAjaxBorradorExamen(valorBorrador,encabezado =null, tipoExamen =null, itemsSeleccionados =null){
+    $.ajax({
+        url: "/borradorExamen",
+        type: 'post',
+        data:JSON.stringify({valorBorrador:valorBorrador,encabezado:encabezado,tipoExamen:tipoExamen,items:itemsSeleccionados}),
+        contentType: 'application/json;charset=UTF-8',
+        dataType: "json",
+
+        success: function (datos) {
+            if(datos["success"]){
+                var retVal = confirm("¿Desea descargar el examen en formato PDF? De igual forma puede descargarlo en la sección de Filtrado de Exámenes");
+                if( retVal === true ) { //../static/
+                    $("#secretDownload").attr("href","../static/"+datos["archivoPDF"])[0].click();
+                }
+
+                window.location.href = "CreacionExamen.html";
+            }
+        }
+    })
+}
+
 function procesarAjaxDescargarExamen(idExamen){
     $.ajax({
 
@@ -655,5 +676,27 @@ function descargarExamen(){
     var idExamen = 3;
 
     procesarAjaxDescargarExamen(idExamen);
+
+}
+
+function guardarCargarBorrador(botonBorrador){
+    var valorBorrador = $(botonBorrador).val();
+
+    if(valorBorrador === "Guardar") {
+
+        var encabezado = $("#selectEncabezados").children("option:selected").val();
+
+        var tipoExamen = $("input[name='tipoExamen']:checked").val();
+
+        var itemsSeleccionados = [];
+
+        $.each($("input[name ='items']:checked"), function () {
+            itemsSeleccionados.push($(this).val())
+        });
+
+        procesarAjaxBorrador(valorBorrador,encabezado, tipoExamen, itemsSeleccionados)
+    }
+    else
+        procesarAjaxBorrador(valorBorrador)
 
 }
