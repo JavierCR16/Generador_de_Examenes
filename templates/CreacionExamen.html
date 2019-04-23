@@ -119,25 +119,28 @@
                     <h2>Tipo de Prueba: </h2>
 
                     <h3>Selección Única</h3>
-                    <input type = radio name = "tipoExamen" value="S">
+                    <input onchange="loadInformacionExamen()" type = radio name = "tipoExamen" value="S">
 
                     <h3>Desarrollo</h3>
-                    <input type = radio name = "tipoExamen" value="D">
+                    <input onchange="loadInformacionExamen()" type = radio name = "tipoExamen" value="D">
 
                     <h3>Práctica de Examen (Selección Única)</h3>
-                    <input type = radio name = "tipoExamen" value="PS">
+                    <input onchange="loadInformacionExamen()" type = radio name = "tipoExamen" value="PS">
 
                     <h3>Práctica de Examen (Desarrollo)</h3>
-                    <input type = radio name = "tipoExamen" value="PD">
+                    <input onchange="loadInformacionExamen()" type = radio name = "tipoExamen" value="PD">
 
                     <br>
-                    <button onclick="loadInformacionExamen()" type="button" >Continuar</button>
+
                 </div>
 
                 <div class= "col-md-6 w3-container divSlid carousel-item" id="Temas_Subtemas">
                     <ul id ="allfather">
 
                     </ul>
+
+                    <button type = "button" onclick = "guardarBorrador()">Guardar Borrador</button>
+                    <button type = "button" onclick="cargarBorrador()">Cargar Borrador</button>
                 </div>
 
                 <div class= "col-md-6 w3-container divSlid carousel-item" id="Generar PDF">

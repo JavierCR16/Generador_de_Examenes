@@ -19,13 +19,12 @@ from Gestores import GestorExamenes
 #TODO ACOMODAR UN POCO EL CODIGO
 #TODO VER SI HAY UNA MEJOR MANERA PARA MANEJAR LOS USUARIOS Y HACER QUE EL ACCESO AL CONTROLADOR SEA SINCRONIZADO.
 #TODO Buscar cualquier uso que se haga de arreglos en un for y dejar setteado el valor que corresponde mediante loop.index0
-#TODO QUITAR LO DE AM Y PM DEL INPUT DE TIPO TIME.
 
 #TODO VER LO DEL API DEL GMAIL PARA ENVIAR CORREO
-#TODO HACER EN LA PARTE DE FILTRADO QUE SE DESCARGUE EL EXAMEN EN FORMATO PDF.
 #TODO VALIDACIONES, CAMPOS COMPLETOS, MOSTRAR MENSAJES DE EXITO.
 #TODO REVISAR LOS MODALS, QUE ESTAN MEDIOS DESPICHADOS, ACOMODAR PARA QUE LA INFO SALGA ACACHETIN
-#TODO VER LO DE LOS BORRADORES
+#TODO OCULTAR MOSTRAR MENSAJE Y COULTAR BOTONES PARA BORRADOR
+#TODO QUITAR LO DE AM Y PM DEL INPUT DE TIPO TIME.
 
 #FUNCIONES DE CONEXION Y QUERIES
 
@@ -764,7 +763,9 @@ def obtenerExamenes(usuario,contrasenna):
                                 "Exa.fechaCreacion, Usu.nombreCompleto FROM Encabezado Enc, Periodo Per, TipoExamen Tip, Examen Exa, Usuario Usu " \
                                 "WHERE Exa.idEncabezado = Enc.id AND Exa.usuarioCreador = Usu.correo AND Enc.idPeriodo = Per.id AND Enc.idtipoexamen = Tip.id"
 
-                for atributos in queryExamenes:
+                examenes.execute(queryExamenes)
+
+                for atributos in examenes:
                     id = atributos[4]
                     encabezado = ObjetoEncabezado(None,atributos[0],atributos[1],None,None,None,atributos[2],atributos[3])
                     listaExamenes.append(ObjetoExamen(id,encabezado,atributos[5],atributos[6],atributos[7],None,None))
@@ -783,7 +784,7 @@ def descargarExamen(idExamen, usuario, contrasenna):
     nuevaConexion = establecerConexion(usuario,contrasenna)
 
     fechaDescarga = datetime.datetime.now()
-    nombreArchivo = "static/Examen-"+str(idExamen)+fechaDescarga.strftime("%Y-%m-%d_%H-%M-%S")+".pdf"
+    nombreArchivo = "Examen-"+str(idExamen)+"-"+fechaDescarga.strftime("%Y-%m-%d_%H-%M-%S")+".pdf"
 
     if(nuevaConexion != False):
 
@@ -794,7 +795,7 @@ def descargarExamen(idExamen, usuario, contrasenna):
                 descargaExamen.execute(queryDescargar,(idExamen))
 
                 for tupla in descargaExamen:
-                    with open(nombreArchivo,'wb') as f: f.write(tupla[0])
+                    with open("static/"+nombreArchivo,'wb') as f: f.write(tupla[0])
 
         except Exception as e:
             print(e)

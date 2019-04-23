@@ -20,7 +20,7 @@
         $(document).ready(function(){
           $("#filtro").on("keyup", function() {
             var value = $(this).val().toLowerCase();
-            $("#TablaExamenes tr").filter(function() {
+            $("#tablaExamenesBody tr").filter(function() {
               $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
           });
@@ -41,25 +41,33 @@
         <input class="form-control" id="filtro" type="text" placeholder="Buscar">
         <br>
 {#        METER CONSULTAS PARA JALAR LOS DATOS#}
-        <table class="table-striped">
+        <table id="tablaExamenes" class="table-striped">
             <thead>
             <tr>
                 <th>Examen</th>
+                <th>Curso</th>
+                <th>Escuela</th>
+                <th>Periodo</th>
+                <th>Tipo</th>
+                <th>Modalidad</th>
+                <th>Fecha de Creación</th>
                 <th>Autor</th>
-                <th>Fecha de Modificación</th>
             </tr>
             </thead>
-            <tbody id="TablaExamenes">
-            <tr>
-                <td>Parcial 1</td>
-                <td>Kevin</td>
-                <td>21/04/2019</td>
-            </tr>
-            <tr>
-                <td>Parcial 2</td>
-                <td>Kevin</td>
-                <td>11/02/2018</td>
-            </tr>
+            <tbody id="tablaExamenesBody">
+                {% for examen in examenes %}
+                    <tr>
+                        <td>{{ examen.getId() }}</td>
+                        <td>{{ examen.getEncabezado().getCurso() }}</td>
+                        <td>{{ examen.getEncabezado().getEscuela() }}</td>
+                        <td>{{ examen.getEncabezado().getIdPeriodo() }}</td>
+                        <td>{{ examen.getEncabezado().getIdTipoExamen() }}</td>
+                        <td>{{ examen.getModalidadExamen() }}</td>
+                        <td>{{ examen.getFechaCreacion() }}</td>
+                        <td>{{ examen.getCreador() }}</td>
+                        <td><a href="#" onclick="descargarExamen(this);return false;" download><i class="fas fa-file-download"></i></a></td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

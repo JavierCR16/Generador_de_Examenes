@@ -446,15 +446,14 @@ def generarExamen():
 
     return jsonify({"success":1,"archivoPDF":nombrePDF})
 
-@app.route("/FiltrarExamenes.html")
+@app.route("/BancoExamenes.html")
 def filtrarExamenes():
 
     listaExamenes = Controller.obtenerExamenes(session['user'],session['contrasenna'])
-
-    return render_template("FiltrarExamenes.html",examenes = listaExamenes)
+    return render_template("BancoExamenes.html",examenes = listaExamenes)
 
 @app.route("/descargarExamen", methods=['post'])
-def descargarExamen():
+def descargarExamen():#TODO BORRAR AQUI TODOS LOS ARCHIVOS QUE ESTEN EN STATIC QUE EMPIECEN CON Examen
 
     descargaInfo = request.get_json()
 
@@ -482,6 +481,19 @@ def ObtenerEstadisticas():
 
 
     return jsonify({"idTema":idTema,"idSubtema":idSubtema,"cantVeces":estadisticas[0],"PromedioSubtema":estadisticas[1]})
+
+#BORRADOR EXAMEN
+@app.route('/crearBorradorExamen',methods=['post'])
+def borradorExamen():
+    infoBorrador = request.get_json()
+
+    encabezado = infoBorrador["encabezado"]
+    tipoExamen = infoBorrador["tipoExamen"]
+    items = infoBorrador["items"]
+
+
+
+
 
 if __name__ == '__main__':
 

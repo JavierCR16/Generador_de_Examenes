@@ -208,7 +208,7 @@ function procesarAjaxVerificarEdiciones(accion,idSugerencia,sugerencia,idItem){
     })
 }
 
-function procesarAjaxInformacionExamen(tipoExamen){
+function procesarAjaxInformacionExamen(tipoExamen, funcion = null){
     $.ajax({
 
         url: "/loadInformacionExamen",
@@ -223,7 +223,6 @@ function procesarAjaxInformacionExamen(tipoExamen){
             var tagPadre = $("#allfather");
 
             tagPadre.empty();
-            console.log(datos["descripcionItems"]);
             for(var i =0; i< datos["temas"].length;i++){
 
                 var l1Tema = "<li></li>";
@@ -263,7 +262,8 @@ function procesarAjaxInformacionExamen(tipoExamen){
                 tagPadre.append(l1Tema)
             }
 
-
+            if(funcion !== null)
+                funcion()
         }
     })
 }
@@ -291,28 +291,7 @@ function procesarAjaxGenerarExamen(encabezado,tipoExamen,conSolucion,itemsSelecc
     })
 }
 
-function procesarAjaxBorradorExamen(valorBorrador,encabezado =null, tipoExamen =null, itemsSeleccionados =null){
-    $.ajax({
-        url: "/borradorExamen",
-        type: 'post',
-        data:JSON.stringify({valorBorrador:valorBorrador,encabezado:encabezado,tipoExamen:tipoExamen,items:itemsSeleccionados}),
-        contentType: 'application/json;charset=UTF-8',
-        dataType: "json",
-
-        success: function (datos) {
-            if(datos["success"]){
-                var retVal = confirm("¿Desea descargar el examen en formato PDF? De igual forma puede descargarlo en la sección de Filtrado de Exámenes");
-                if( retVal === true ) { //../static/
-                    $("#secretDownload").attr("href","../static/"+datos["archivoPDF"])[0].click();
-                }
-
-                window.location.href = "CreacionExamen.html";
-            }
-        }
-    })
-}
-
-function procesarAjaxDescargarExamen(idExamen){
+function procesarAjaxDescargarExamen(idExamen,botonDescargar){
     $.ajax({
 
         url: "/descargarExamen",
@@ -323,9 +302,9 @@ function procesarAjaxDescargarExamen(idExamen){
 
         success: function (datos) {
             if(datos["success"]){
-
-                $("#downloadExamen").attr("href","../static/"+datos["nombreExamen"])[0].click();
-
+                $(botonDescargar).removeAttr('onclick');
+                $(botonDescargar).attr("href","../static/"+datos["nombreExamen"])[0].click();
+                $(botonDescargar).attr("href","#").attr("onclick","descargarExamen(this);return false;")
             }
         }
     })
@@ -671,32 +650,108 @@ function generarExamen(botonSeleccionado){
 
 }
 
-function descargarExamen(){
+function descargarExamen(botonDescargar){
 
-    var idExamen = 3;
+    var indice = $(botonDescargar).parent().parent().index();
+    var filaTablaExamenes = $("#tablaExamenes tr").eq(indice+1).find('td');
+    var idExamen = filaTablaExamenes.eq(0).text();
 
-    procesarAjaxDescargarExamen(idExamen);
+    procesarAjaxDescargarExamen(idExamen,botonDescargar);
 
 }
 
-function guardarCargarBorrador(botonBorrador){
-    var valorBorrador = $(botonBorrador).val();
+function guardarBorrador(){
 
-    if(valorBorrador === "Guardar") {
+    var encabezado = $("#selectEncabezados").children("option:selected").val();
 
-        var encabezado = $("#selectEncabezados").children("option:selected").val();
+    var tipoExamen = $("input[name='tipoExamen']:checked").val();
 
-        var tipoExamen = $("input[name='tipoExamen']:checked").val();
+    var idItems = [];
 
-        var itemsSeleccionados = [];
+    $.each($("input[name ='items']:checked"), function () {
+            idItems.push($(this).val().split(",")[1])
+    });
 
-        $.each($("input[name ='items']:checked"), function () {
-            itemsSeleccionados.push($(this).val())
-        });
+    var data = encabezado + "%" +tipoExamen + "%" + JSON.stringify(idItems);
 
-        procesarAjaxBorrador(valorBorrador,encabezado, tipoExamen, itemsSeleccionados)
-    }
-    else
-        procesarAjaxBorrador(valorBorrador)
+    download("Borrador.exam",data)
+
+}
+
+function download(filename, text) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}
+
+function cargarBorrador(){
+
+    var input = document.createElement('input');
+    input.type = 'file';
+
+    input.onchange = e => {
+
+        // getting a hold of the file reference
+        var file = e.target.files[0];
+
+        // setting up the reader
+        var reader = new FileReader();
+        reader.readAsText(file); // this is reading as data url
+
+        // here we tell the reader what to do when it's done reading...
+        reader.onload = readerEvent => {
+            var contenidoArchivo = readerEvent.target.result; // this is the content!
+
+            estructurarExamen(contenidoArchivo)
+
+        }
+
+    };
+
+input.click();
+
+}
+
+function estructurarExamen(contenido){
+
+    var valorEncabezado = contenido.split("%")[0];
+    var tipoExamen = contenido.split("%")[1];
+    var listaIdItems = JSON.parse(contenido.split("%")[2]);
+
+    procesarAjaxInformacionExamen(tipoExamen,function () {
+        marcarExamen(valorEncabezado,tipoExamen,listaIdItems)
+    });
+
+}
+
+function marcarExamen(valorEncabezado,tipoExamen,listaItems){
+
+    $.each($("input[name = 'items']"),function () {
+        for (var i = 0; i<listaItems.length; i++){
+            if($(this).val().split(",")[1] === listaItems[i]) {
+                $( this ).attr( 'checked', true );
+                listaItems.splice(i,1);
+                break;
+            }
+        }
+    });
+
+    $.each($("#selectEncabezados").children("option"),function () {
+        if($(this).val() === valorEncabezado)
+            $(this).attr('selected', true);
+    });
+
+    $.each($("input[name = 'tipoExamen']"),function () {
+        if($(this).val() === tipoExamen)
+            $(this).attr('checked', true);
+    });
+
 
 }
