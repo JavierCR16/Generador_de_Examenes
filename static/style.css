@@ -245,6 +245,10 @@ button:not(#aFalse):not(#titulo):hover, input[type=submit]:hover{
 	-webkit-transition: all 0.4s ease-in-out;
 }
 
+ul, li {
+	text-align: left;
+}
+
 .titulo {
 	width: 25%;
 	height: 25%;
