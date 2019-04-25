@@ -476,7 +476,7 @@ def ObtenerEstadisticas():
     idItem = infoEstadisticas["idItem"]
     idEstadistica = infoEstadisticas["idEstadistica"]
 
-    estadistica = Controller.obtenerEstadisticas(session['user'],session['contrasenna'],idEstadistica,idItem)
+    estadistica = Controller.obtenerEstadisticas(session['user'],session['contrasenna'],int(idEstadistica),idItem)
 
     return jsonify({"estadistica":estadistica})
 

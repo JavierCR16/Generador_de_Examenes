@@ -601,11 +601,12 @@ function ObtenerDatosdeEstadistica() {
 
     var idItem = $("#selectItemEstadisticas").children("option:selected").val().split("/Item")[1];
 
-    obtenerAjaxEstadisticasItems(iditem)
+    obtenerAjaxEstadisticasItems(idItem,idEstadistica)
 }
 
 function obtenerAjaxEstadisticasItems(idItem,idEstadistica) {
-    mensajes = ["Cantidad de Veces Usado ","Semestres y Años en el que ha sido Utilizado","Cantidad Usado en Cada Semestre","Total de Sugerencias de Edición Asociadas"];
+    var mensajes = ["Cantidad de Veces Usado ","Semestres y Años en el que ha sido Utilizado","Cantidad Usado en Cada Semestre","Total de Sugerencias de Edición Asociadas"];
+    var index = parseFloat(idEstadistica) -1;
     $.ajax({
         url: "/ObtenerEstadisticas",
         type: 'post',
@@ -615,9 +616,20 @@ function obtenerAjaxEstadisticasItems(idItem,idEstadistica) {
         success: function (datos) {
             var bodyModalEstadisticas = $("#vistaEstadisticas");
 
-            var modalEstadisticas = $("#estadisticasModal");
+            bodyModalEstadisticas.find("h1").remove();
+            bodyModalEstadisticas.find("h2").remove();
 
-            modalEstadisticas.modal({
+            bodyModalEstadisticas.append($("<h1>",{
+
+            text: mensajes[index]}
+            ));
+
+
+            bodyModalEstadisticas.append($("<h2>",{
+               text:datos["estadistica"]
+            }));
+
+             $("#estadisticasModal").modal({
                 show:true
             });
         }

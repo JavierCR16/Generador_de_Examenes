@@ -38,20 +38,20 @@
 
             </select>
             <h2>Tema:</h2>
-            <select name="SelectTemaEstadisticas" id="SelectTemaEstadisticas" onchange="obtenerSubtemas(this,'SelectSubtemaEstadisticas')">
+            <select name="selectTemaEstadisticas" id="selectTemaEstadisticas" onchange="obtenerSubtemas(this,'selectSubtemaEstadisticas')">
                 <option>Seleccionar Tema</option>
                 {% for tema in Temas %}
                     <option>{{ tema.getId() }} - {{ tema.getTema() }}</option>
                 {% endfor %}
             </select>
             <h2>Subtema:</h2>
-            <select name = "SelectSubtemaEstadisticas" id="SelectSubtemaEstadisticas" onchange="obtenerItems(this,'total','SelectItemEstadisticas','descripcionDesplegar')">
+            <select name = "selectSubtemaEstadisticas" id="selectSubtemaEstadisticas" onchange="obtenerItems(this,'total','selectItemEstadisticas','descripcionDesplegar')">
                 <option>Escoger Subtema</option>
             </select>
 
 
             <h2>Item</h2>
-            <select name= "selectItemEstadisticas" id="SelectItemEstadisticas">
+            <select name= "selectItemEstadisticas" id="selectItemEstadisticas">
                 <option>Escoger Item</option>
             </select>
 
