@@ -336,9 +336,14 @@ function obtenerItemsRespuestas(selectEscogido, tipoFiltrado, idSelectItems, idP
 
 function cargarDatosModificar(selectItem){
 
-    var itemSeleccionado = selectItem.options[selectItem.selectedIndex].text;
+    if(selectItem.selectedIndex !== 0) {
 
-    procesarAjaxItemModificar(itemSeleccionado)
+        var itemSeleccionado = selectItem.options[selectItem.selectedIndex].text;
+
+        procesarAjaxItemModificar(itemSeleccionado)
+    }
+    else
+        $("#divModificarItem").attr("hidden",true)
 
 }
 
