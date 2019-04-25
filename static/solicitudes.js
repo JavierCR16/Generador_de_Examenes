@@ -597,27 +597,19 @@ function loadInformacionExamen(){
 
 function ObtenerDatosdeEstadistica() {
 
-    var TemaDOM = document.getElementById("SelectTemaEstadisticas");
-    var tema = TemaDOM.options[TemaDOM.selectedIndex].text;
-    var idtema = tema.split('-')[0]
+    var idEstadistica = $("#selectEstadisticas").children("option:selected").val().split("-")[0];
 
-    var SubTemaDOM = document.getElementById("SelectSubtemaEstadisticas");
-    var subTema = SubTemaDOM.options[SubTemaDOM.selectedIndex].text;
-    var idsubTema = subTema.split('-')[0]
+    var idItem = $("#selectItemEstadisticas").children("option:selected").val().split("/Item")[1];
 
-    var itemDOM = document.getElementById("SelectItemEstadisticas");
-    var item = itemDOM.options[itemDOM.selectedIndex].text;
-    var iditem = item.split('-')[0]
-
-    obtenerAjaxEstadisticas(idtema,idsubTema,iditem)
+    obtenerAjaxEstadisticasItems(iditem)
 }
 
-function obtenerAjaxEstadisticas(idTema,idsubTema,idItem) {
+function obtenerAjaxEstadisticasItems(idItem,idEstadistica) {
     $.ajax({
 
         url: "/ObtenerEstadisticas",
         type: 'post',
-        data:JSON.stringify({idTema:idTema,idsubTema:idsubTema,idItem:idItem}),
+        data:JSON.stringify({idItem:idItem, idEstadistica:idEstadistica}),
         contentType: 'application/json;charset=UTF-8',
         dataType: "json",
         success: function (datos) {

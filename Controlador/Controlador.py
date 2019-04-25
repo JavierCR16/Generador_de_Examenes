@@ -294,10 +294,16 @@ class Controlador:
 
     #Funciones Estadisticas
 
-    def obtenerEstadisticas(self,usuario,contrasenna,idSubtema,idItem):
-        estadisticas = []
-        cantVeces = GestorBase.ObtenerCantVecesItem(usuario, contrasenna, idItem)
-        promSubtema= GestorBase.ObtenerPromSubtema(usuario, contrasenna,idSubtema)
-        estadisticas.append(cantVeces)
-        estadisticas.append(promSubtema)
-        return estadisticas
+    def obtenerEstadisticas(self,usuario,contrasenna,idEstadistica,idItem):
+        resultado = ""
+
+        if(idEstadistica == 1): #Frecuencia de Uso
+            resultado = GestorBase.obtenerCantVecesItem(usuario,contrasenna,idItem)
+        elif(idEstadistica == 2):#Lista de Semestres en los que se ha usado
+            resultado = GestorBase.obtenerListaSemestresItem(idItem)
+        elif(idEstadistica == 3):#Cantidad de Uso en ambos semestres
+            resultado = GestorBase.obtenerUsoEnSemestres
+        else: #Cantidad de Sugerencias de Edicion.
+            resultado = GestorBase.obtenerCantidadSugerenciasItem(idItem)
+
+        return resultado

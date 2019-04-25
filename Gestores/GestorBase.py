@@ -832,7 +832,9 @@ def getNombreUsuario(usuario,contrasenna):
 
     return nombreUsuario
 
-def ObtenerPromSubtema(usuario,contrasenna,idSubtema):
+#Funciones Estadisticas Items
+
+def obtenerPromSubtema(usuario,contrasenna,idSubtema): #TODO ESTA VA PARA GRAFICOS
     nuevaConexion = establecerConexion(usuario,contrasenna)
     promedio= 0
 
@@ -857,7 +859,7 @@ def ObtenerPromSubtema(usuario,contrasenna,idSubtema):
 
     return promedio
 
-def ObtenerCantVecesItem(usuario,contrasenna,idItem):
+def obtenerCantVecesItem(usuario,contrasenna,idItem):
     nuevaConexion = establecerConexion(usuario,contrasenna)
     cant= 0
 

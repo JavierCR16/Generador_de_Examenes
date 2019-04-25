@@ -473,14 +473,12 @@ def ConsultaEstadisticasItems():
 @app.route('/ObtenerEstadisticas',methods= ['post'])
 def ObtenerEstadisticas():
     infoEstadisticas = request.get_json()
-    idTema = infoEstadisticas["idTema"]
-    idSubtema= infoEstadisticas["idsubTema"]
     idItem = infoEstadisticas["idItem"]
-    print(idTema,idSubtema,idItem)
-    estadisticas = Controller.obtenerEstadisticas(session['user'],session['contrasenna'],idTema,idSubtema)
+    idEstadistica = infoEstadisticas["idEstadistica"]
 
+    estadistica = Controller.obtenerEstadisticas(session['user'],session['contrasenna'],idEstadistica,idItem)
 
-    return jsonify({"idTema":idTema,"idSubtema":idSubtema,"cantVeces":estadisticas[0],"PromedioSubtema":estadisticas[1]})
+    return jsonify({"estadistica":estadistica})
 
 #BORRADOR EXAMEN
 @app.route('/crearBorradorExamen',methods=['post'])
