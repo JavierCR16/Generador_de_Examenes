@@ -300,10 +300,8 @@ class Controlador:
         if(idEstadistica == 1): #Frecuencia de Uso
             resultado = GestorBase.obtenerCantVecesItem(usuario,contrasenna,idItem)
         elif(idEstadistica == 2):#Lista de Semestres en los que se ha usado
-            resultado = GestorBase.obtenerListaSemestresItem(idItem)
-        elif(idEstadistica == 3):#Cantidad de Uso en ambos semestres
-            resultado = GestorBase.obtenerUsoEnSemestres
-        else: #Cantidad de Sugerencias de Edicion.
-            resultado = GestorBase.obtenerCantidadSugerenciasItem(idItem)
+            resultado = GestorBase.obtenerListaSemestresItem(usuario,contrasenna,idItem)
+        else: #Cantidad de Uso en ambos semestres
+            resultado = GestorBase.obtenerCantidadSugerenciasItem(usuario,contrasenna,idItem)
 
         return resultado

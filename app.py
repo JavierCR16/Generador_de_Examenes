@@ -477,7 +477,6 @@ def ObtenerEstadisticas():
     idEstadistica = infoEstadisticas["idEstadistica"]
 
     estadistica = Controller.obtenerEstadisticas(session['user'],session['contrasenna'],int(idEstadistica),idItem)
-
     return jsonify({"estadistica":estadistica})
 
 #BORRADOR EXAMEN

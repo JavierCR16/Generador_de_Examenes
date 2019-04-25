@@ -908,3 +908,28 @@ def obtenerCantidadSugerenciasItem(usuario,contrasenna, idItem):
 
     return cantidad
 
+def obtenerListaSemestresItem(usuario,contrasenna,idItem):
+
+    nuevaConexion = establecerConexion(usuario, contrasenna)
+    lista = []
+    if (nuevaConexion != False):
+
+        try:
+            with nuevaConexion.cursor() as listaSemAnno:
+
+                queryListaSem = "SELECT Per.descPeriodo, Enc.anno FROM ItemsExamen IE inner join Examen Exa on IE.idExamen = Exa.id inner join " \
+                            "Encabezado Enc on Exa.idEncabezado = Enc.id inner join Periodo Per on Enc.idPeriodo = Per.id " \
+                            "WHERE IE.idItem = %s "
+                listaSemAnno.execute(queryListaSem,(idItem))
+
+                for tupla in listaSemAnno:
+                    lista.append([tupla[0],tupla[1]])
+
+        except Exception as e:
+            print(e)
+            print("Error al obtener los semestres y annos del item.")
+
+        finally:
+            nuevaConexion.close()
+
+    return lista

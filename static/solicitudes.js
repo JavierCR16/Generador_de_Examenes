@@ -616,18 +616,31 @@ function obtenerAjaxEstadisticasItems(idItem,idEstadistica) {
         success: function (datos) {
             var bodyModalEstadisticas = $("#vistaEstadisticas");
 
-            bodyModalEstadisticas.find("h1").remove();
-            bodyModalEstadisticas.find("h2").remove();
+            bodyModalEstadisticas.children().remove();
 
-            bodyModalEstadisticas.append($("<h1>",{
+            bodyModalEstadisticas.append($("<h1>", {
+                        text: mensajes[index]
+                    }
+                ));
 
-            text: mensajes[index]}
-            ));
+            if(idEstadistica !== "2") {
 
+                bodyModalEstadisticas.append($("<h2>", {
+                    text: datos["estadistica"]
+                }));
+            }
 
-            bodyModalEstadisticas.append($("<h2>",{
-               text:datos["estadistica"]
-            }));
+            else{
+
+                bodyModalEstadisticas.append($("<table>").attr("id","tablaEstadistica").append($("<thead>").append($("<tr>").append($("<th>",{text:"Periodo"})).append($("<th>",{text:"Año"})))))
+                $("#tablaEstadistica").append($("<tbody>").attr("id","tbodyEstadistica"));
+
+                for(var i =0; i<datos["estadistica"].length;i++){
+                    var tupla = datos["estadistica"][i];
+
+                    $("#tbodyEstadistica").append($("<tr>").append($("<td>",{text: tupla[0]})).append($("<td>",{text: tupla[1]})))
+                }
+            }
 
              $("#estadisticasModal").modal({
                 show:true
