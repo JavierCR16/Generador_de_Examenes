@@ -605,19 +605,15 @@ function ObtenerDatosdeEstadistica() {
 }
 
 function obtenerAjaxEstadisticasItems(idItem,idEstadistica) {
+    mensajes = ["Cantidad de Veces Usado ","Semestres y Años en el que ha sido Utilizado","Cantidad Usado en Cada Semestre","Total de Sugerencias de Edición Asociadas"];
     $.ajax({
-
         url: "/ObtenerEstadisticas",
         type: 'post',
         data:JSON.stringify({idItem:idItem, idEstadistica:idEstadistica}),
         contentType: 'application/json;charset=UTF-8',
         dataType: "json",
         success: function (datos) {
-            var bodyModalEstadisticas = $("#VistaEstadisticas");
-            bodyModalEstadisticas.find('h2').remove();
-
-            bodyModalEstadisticas.append("<h2>Cantidad de veces usado:" + datos["cantVeces"]+ "</h2>");
-            bodyModalEstadisticas.append("<h2>Promedio de indice de Discriminación del subtema:" + datos["PromedioSubtema"]+ "</h2>");
+            var bodyModalEstadisticas = $("#vistaEstadisticas");
 
             var modalEstadisticas = $("#estadisticasModal");
 
