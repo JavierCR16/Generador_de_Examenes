@@ -884,3 +884,27 @@ def obtenerCantVecesItem(usuario,contrasenna,idItem):
 
     return cant
 
+def obtenerCantidadSugerenciasItem(usuario,contrasenna, idItem):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
+    cantidad = ""
+    if(nuevaConexion != False):
+
+        try:
+            with nuevaConexion.cursor() as cantSugerencias:
+
+                queryCantSugerencias = "SELECT COUNT(*) FROM sugerenciaedicion WHERE idItem = %s"
+
+                cantSugerencias.execute(queryCantSugerencias,(idItem))
+
+                for atributos in cantSugerencias:
+                    cantidad = atributos[0]
+
+        except Exception as e:
+            print(e)
+            print("Error con el ID")
+
+        finally:
+            nuevaConexion.close()
+
+    return cantidad
+
