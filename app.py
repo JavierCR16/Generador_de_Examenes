@@ -497,7 +497,7 @@ def filtrarExamenesFeedback():
 
     return jsonify({"comentarios":comentarios})
 
-@app.route('publicarExamenFeedback',methods=['post'])
+@app.route('/publicarExamenFeedback',methods=['post'])
 def publicarExamenFeedback():
 
     infoExamenFeed = request.get_json()
@@ -509,7 +509,7 @@ def publicarExamenFeedback():
 
     return jsonify()
 
-@app.route('agregarComentario',methods=['post'])
+@app.route('/agregarComentario',methods=['post'])
 def agregarComentario():
 
     infoComentario = request.get_json()
