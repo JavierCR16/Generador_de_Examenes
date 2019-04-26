@@ -188,7 +188,7 @@ def filtrarItems(idSubtema,tipoFiltrado,usuario,contrasenna):
                 queryitemsUser = "SELECT idItem,id, descripcion,tipo, puntaje, indiceDiscriminacion FROM Item WHERE idSubtema = %s AND" \
                                  " usuarioCreador = %s"
                 queryitemsNotUser = "SELECT idItem,id, descripcion,tipo, puntaje, indiceDiscriminacion FROM Item WHERE idSubtema = %s AND" \
-                                 " usuarioCreador != %s"
+                                    " usuarioCreador != %s"
 
                 if(tipoFiltrado == "total"):
                     items.execute(queryitemsTotal, (idSubtema))
@@ -267,7 +267,7 @@ def cargarEncabezados(usuario,contrasenna):
             with nuevaConexion.cursor() as encabezados:
                 queryEncabezados = "SELECT Encabezado.id, curso, escuela,instrucciones,anno,tiempo," \
                                    "Periodo.id,descPeriodo,TipoExamen.id,descTipo FROM Encabezado,Periodo," \
-                               "TipoExamen WHERE idPeriodo = Periodo.id AND idtipoexamen = TipoExamen.id"
+                                   "TipoExamen WHERE idPeriodo = Periodo.id AND idtipoexamen = TipoExamen.id"
                 encabezados.execute(queryEncabezados)
 
                 for atributos in encabezados:
@@ -415,7 +415,7 @@ def agregarItem(nuevoObjetoItem,usuario,contrasenna):
 
                 insertItem = "INSERT INTO Item (id, descripcion,tipo,idSubtema,puntaje,usuarioCreador) VALUES(%s,%s,%s,%s,%s,%s)"
                 nuevoItem.execute(insertItem,(nuevoObjetoItem.getIdLargo(),nuevoObjetoItem.getDescripcion(),
-                                  nuevoObjetoItem.getTipo(),nuevoObjetoItem.getIdSubtema(),nuevoObjetoItem.getPuntaje(),usuario
+                                              nuevoObjetoItem.getTipo(),nuevoObjetoItem.getIdSubtema(),nuevoObjetoItem.getPuntaje(),usuario
                                               ))
                 nuevaConexion.commit()
         except Exception as e:
@@ -547,8 +547,8 @@ def modificarRespuestas(objetoModRespuesta,usuario,contrasenna):
 
                     modifyRespuesta = "UPDATE Respuestas SET respuesta = %s, respuestaCorrecta = %s WHERE id = %s"
                     respuestaModificar.execute(modifyRespuesta, (modResp,"S",
-                                                             ids[index])) if contador == objetoModRespuesta.getRespuestaCorrecta() else respuestaModificar.execute(modifyRespuesta, (modResp,"N",
-                                                             ids[index]))
+                                                                 ids[index])) if contador == objetoModRespuesta.getRespuestaCorrecta() else respuestaModificar.execute(modifyRespuesta, (modResp,"N",
+                                                                                                                                                                                         ids[index]))
                     contador+=1
                     index+=1
                     nuevaConexion.commit()
@@ -703,8 +703,8 @@ def loadInformacionGenerarExamen(tipoExamen,usuario,contrasenna):
             with nuevaConexion.cursor() as infoExamen:
 
                 queryInformacion ="SELECT Tema.id,Tema.tema,Subtema.id, Subtema.subtema, Item.idItem, Item.id, " \
-                                      "Item.descripcion,Item.tipo,Item.puntaje FROM Tema left join Subtema on Tema.id = Subtema.idTema " \
-                                      "left join Item on Subtema.Id = Item.idSubtema WHERE Subtema.id is NOT NULL AND Item.idItem is NOT NULL AND Item.tipo =%s "
+                                  "Item.descripcion,Item.tipo,Item.puntaje FROM Tema left join Subtema on Tema.id = Subtema.idTema " \
+                                  "left join Item on Subtema.Id = Item.idSubtema WHERE Subtema.id is NOT NULL AND Item.idItem is NOT NULL AND Item.tipo =%s "
 
                 infoExamen.execute(queryInformacion,(tipoExamen))
 
@@ -732,12 +732,12 @@ def guardarExamen(objetoExamen, usuario, contrasenna):
         try:
             with nuevaConexion.cursor() as guardarExamen:
                 guardarExamenStatement = "INSERT INTO Examen (idEncabezado,modalidadExamen,fechaCreacion,usuarioCreador,archivoExamen) VALUES " \
-                                   "(%s, %s, %s, %s, %s)"
+                                         "(%s, %s, %s, %s, %s)"
                 guardarItemsStatement = "INSERT INTO ItemsExamen VALUES(%s, %s)"
 
                 guardarExamen.execute(guardarExamenStatement,(objetoExamen.getEncabezado(),objetoExamen.getModalidadExamen(),
-                                                        objetoExamen.getFechaCreacion(),objetoExamen.getCreador(),
-                                                        objetoExamen.getArchivoExamen()))
+                                                              objetoExamen.getFechaCreacion(),objetoExamen.getCreador(),
+                                                              objetoExamen.getArchivoExamen()))
                 idExamen = guardarExamen.lastrowid
 
                 tuplasItemsExamen = [(idExamen,idItem) for idItem in objetoExamen.getItems()]
@@ -765,9 +765,9 @@ def obtenerExamenes(usuario,contrasenna,filtrado): #PARA EL BANCO Y EL FEEDBACK
                                 "WHERE Exa.idEncabezado = Enc.id AND Exa.usuarioCreador = Usu.correo AND Enc.idPeriodo = Per.id AND Enc.idtipoexamen = Tip.id"
 
                 queryExamenesFeedback = "SELECT Enc.curso, Enc.escuela, Per.descPeriodo, Tip.descTipo, Exa.id,Exa.modalidadExamen, " \
-                                "Exa.fechaCreacion, Usu.nombreCompleto FROM Encabezado Enc, Periodo Per, TipoExamen Tip, Examen Exa, Usuario Usu, " \
-                                "ExamenesFeedback EF " \
-                                "WHERE Exa.id = EF.idExamen AND Exa.idEncabezado = Enc.id AND Exa.usuarioCreador = Usu.correo AND Enc.idPeriodo = Per.id AND Enc.idtipoexamen = Tip.id"
+                                        "Exa.fechaCreacion, Usu.nombreCompleto FROM Encabezado Enc, Periodo Per, TipoExamen Tip, Examen Exa, Usuario Usu, " \
+                                        "ExamenesFeedback EF " \
+                                        "WHERE Exa.id = EF.idExamen AND Exa.idEncabezado = Enc.id AND Exa.usuarioCreador = Usu.correo AND Enc.idPeriodo = Per.id AND Enc.idtipoexamen = Tip.id"
 
                 examenes.execute(queryExamenes) if filtrado == "Banco" else examenes.execute(queryExamenesFeedback)
 
@@ -901,8 +901,8 @@ def obtenerListaSemestresItem(usuario,contrasenna,idItem):
             with nuevaConexion.cursor() as listaSemAnno:
 
                 queryListaSem = "SELECT Per.descPeriodo, Enc.anno FROM ItemsExamen IE inner join Examen Exa on IE.idExamen = Exa.id inner join " \
-                            "Encabezado Enc on Exa.idEncabezado = Enc.id inner join Periodo Per on Enc.idPeriodo = Per.id " \
-                            "WHERE IE.idItem = %s "
+                                "Encabezado Enc on Exa.idEncabezado = Enc.id inner join Periodo Per on Enc.idPeriodo = Per.id " \
+                                "WHERE IE.idItem = %s "
                 listaSemAnno.execute(queryListaSem,(idItem))
 
                 for tupla in listaSemAnno:
