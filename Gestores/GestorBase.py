@@ -955,6 +955,31 @@ def obtenerItemsModalidad(usuario,contrasenna):
 
         finally:
             nuevaConexion.close()
-    print(contModalidad)
 
     return contModalidad
+
+
+def obtenerItemsIndice(usuario,contrasenna, rangoMenor, rangoMayor):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
+    listaItems = []
+    if(nuevaConexion != False):
+
+        try:
+            with nuevaConexion.cursor() as itemsIndice:
+
+                queryItemsIndice = "select * from item where indiceDiscriminacion>=%s and indiceDiscriminacion <=%s;"
+
+                itemsIndice.execute(queryItemsIndice, (rangoMenor, rangoMayor))
+
+                for item in itemsIndice:
+                    listaItems.append(item[0])
+
+        except Exception as e:
+            print(e)
+            print("Error al obtener los items")
+
+        finally:
+            nuevaConexion.close()
+
+    print(listaItems)
+    return listaItems

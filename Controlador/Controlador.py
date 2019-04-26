@@ -309,3 +309,7 @@ class Controlador:
     def obtenerItemsModalidad(self,usuario,contrasenna):
 
         return GestorBase.obtenerItemsModalidad(usuario,contrasenna)
+
+    def obtenerItemsIndice(self,usuario,contrasenna, rangoMenor, rangoMayor):
+
+        return GestorBase.obtenerItemsIndice(usuario,contrasenna, rangoMenor, rangoMayor)
