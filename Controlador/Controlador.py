@@ -284,9 +284,9 @@ class Controlador:
 
         GestorBase.guardarExamen(objetoExamen,usuario,contrasenna)
 
-    def obtenerExamenes(self,usuario,contrasenna):
+    def obtenerExamenes(self,usuario,contrasenna,filtrado):
 
-        return GestorBase.obtenerExamenes(usuario,contrasenna)
+        return GestorBase.obtenerExamenes(usuario,contrasenna,filtrado)
 
     def descargarExamen(self,idExamen,usuario,contrasenna):
 
@@ -313,3 +313,17 @@ class Controlador:
     def obtenerItemsIndice(self,usuario,contrasenna, rangoMenor, rangoMayor):
 
         return GestorBase.obtenerItemsIndice(usuario,contrasenna, rangoMenor, rangoMayor)
+
+    #Funciones Feedback
+
+    def obtenerComentariosFeedback(self, usuario, contrasenna, listaParametros):
+
+        return GestorBase.mostrarComentariosFeedback(usuario, contrasenna, listaParametros)
+
+    def publicarExamen(self, usuario, contrasenna, idExamen, codigo):
+
+        GestorBase.publicarExamen(usuario, contrasenna, idExamen, codigo)
+
+    def agregarComentario(self, usuario, contrasenna, comentario, reaccion):
+
+        GestorBase.agregarComentario(self, usuario, contrasenna, comentario, reaccion)

@@ -449,7 +449,7 @@ def generarExamen():
 @app.route("/BancoExamenes.html")
 def filtrarExamenes():
 
-    listaExamenes = Controller.obtenerExamenes(session['user'],session['contrasenna'])
+    listaExamenes = Controller.obtenerExamenes(session['user'],session['contrasenna'],"Banco")
     return render_template("BancoExamenes.html",examenes = listaExamenes)
 
 @app.route("/descargarExamen", methods=['post'])
@@ -479,18 +479,46 @@ def ObtenerEstadisticas():
     estadistica = Controller.obtenerEstadisticas(session['user'],session['contrasenna'],int(idEstadistica),idItem)
     return jsonify({"estadistica":estadistica})
 
-#BORRADOR EXAMEN
-@app.route('/crearBorradorExamen',methods=['post'])
-def borradorExamen():
-    infoBorrador = request.get_json()
+#FEEDBACK EXAMEN
+@app.route('/FeedbackExamenes.html',methods=['post'])
+def feedbackExamenes():
 
-    encabezado = infoBorrador["encabezado"]
-    tipoExamen = infoBorrador["tipoExamen"]
-    items = infoBorrador["items"]
+    return render_template("FeedbackExamenes.html")
 
+@app.route('/filtrarExamenesFeedback',methods=['post'])
+def filtrarExamenesFeedback():
 
+    infoFeedback = request.get_json()
+    filtrado = infoFeedback["filtrado"]
+    parametro = infoFeedback["parametro"]  #Parametro puede ser el id del item o el codigo alfanumerico
 
+    comentarios = Controller.obtenerComentariosFeedback(session['user'],session['contrasenna'],[filtrado,parametro])
 
+    return jsonify({"comentarios":comentarios})
+
+@app.route('publicarExamenFeedback',methods=['post'])
+def publicarExamenFeedback():
+
+    infoExamenFeed = request.get_json()
+
+    idExamen = infoExamenFeed["idExamen"]
+    codigo = infoExamenFeed["codigo"]
+
+    Controller.publicarExamen(session['user'],session['contrasenna'],idExamen,codigo)
+
+    return jsonify()
+
+@app.route('agregarComentario',methods=['post'])
+def agregarComentario():
+
+    infoComentario = request.get_json()
+
+    comentario = infoComentario["comentario"]
+    reaccion =  infoComentario["reaccion"]
+
+    Controller.agregarComentario(session['user'],session['contrasenna'],comentario,reaccion)
+
+    return jsonify({"success":"Su comentario ha sido enviado con éxito"})
 
 if __name__ == '__main__':
 

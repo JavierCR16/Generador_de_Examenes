@@ -25,9 +25,7 @@ from Gestores import GestorExamenes
 #TODO REVISAR LOS MODALS, QUE ESTAN MEDIOS DESPICHADOS, ACOMODAR PARA QUE LA INFO SALGA ACACHETIN
 #TODO OCULTAR MOSTRAR MENSAJE Y COULTAR BOTONES PARA BORRADOR
 #TODO QUITAR LO DE AM Y PM DEL INPUT DE TIPO TIME.
-
-#TODO Quitar todos los .html en los path
-#TODO Poner mensajes de exito y fallo
+#TODO ELIMINAR .HTML DE LOS HREF Y CAMBIARLO EN LOS ROUTE DE app.py
 
 #FUNCIONES DE CONEXION Y QUERIES
 
@@ -753,7 +751,7 @@ def guardarExamen(objetoExamen, usuario, contrasenna):
         finally:
             nuevaConexion.close()
 
-def obtenerExamenes(usuario,contrasenna):
+def obtenerExamenes(usuario,contrasenna,filtrado): #PARA EL BANCO Y EL FEEDBACK
 
     nuevaConexion = establecerConexion(usuario,contrasenna)
     listaExamenes = []
@@ -765,6 +763,13 @@ def obtenerExamenes(usuario,contrasenna):
                 queryExamenes = "SELECT Enc.curso, Enc.escuela, Per.descPeriodo, Tip.descTipo, Exa.id,Exa.modalidadExamen, " \
                                 "Exa.fechaCreacion, Usu.nombreCompleto FROM Encabezado Enc, Periodo Per, TipoExamen Tip, Examen Exa, Usuario Usu " \
                                 "WHERE Exa.idEncabezado = Enc.id AND Exa.usuarioCreador = Usu.correo AND Enc.idPeriodo = Per.id AND Enc.idtipoexamen = Tip.id"
+
+                queryExamenesFeedback = "SELECT Enc.curso, Enc.escuela, Per.descPeriodo, Tip.descTipo, Exa.id,Exa.modalidadExamen, " \
+                                "Exa.fechaCreacion, Usu.nombreCompleto FROM Encabezado Enc, Periodo Per, TipoExamen Tip, Examen Exa, Usuario Usu, " \
+                                "ExamenesFeedback EF " \
+                                "WHERE Exa.id = EF.idExamen AND Exa.idEncabezado = Enc.id AND Exa.usuarioCreador = Usu.correo AND Enc.idPeriodo = Per.id AND Enc.idtipoexamen = Tip.id"
+
+                examenes.execute(queryExamenes) if filtrado == "Banco" else examenes.execute(queryExamenesFeedback)
 
                 examenes.execute(queryExamenes)
 
@@ -836,31 +841,6 @@ def getNombreUsuario(usuario,contrasenna):
     return nombreUsuario
 
 #Funciones Estadisticas Items
-
-def obtenerPromSubtema(usuario,contrasenna,idSubtema): #TODO ESTA VA PARA GRAFICOS
-    nuevaConexion = establecerConexion(usuario,contrasenna)
-    promedio= 0
-
-    if (nuevaConexion != False):
-
-        try:
-            with nuevaConexion.cursor() as Consulta:
-
-                queryNombreCompleto = "SELECT AVG(indiceDiscriminacion) FROM item WHERE idSubtema = %s"
-
-                Consulta.execute(queryNombreCompleto, (idSubtema))
-
-                for atributos in Consulta:
-                    promedio = atributos[0]
-
-        except Exception as e:
-            print(e)
-            print("Error al obtener el promedio de Indice de Discriminación de Subtema")
-
-        finally:
-            nuevaConexion.close()
-
-    return promedio
 
 def obtenerCantVecesItem(usuario,contrasenna,idItem):
     nuevaConexion = establecerConexion(usuario,contrasenna)
@@ -937,6 +917,31 @@ def obtenerListaSemestresItem(usuario,contrasenna,idItem):
 
     return lista
 
+def obtenerPromSubtema(usuario,contrasenna,idSubtema):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
+    promedio= 0
+
+    if (nuevaConexion != False):
+
+        try:
+            with nuevaConexion.cursor() as Consulta:
+
+                queryNombreCompleto = "SELECT AVG(indiceDiscriminacion) FROM item WHERE idSubtema = %s"
+
+                Consulta.execute(queryNombreCompleto, (idSubtema))
+
+                for atributos in Consulta:
+                    promedio = atributos[0]
+
+        except Exception as e:
+            print(e)
+            print("Error al obtener el promedio de Indice de Discriminación de Subtema")
+
+        finally:
+            nuevaConexion.close()
+
+    return promedio
+
 def obtenerItemsModalidad(usuario,contrasenna):
     nuevaConexion = establecerConexion(usuario,contrasenna)
     contModalidad = []
@@ -986,3 +991,39 @@ def obtenerItemsIndice(usuario,contrasenna, rangoMenor, rangoMayor):
 
     print(listaItems)
     return listaItems
+
+#Funciones Feedback
+
+def mostrarComentariosFeedback(usuario,contrasenna,listaParametros): #ListaParametros tiene la condicion de filtrado y el parametro
+
+    nuevaConexion = establecerConexion(usuario,contrasenna)
+    listaComentarios = []
+
+    if(nuevaConexion != False):
+        try:
+            with nuevaConexion.cursor() as feedbackExamenes:
+
+                queryFeedbackConCodigo = "SELECT comentario FROM ComentariosExamen WHERE codigoFeed=%s"
+
+                queryFeedbackConExamen = "SELECT comentario FROM ComentariosExamen,ExamenesFeedback " \
+                                         "WHERE ExamenesFeedback.codigo = ComentariosExamen.codigoFeed AND idExamen = %s"
+
+                feedbackExamenes.execute(queryFeedbackConCodigo,(listaParametros[1])) if(listaParametros[0] == "Feedback") else \
+                    feedbackExamenes.execute(queryFeedbackConExamen,(listaParametros[1]))
+
+                for tupla in feedbackExamenes:
+                    listaComentarios.append(tupla[0])
+
+        except Exception as e:
+            print(e)
+            print("Error al obtener los comentarios")
+
+        finally:
+            nuevaConexion.close()
+
+
+    return listaComentarios
+
+def publicarExamen(usuario,contrasenna,idExamen,codigo):
+
+def agregarComentario(usuario,contrasenna,comentario,reaccion):
