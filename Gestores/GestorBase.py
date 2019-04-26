@@ -26,6 +26,9 @@ from Gestores import GestorExamenes
 #TODO OCULTAR MOSTRAR MENSAJE Y COULTAR BOTONES PARA BORRADOR
 #TODO QUITAR LO DE AM Y PM DEL INPUT DE TIPO TIME.
 
+#TODO Quitar todos los .html en los path
+#TODO Poner mensajes de exito y fallo
+
 #FUNCIONES DE CONEXION Y QUERIES
 
 def establecerConexion(usuario,password):#usuario,password):
