@@ -40,7 +40,7 @@ def generarStringSeleccionUnica(listaItems,listaRespuestas,conSolucion,puntajes)
     finSeleccion = "\\end{enumerate}"
     for indexItem,item in enumerate(listaItems):
 
-        seleccion+= "\\item "+item + "\\hfill" + "\\textbf{" +str(puntajes[indexItem]) + " (Puntos)}" +"\n "
+        seleccion+= "\\item "+item + "\\hfill" + "\\textbf{" + "(" + str(puntajes[indexItem]) + " Puntos)}" +"\n "
 
         if(listaRespuestas[indexItem].getRespuestas()!= []):
             objetoResp = listaRespuestas[indexItem]
