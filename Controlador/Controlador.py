@@ -324,6 +324,6 @@ class Controlador:
 
         GestorBase.publicarExamen(usuario, contrasenna, idExamen, codigo)
 
-    def agregarComentario(self, usuario, contrasenna, comentario, reaccion):
+    def agregarComentario(self, usuario, contrasenna,codigo,comentario, reaccion):
 
-        GestorBase.agregarComentario(self, usuario, contrasenna, comentario, reaccion)
+        GestorBase.agregarComentario(usuario, contrasenna,codigo,comentario, reaccion)

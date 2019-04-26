@@ -1026,4 +1026,43 @@ def mostrarComentariosFeedback(usuario,contrasenna,listaParametros): #ListaParam
 
 def publicarExamen(usuario,contrasenna,idExamen,codigo):
 
-def agregarComentario(usuario,contrasenna,comentario,reaccion):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
+
+    if(nuevaConexion != False):
+
+        try:
+            with nuevaConexion.cursor() as publicacion:
+
+                statementPublicar = "INSERT INTO ExamenesFeedback VALUES (%s,%s)"
+
+                publicacion.execute(statementPublicar,(idExamen,codigo))
+
+                nuevaConexion.commit()
+
+        except Exception as e:
+            print(e)
+            print("Error al publicar examen")
+
+        finally:
+            nuevaConexion.close()
+
+def agregarComentario(usuario,contrasenna,codigo,comentario,reaccion):
+    nuevaConexion = establecerConexion(usuario, contrasenna)
+
+    if (nuevaConexion != False):
+
+        try:
+            with nuevaConexion.cursor() as feedback:
+
+                statementComentario = "INSERT INTO ComentariosExamen (codigoFeed,comentario,reaccion) VALUES (%s,%s,%s)"
+
+                feedback.execute(statementComentario, (codigo,comentario, reaccion))
+
+                nuevaConexion.commit()
+
+        except Exception as e:
+            print(e)
+            print("Error al publicar examen")
+
+        finally:
+            nuevaConexion.close()

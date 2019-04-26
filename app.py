@@ -513,10 +513,11 @@ def agregarComentario():
 
     infoComentario = request.get_json()
 
+    codigo = infoComentario["codigo"]
     comentario = infoComentario["comentario"]
     reaccion =  infoComentario["reaccion"]
 
-    Controller.agregarComentario(session['user'],session['contrasenna'],comentario,reaccion)
+    Controller.agregarComentario(session['user'],session['contrasenna'],codigo,comentario,reaccion)
 
     return jsonify({"success":"Su comentario ha sido enviado con éxito"})
 
