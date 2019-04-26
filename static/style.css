@@ -169,7 +169,7 @@ h1 {
 	color: #0a86f0;
 	text-align: center;
 	font-family: 'Montserrat', sans-serif;
-	font-size: 5vh;
+	font-size: 6vh;
 	font-weight: 200;
 	line-height: 58px;
 }
@@ -371,7 +371,7 @@ tr:hover {
 	margin-left: 50px;
 }
 
-@media screen and (max-height: 650px) {
+@media screen and (max-height: 850px) and (max-width: 400px) {
 	.sidenav {padding-top: 15px;}
 	.sidenav a {font-size: 4vh;}
 	.LogIn {max-width: 60%; left: 20%;}

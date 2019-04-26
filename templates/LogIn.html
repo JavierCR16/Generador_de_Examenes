@@ -15,21 +15,21 @@
     <title>GEMA 💎 </title>
 </head>
 <body>
-
-    <form action="login" method="post" id="LogInForm">
-        <div class="row ">
-            <div class="col-xs-4 col-md-4 LogIn">
+    <div class="row ">
+        <div class="col-xs-4 col-md-4 LogIn">
+            <form action="login" method="post" id="LogInForm">
                 <input name ="correo" type="email" placeholder="Email: "/>
                 </br>
                 <input name="contrasenna" type="password" placeholder="Contraseña: " />
                 </br>
                 </br>
                 <button type="submit"> Ingresar </button>
-                </br>
-                <button type="submit"> Visitante </button>
-            </div>
+            </form>
+            <form action="estudiantesInicio" method="post" id="estudiantesInicioForm">
+                <button type="submit"> Estudiante </button>
+            </form>
         </div>
-    </form>
+    </div>
 
     <div class="footer">
         <img class = "logoLogIn" src="../static/TEC.png" alt="Tecnológico de Costa Rica">

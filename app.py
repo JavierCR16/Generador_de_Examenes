@@ -18,17 +18,30 @@ def main():
 def login():
     user = request.form.get("correo")
     contrasenna = request.form.get("contrasenna")
+    print(user)
     conexion = Controller.comprobarConexion(user,contrasenna)
+    print(user)
 
     if(conexion!= False):
         session['user'] = user
         session['contrasenna'] = contrasenna
-
         Controller.cerrarConexion(conexion)
 
         return redirect(url_for('opcionesPrincipales'))
 
     return render_template('LogIn.html')
+
+@app.route('/estudiantesInicio',methods=['post'])
+def estudiantesInicio():
+    return render_template('EstudiantesInicio.html')
+
+@app.route('/JuegoLogIn.html')
+def juegoLogIn():
+    return render_template('JuegoLogIn.html')
+
+@app.route('/Comentarios.html')
+def comentarios():
+    return render_template('Comentarios.html')
 
 @app.route('/OpcionesPrincipales.html')
 def opcionesPrincipales():
@@ -519,6 +532,30 @@ def agregarComentario():
     Controller.agregarComentario(session['user'],session['contrasenna'],comentario,reaccion)
 
     return jsonify({"success":"Su comentario ha sido enviado con éxito"})
+
+#GRAFICOS
+# @app.route('/crudItemsModificar', methods = ['post'])
+# def graficar():
+#
+#     valor_boton = request.form.get("accioncruditems")
+#
+#     itemModificar = request.form.get("selectItemModificarEliminar")
+#     tipoItemModificar = request.form.get("tiposItemModificar")
+#     descripcionModificar = request.form.get("descripcionItemModificar")
+#     puntajeModificar = request.form.get("puntajeModificar")
+#
+#     Controller.generarGrafico(session['user'],session['contrasenna'])
+#
+#     else:
+#         itemEliminar = request.form.get("selectItemModificarEliminar")
+#         Controller.eliminarItem(itemEliminar,session['user'],session['contrasenna'])
+#
+#     temasExistentes = Controller.obtenerTemas(session['user'],session['contrasenna'])
+#
+#     return render_template('CRUDItems.html', temas=temasExistentes)
+#
+#
+#     if(valor_boton == "Modificar Item"):
 
 if __name__ == '__main__':
 
