@@ -305,3 +305,7 @@ class Controlador:
             resultado = GestorBase.obtenerCantidadSugerenciasItem(usuario,contrasenna,idItem)
 
         return resultado
+
+    def obtenerItemsModalidad(self,usuario,contrasenna):
+
+        return GestorBase.obtenerItemsModalidad(usuario,contrasenna)

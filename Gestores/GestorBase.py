@@ -933,3 +933,28 @@ def obtenerListaSemestresItem(usuario,contrasenna,idItem):
             nuevaConexion.close()
 
     return lista
+
+def obtenerItemsModalidad(usuario,contrasenna):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
+    contModalidad = []
+    if(nuevaConexion != False):
+
+        try:
+            with nuevaConexion.cursor() as modalidad:
+
+                queryModalidad = "SELECT tipo, COUNT(*) FROM item GROUP BY tipo"
+
+                modalidad.execute(queryModalidad)
+
+                for fila in modalidad:
+                    contModalidad.append([fila[0], fila[1]])
+
+        except Exception as e:
+            print(e)
+            print("Error al obtener las modalidades")
+
+        finally:
+            nuevaConexion.close()
+    print(contModalidad)
+
+    return contModalidad
