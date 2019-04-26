@@ -301,7 +301,7 @@ class Controlador:
             resultado = GestorBase.obtenerCantVecesItem(usuario,contrasenna,idItem)
         elif(idEstadistica == 2):#Lista de Semestres en los que se ha usado
             resultado = GestorBase.obtenerListaSemestresItem(usuario,contrasenna,idItem)
-        else: #Cantidad de Uso en ambos semestres
+        else: #Cantidad de Sugerencias
             resultado = GestorBase.obtenerCantidadSugerenciasItem(usuario,contrasenna,idItem)
 
         return resultado

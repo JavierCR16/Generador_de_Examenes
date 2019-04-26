@@ -188,7 +188,35 @@ h3,label {
 	font-size: 2.5vh;
 }
 
-input[type=text], select, textarea,  input[type=file] , input[type=number], input[type=time], input[type=email], input[type=password]{
+.modalB{
+	font-family: 'Montserrat', sans-serif;
+	font-size: 2.5vh;
+	background-color: #00457c;
+	color: white;
+	border: 1px solid white;
+	position: relative;
+	border-radius: 10px;
+	margin-bottom: 5%;
+	-webkit-transition: all 0.2s ease-in-out;
+	width: auto;
+	height: auto;
+}
+
+.modalI{
+	font-family: 'Montserrat', sans-serif;
+	font-size: 2.5vh;
+	background-color: white;
+	color: #0a86f0;
+	position: relative;
+	border: 1px solid #0a86f0;
+	border-radius: 10px;
+	margin-bottom: 5%;
+	-webkit-transition: all 0.2s ease-in-out;
+	width: auto;
+	height: auto;
+}
+
+input[type=text]:not(.modalI), select, textarea,  input[type=file] , input[type=number], input[type=time], input[type=email], input[type=password]{
 	font-family: 'Montserrat', sans-serif;
 	font-size: 2.5vh;
 	background-color: white;
@@ -222,7 +250,7 @@ input[type=radio]:hover, input[type=checkbox]:hover{
 	cursor: pointer;
 }
 
-button:not(#aFalse):not(#titulo), input[type="submit"]{
+button:not(#aFalse):not(#titulo):not(.close):not(.modalB), input[type="submit"]{
 	font-family: 'Montserrat', sans-serif;
 	font-size: 2.5vh;
 	background-color: #00457c;
@@ -236,7 +264,7 @@ button:not(#aFalse):not(#titulo), input[type="submit"]{
 	height: 9%;
 }
 
-button:not(#aFalse):not(#titulo):hover, input[type=submit]:hover{
+button:not(#aFalse):not(#titulo):not(.close):hover, input[type=submit]:hover{
 	background-color: #0a86f0;
 	color: white;
 	border: 1px solid white;

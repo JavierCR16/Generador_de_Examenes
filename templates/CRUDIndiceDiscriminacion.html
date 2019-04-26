@@ -88,15 +88,15 @@
                     <h2 id="infoItemAgregar"> </h2> <br>
                     <h2>Índice de Discriminación</h2>
 
-                    <input id ="addIndice" type="text" placeholder="Ingresar Índice">
+                    <input class="modalI" id ="addIndice" type="text" placeholder="Ingresar Índice">
 
-                    <input id="idItemSecretoAdd" hidden type="text">
-                    <input id = "idSubtemaSecretAdd" hidden type="text">
+                    <input class="modalI" id="idItemSecretoAdd" hidden type="text">
+                    <input class="modalI" id = "idSubtemaSecretAdd" hidden type="text">
 
                 </div>
                 <div class="modal-footer">
-                    <button value="agregarIndiceBoton" id="agregarIndiceBoton" type ="button" class="btn btn-secondary" onclick="agregarIndiceDiscriminacion({{ descripItems }})">Agregar Índice</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button value="agregarIndiceBoton" id="agregarIndiceBoton" type ="button" class="btn btn-secondary modalB" onclick="agregarIndiceDiscriminacion({{ descripItems }})">Agregar Índice</button>
+                    <button type="button" class="btn btn-secondary modalB" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
@@ -106,26 +106,26 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Modificar Índice de Discriminación</h5>
+                    <h2 class="modal-title" id="exampleModalLabel">Modificar Índice de Discriminación</h2>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
 
-                    <h2 id="infoItemModificar"> </h2> <br>
-                    <h2>Índice de Discriminación </h2>
+                    <h3 id="infoItemModificar"> </h3> <br>
+                    <h3>Índice de Discriminación </h3>
 
-                    <input  id="idItemSecretoMod" hidden type="text">
-                    <input id = "idSubtemaSecretMod" hidden type="text">
+                    <input class="modalI" id="idItemSecretoMod" hidden type="text">
+                    <input class="modalI" id = "idSubtemaSecretMod" hidden type="text">
 
-                    <input  id = "modIndice" type="text" ><br>
+                    <input class="modalI" id = "modIndice" type="text" ><br>
 
                 </div>
                 <div class="modal-footer">
-                    <button value="modificarIndiceBoton" onclick="modificarEliminarIndiceDiscriminacion(this.value, {{descripItems}})"  type="button" class="btn btn-secondary">Modificar Índice</button>
-                    <button value="eliminarIndiceBoton" onclick="modificarEliminarIndiceDiscriminacion(this.value, {{descripItems}})" type="button" class="btn btn-secondary">Eliminar Índice</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button value="modificarIndiceBoton" onclick="modificarEliminarIndiceDiscriminacion(this.value, {{descripItems}})"  type="button" class="btn btn-secondary modalB">Modificar Índice</button>
+                    <button value="eliminarIndiceBoton" onclick="modificarEliminarIndiceDiscriminacion(this.value, {{descripItems}})" type="button" class="btn btn-secondary modalB">Eliminar Índice</button>
+                    <button type="button" class="btn btn-secondary modalB" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
