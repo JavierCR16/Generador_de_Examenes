@@ -230,6 +230,10 @@ input[type=text]:not(.modalI), select, textarea,  input[type=file] , input[type=
 	height: 7%;
 }
 
+textarea{
+	resize: none;
+}
+
 input[type=text]:hover, select:hover, textarea:hover, input[type=file]:hover, input[type=number]:hover, input[type=time]:hover, input[type=email]:hover, input[type=password]:hover{
 	-webkit-transition: all 0.4s ease-in-out;
 	color: #00457c;
@@ -250,12 +254,12 @@ input[type=radio]:hover, input[type=checkbox]:hover{
 	cursor: pointer;
 }
 
-button:not(#aFalse):not(#titulo):not(.close):not(.modalB), input[type="submit"]{
+button:not(#aFalse):not(#titulo):not(.close):not(.modalB):not(.emoji), input[type="submit"]{
 	font-family: 'Montserrat', sans-serif;
 	font-size: 2.5vh;
 	background-color: #00457c;
 	color: white;
-	border: 1px solid white;
+	/*border: 1px solid white;*/
 	position: relative;
 	border-radius: 10px;
 	margin-bottom: 5%;
@@ -264,14 +268,31 @@ button:not(#aFalse):not(#titulo):not(.close):not(.modalB), input[type="submit"]{
 	height: 9%;
 }
 
-button:not(#aFalse):not(#titulo):not(.close):hover, input[type=submit]:hover{
+button:not(#aFalse):not(#titulo):not(.close):not(.emoji):hover, input[type=submit]:hover{
 	background-color: #0a86f0;
 	color: white;
-	border: 1px solid white;
+	/*border: 1px solid white;*/
 	cursor: pointer;
 	-webkit-border-radius: 15px;
 	-webkit-transition: all 0.4s ease-in-out;
 }
+
+.emoji{
+	font-family: 'Montserrat', sans-serif;
+	font-size: 5vh;
+	background-color: #00457c;
+	color: white;
+	margin-bottom: 5%;
+	-webkit-transition: all 0.2s ease-in-out;
+}
+
+.emoji:hover{
+	background-color: #0a86f0;
+	color: white;
+	cursor: pointer;
+	-webkit-transition: all 0.4s ease-in-out;
+}
+
 
 ul, li {
 	text-align: left;

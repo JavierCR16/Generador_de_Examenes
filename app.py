@@ -526,7 +526,11 @@ def agregarComentario():
 
 #JUEGO
 
-@app.route('/estudiantesInicio',methods=['post'])
+@app.route('/EstudiantesInicio')
+def estudiantesInicioVolver():
+    return render_template('EstudiantesInicio.html')
+
+@app.route('/EstudiantesInicio',methods=['post'])
 def estudiantesInicio():
     return render_template('EstudiantesInicio.html')
 
