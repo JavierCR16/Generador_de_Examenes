@@ -29,7 +29,7 @@ def login():
 
     return render_template('LogIn.html')
 
-@app.route('/OpcionesPrincipales.html')
+@app.route('/OpcionesPrincipales')
 def opcionesPrincipales():
     usuario = Controller.getNombreUsuario(session['user'],session['contrasenna'])
     return render_template("OpcionesPrincipales.html", nombre = usuario)
@@ -43,7 +43,7 @@ def cerrarSesion():
     return render_template("LogIn.html")
 
 #CRUD TEMAS SUBTEMAS
-@app.route("/CRUDTemasSubtemas.html")
+@app.route("/CRUDTemasSubtemas")
 def ventanaCRUDTemasSubtemas():
     listaTemas = Controller.obtenerTemas(session['user'],session['contrasenna'])
 
@@ -113,7 +113,7 @@ def cambioIndiceDiscriminacion():
 
     return jsonify({'items':Controller.convertirItemsJson(itemsActualizados)})
 
-@app.route("/CRUDIndiceDiscriminacion.html")
+@app.route("/CRUDIndiceDiscriminacion")
 def crudIndiceDiscriminacion():
     listaTemas = Controller.obtenerTemas(session['user'],session['contrasenna'])
     return render_template("CRUDIndiceDiscriminacion.html", temas = listaTemas)
@@ -133,7 +133,7 @@ def buscarSubtemasItems():
                            descripItems = descripcionesItems)
 
 #CRUD ITEMS
-@app.route("/CRUDItems.html")
+@app.route("/CRUDItems")
 def ventanaCRUDItems():
     listaTemas = Controller.obtenerTemas(session['user'],session['contrasenna'])
 
@@ -213,7 +213,7 @@ def extraerInformacionItem():
     return jsonify({'informacionItem':informacionItem.__dict__})
 
 #CRUD RESPUESTAS
-@app.route("/CRUDRespuestas.html")
+@app.route("/CRUDRespuestas")
 def ventanaCRUDRespuestas():
     listaTemas = Controller.obtenerTemas(session['user'],session['contrasenna'])
     return render_template("CRUDRespuestas.html", temas = listaTemas)
@@ -271,7 +271,7 @@ def extraerRespuestasItem():
     return jsonify({'informacionItem':objetoRespuesta.__dict__})
 
 #CRUD ENCABEZADO
-@app.route("/CRUDEncabezado.html")
+@app.route("/CRUDEncabezado")
 def ventanaCRUDEncabezado():
 
     Periodos = Controller.obtenerPeriodos(session['user'],session['contrasenna'])
@@ -315,7 +315,7 @@ def guardarEncabezado():
 
 #CRUD SUGERIR VERIFICAR EDICIONES
 
-@app.route("/SugerenciaEdicion.html")
+@app.route("/SugerenciaEdicion")
 def sugerenciaEdicion():
     temas = Controller.obtenerTemas(session['user'],session['contrasenna'])
 
@@ -346,7 +346,7 @@ def enviarSugerencia():
 
     return jsonify({"status":"Sugerencia Enviada con Éxito"})
 
-@app.route("/VerificacionEdicion.html")
+@app.route("/VerificacionEdicion")
 def verificacionEdicion():
 
     objetosSugerencia = Controller.filtrarSugerencias(session['user'],session['contrasenna'])
@@ -373,7 +373,7 @@ def aprobarRechazarSugerencia(): #1 = Aprobar, 0 = Rechazar
     return jsonify({"status":"Sugerencia Revisada"})
 
 #COMPARTIR EXAMENES
-@app.route('/CompartirExamenes.html')
+@app.route('/CompartirExamenes')
 def compartirExamenes():
     usuarios = Controller.cargarUsuarios(session['user'],session['contrasenna'])
 
@@ -395,7 +395,7 @@ def enviarCorreo():
     return render_template("CompartirExamenes.html", usuarios=usuarios)
 
 #GENERAR EXAMEN
-@app.route("/CreacionExamen.html")
+@app.route("/CreacionExamen")
 def creacionExamen():
 
     listaEncabezados = Controller.obtenerEncabezados(session['user'],session['contrasenna'])
@@ -445,7 +445,7 @@ def generarExamen():
 
     return jsonify({"success":1,"archivoPDF":nombrePDF})
 
-@app.route("/BancoExamenes.html")
+@app.route("/BancoExamenes")
 def filtrarExamenes():
 
     listaExamenes = Controller.obtenerExamenes(session['user'],session['contrasenna'],"Banco")
@@ -463,7 +463,7 @@ def descargarExamen():#TODO BORRAR AQUI TODOS LOS ARCHIVOS QUE ESTEN EN STATIC Q
     return jsonify({"success":1,"nombreExamen":nombreExamen})
 
 #ESTADISTICAS
-@app.route('/ConsultaEstadisticasItems.html')
+@app.route('/ConsultaEstadisticasItems')
 def ConsultaEstadisticasItems():
     temas = Controller.obtenerTemas(session['user'],session['contrasenna'])
 
@@ -479,11 +479,13 @@ def ObtenerEstadisticas():
     return jsonify({"estadistica":estadistica})
 
 #GRAFICOS
+@app.route('/Graficos')
+def obtenerGraficos():
+    return render_template("Graficos.html")
 
 #FEEDBACK EXAMEN
-@app.route('/FeedbackExamenes.html',methods=['post'])
+@app.route('/FeedbackExamenes')
 def feedbackExamenes():
-
     return render_template("FeedbackExamenes.html")
 
 @app.route('/filtrarExamenesFeedback',methods=['post'])
@@ -528,11 +530,11 @@ def agregarComentario():
 def estudiantesInicio():
     return render_template('EstudiantesInicio.html')
 
-@app.route('/JuegoLogIn.html')
+@app.route('/JuegoLogIn')
 def juegoLogIn():
     return render_template('JuegoLogIn.html')
 
-@app.route('/Comentarios.html')
+@app.route('/Comentarios')
 def comentarios():
     return render_template('Comentarios.html')
 
