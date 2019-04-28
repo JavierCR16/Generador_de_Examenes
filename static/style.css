@@ -399,6 +399,15 @@ tr:hover {
 	margin-left: 50px;
 }
 
+#subnav {
+	font-size: 3vh;
+	color: #cecece;
+}
+
+#subnav:hover {
+	color: #0a86f0;
+}
+
 @media screen and (max-height: 850px) and (max-width: 400px) {
 	.sidenav {padding-top: 15px;}
 	.sidenav a {font-size: 4vh;}
