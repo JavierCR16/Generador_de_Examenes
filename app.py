@@ -291,7 +291,7 @@ def previewEncabezado():
     tipo = infoPreview["tipo"]
     instrucciones = infoPreview["instrucciones"]
 
-    nombreImagen = Controller.generarPreview(curso,escuela,instrucciones,periodo,fecha,tiempo,tipo,session['user'])
+    nombreImagen = Controller.generarPreview(curso,escuela,instrucciones,periodo,fecha,tiempo,tipo)
 
     return jsonify({"imagen":nombreImagen})
 
@@ -494,17 +494,13 @@ def obtenerDatosGraficos():
 
     return jsonify({"success": 1, "estadisticas": datos})
 
-#FEEDBACK EXAMEN
-@app.route('/FeedbackExamenes')
-def feedbackExamenes():
-    return render_template("FeedbackExamenes.html")
-
+#FEEDBACK EXAMEN VISUALIZAR
 @app.route('/filtrarExamenesFeedback',methods=['post'])
 def filtrarExamenesFeedback():
 
     infoFeedback = request.get_json()
     filtrado = infoFeedback["filtrado"]
-    parametro = infoFeedback["parametro"]  #Parametro puede ser el id del item o el codigo alfanumerico
+    parametro = infoFeedback["parametro"]  #Parametro puede ser el id del examen o el codigo alfanumerico
 
     comentarios = Controller.obtenerComentariosFeedback(session['user'],session['contrasenna'],[filtrado,parametro])
 

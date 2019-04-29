@@ -11,6 +11,7 @@ from Gestores import GestorRespuestas
 from Gestores import GestorTemasSubtemas
 from Gestores import GestorLaTeX
 from Gestores import GestorJSON
+from Gestores import GestorArchivos
 from Modelo.ObjetoItem import ObjetoItem
 from Modelo.ObjetoSubtema import ObjetoSubtema
 from Modelo.ObjetoTema import ObjetoTema
@@ -160,14 +161,14 @@ class Controlador:
 
         GestorBase.agregarEncabezado(nuevoEncabezado,usuario,contrasenna)
 
-    def generarPreview(self,curso,escuela,instrucciones ,periodo,fecha,tiempo,tipo,usuario):
+    def generarPreview(self,curso,escuela,instrucciones ,periodo,fecha,tiempo,tipo):
         periodo= periodo.split('-')[1]
         tipo = tipo.split('-')[1]
         fecha = fecha.split("-")[0]
 
         nuevoEncabezado = ObjetoEncabezado(None,curso,escuela,instrucciones, fecha, tiempo,periodo, tipo)
 
-        return GestorEncabezado.previewEncabezado(nuevoEncabezado,usuario)
+        return GestorEncabezado.previewEncabezado(nuevoEncabezado)
 
     def obtenerEncabezados(self,usuario,contrasenna):
 
@@ -289,27 +290,22 @@ class Controlador:
 
         return GestorBase.obtenerExamenes(usuario,contrasenna,filtrado)
 
-    def obtenerExamenesFeedback(self,usuario,contrasenna):
-
-        return GestorBase.obtenerExamenesFeedback(usuario,contrasenna)
-
     def descargarExamen(self,idExamen,usuario,contrasenna):
+
+        GestorArchivos.eliminarArchivos("Examen")
 
         return GestorBase.descargarExamen(idExamen,usuario,contrasenna)
 
     #Funciones Estadisticas
 
     def obtenerEstadisticas(self,usuario,contrasenna,idEstadistica,idItem):
-        resultado = ""
 
         if(idEstadistica == 1): #Frecuencia de Uso
-            resultado = GestorBase.obtenerCantVecesItem(usuario,contrasenna,idItem)
+            return GestorBase.obtenerCantVecesItem(usuario,contrasenna,idItem)
         elif(idEstadistica == 2):#Lista de Semestres en los que se ha usado
-            resultado = GestorBase.obtenerListaSemestresItem(usuario,contrasenna,idItem)
+            return GestorBase.obtenerListaSemestresItem(usuario,contrasenna,idItem)
         else: #Cantidad de Sugerencias
-            resultado = GestorBase.obtenerCantidadSugerenciasItem(usuario,contrasenna,idItem)
-
-        return resultado
+            return GestorBase.obtenerCantidadSugerenciasItem(usuario,contrasenna,idItem)
 
     def obtenerItemsModalidad(self,usuario,contrasenna):
 

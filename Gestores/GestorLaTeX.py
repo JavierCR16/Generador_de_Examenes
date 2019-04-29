@@ -1,6 +1,9 @@
 import os,subprocess,datetime
+from Gestores import GestorArchivos
 
 def generarExamen(objEncabezado,listaItems,respuestas,tipoExamen,conSolucion,puntajes):
+    GestorArchivos.eliminarArchivos(objEncabezado.getCurso())
+
     header = r'''\documentclass{article}
     \usepackage{enumerate}
     \usepackage{xcolor}
@@ -48,7 +51,7 @@ def generarStringSeleccionUnica(listaItems,listaRespuestas,conSolucion,puntajes)
 
             for index,respuesta in enumerate(objetoResp.getRespuestas(), start=1):
 
-                #TODO En esta  primera, poner algo que identifique la respuesta correcta
+                #TODO En esta  primera, poner algo que identifique la respuesta correcta de forma mas tuanis
                 seleccion += "\\item \\colorbox{red}{" + respuesta + "} \n" \
                     if(conSolucion and index == objetoResp.getRespuestaCorrecta()) else "\\item " + respuesta + "\n"
 
@@ -78,9 +81,6 @@ def generarStringEncabezado(objEncabezado,puntajes):
                        + objEncabezado.getInstrucciones() + "\\\\ \\hrulefill"
 
     return stringEncabezado
-
-
-
 
 
 

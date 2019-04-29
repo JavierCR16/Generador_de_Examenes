@@ -281,16 +281,17 @@ function procesarAjaxGenerarExamen(encabezado,tipoExamen,conSolucion,itemsSelecc
         success: function (datos) {
             if(datos["success"]){
                 var retVal = confirm("¿Desea descargar el examen en formato PDF? De igual forma puede descargarlo en la sección de Filtrado de Exámenes");
-                if( retVal === true ) { //../static/
+                /*if( retVal === true ) { //../static/
                     $("#secretDownload").attr("href","../static/"+datos["archivoPDF"])[0].click();
-                }
+                }*/
 
                 var codigo = prompt("¿Desea ingresar un código de 9 caracteres para recibir retroalimentación del examen?");
-                if( codigo !== null || codigo !== "" ) { //../static/
-                    procesarAjaxPublicarExamen(codigo, datos["idExamen"]);
+                if( codigo !== null && codigo !== "" ) { //../static/
+                    //procesarAjaxPublicarExamen(codigo, datos["idExamen"]);
+                    console.log("Entre xdxd")
                 }
                 else {
-                    window.location.href = "CreacionExamen.html";
+                    window.location.href = "/CreacionExamen";
                 }
             }
         }
