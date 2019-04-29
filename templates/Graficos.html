@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300" rel="stylesheet">
+    <script type = "text/javascript" src = "https://www.gstatic.com/charts/loader.js"></script>
+    <script type = "text/javascript">google.charts.load('current', {packages: ['corechart']});</script>
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+    <script type="text/javascript" src="/static/solicitudes.js"></script>
+    <title>GEMA 💎 </title>
+</head>
+
+<body>
+    <img class= "imgs" src="../static/bkg.jpg">
+
+    <div class="col-md-12 header">
+        <a href="/OpcionesPrincipales"><i class="material-icons backA">chevron_left</i></a>
+        <h1>Gráficos</h1>
+        <form id="formlogout" action="cerrarSesion" method="post">
+            <a href="javascript:$('#formlogout').submit();" data-toggle="SignOutTooltip" data-placement="bottom" title="Cerrar Sesión"><i class="material-icons signO">exit_to_app</i></a>
+        </form>
+    </div>
+
+    <div class = "col-md-4 w3-container divsL">
+        <h2>Tipo de Gráfico:</h2>
+        <select id="selectGraficos" onchange="mostrarSelectGraficos(this)">
+            <option>Escoger tipo de Gráfico</option>
+            <option>1-Promedio de Índice de Discriminación</option>
+            <option>2-Conteo de Ítems por Tipo</option>
+            <option>3-Conteo de Reacciones en una Prueba</option>
+        </select>
+
+        <div id="divGraf-3" class="w3-hide">
+            <h3>Examen:</h3>
+            <select id="selectExamenesGrafico">
+                <option>Escoger Exámen</option>
+                {% for examen in examenes %}
+                    <option> {{examen.getId()}}-{{examen.getEncabezado().getCurso()}}-{{examen.getModalidadExamen()}}--{{examen.getFechaCreacion()}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <input type="submit" value="Graficar" onclick="graficar('selectGraficos')">
+    </div>
+
+    <div class = "col-md-6 w3-container divsR">
+        <div id = "containerChart" class="w3-hide"></div>
+    </div>
+</body>
+</html>

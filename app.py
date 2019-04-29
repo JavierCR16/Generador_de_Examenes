@@ -488,10 +488,11 @@ def obtenerGraficos():
 
 @app.route('/obtenerDatosGraficos', methods= ['post'])
 def obtenerDatosGraficos():
-    listaTemas = Controller.obtenerTemas(session['user'],session['contrasenna'])
-    listaExamenes = Controller.obtenerExamenes(session['user'], session['contrasenna'], "Feedback")
+    infoGraficos = request.get_json()
+    datos = Controller.obtenerDatosGraficos(session['user'], session['contrasenna'],
+                                            infoGraficos["consulta"], infoGraficos["datos"])
 
-    return render_template("Graficos.html", temas = listaTemas, examenes = listaExamenes)
+    return jsonify({"success": 1, "estadisticas": datos})
 
 #FEEDBACK EXAMEN
 @app.route('/FeedbackExamenes')

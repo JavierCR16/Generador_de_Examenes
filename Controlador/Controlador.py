@@ -319,6 +319,16 @@ class Controlador:
 
         return GestorBase.obtenerItemsIndice(usuario,contrasenna, rangoMenor, rangoMayor)
 
+    #Funciones Graficos
+
+    def obtenerDatosGraficos(self, usuario, contrasenna, consulta, datos):
+        if(consulta == "1"):
+            return GestorBase.obtenerPromSubtema(usuario, contrasenna)
+        elif(consulta == "2"):
+            return GestorBase.obtenerItemsModalidad(usuario,contrasenna)
+        elif(consulta == "3"):
+            return GestorBase.obtenerComentariosReacciones(usuario,contrasenna, datos)
+
     #Funciones Feedback
 
     def obtenerComentariosFeedback(self, usuario, contrasenna, listaParametros):

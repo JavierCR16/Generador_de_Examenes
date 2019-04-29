@@ -350,6 +350,24 @@ function procesarAjaxComentario(reaccion, codigoExamenComent, comentario){
     })
 }
 
+function procesarAjaxGrafico(consulta, titulo, datos){
+    $.ajax({
+
+        url: "/obtenerDatosGraficos",
+        type: 'post',
+        data:JSON.stringify({consulta: consulta, datos: datos}),
+        contentType: 'application/json;charset=UTF-8',
+        dataType: "json",
+
+        success: function (datos) {
+            if(datos["success"]){
+                $("#containerChart").removeClass("w3-hide");
+                google.charts.setOnLoadCallback(function () { drawChart(titulo, datos["estadisticas"]);});
+            }
+        }
+    })
+}
+
 function obtenerSubtemas(selectEscogido, idObjHTML){
 
     var temaEscogido = selectEscogido.options[selectEscogido.selectedIndex].text;
@@ -817,15 +835,12 @@ function marcarExamen(valorEncabezado,tipoExamen,listaItems){
 function mostrarSelectGraficos(selectEscogido){
     var graficoEscogido = selectEscogido.options[selectEscogido.selectedIndex].text;
 
-    $("#divGraf-1").removeClass("w3-hide");
-    $("#divGraf-1").addClass("w3-hide");
     $("#divGraf-3").removeClass("w3-hide");
     $("#divGraf-3").addClass("w3-hide");
+    $("#containerChart").removeClass("w3-hide");
+    $("#containerChart").addClass("w3-hide");
 
-    if (graficoEscogido === "1-Promedio de Índice de Discriminación"){
-        $("#divGraf-1").removeClass("w3-hide");
-    }
-    else if (graficoEscogido === "3-Conteo de Reacciones a Prueba"){
+    if (graficoEscogido === "3-Conteo de Reacciones en una Prueba"){
         $("#divGraf-3").removeClass("w3-hide");
     }
 }
@@ -842,26 +857,23 @@ function drawChart(titulo, datos) {
 }
 
 function graficar(selectEscogido){
-    var graficoEscogido = $("#selectGraficos").val();
+    if(selectEscogido.index !== 0){
+        var graficoEscogido = $("#"+selectEscogido).val().split("-")[1];
+        var id = $("#"+selectEscogido).val().split("-")[0];
 
-    if (graficoEscogido === "1-Promedio de Índice de Discriminación"){
-        alert(graficoEscogido);
-    }
-    else if (graficoEscogido === "2-Conteo de Ítems por Tipo"){
-        datos = $("#subtemaGrafico").val();
-    }
-    else if (graficoEscogido === "3-Conteo de Reacciones a Prueba"){
-        datos = $("#selectExamenesGrafico").val();
-    }
+        var datos = "";
+        switch(graficoEscogido){
+            case "Promedio de Índice de Discriminación":
+                break;
+            case "Conteo de Ítems por Tipo":
+                break;
+            case "Conteo de Reacciones en una Prueba":
+                datos = $("#selectExamenesGrafico").val().split("-")[0];
+                break;
+        }
+        procesarAjaxGrafico(id, graficoEscogido, datos);
 
-    google.charts.setOnLoadCallback(function () { drawChart(graficoEscogido, [
-        ['Year', 'Asia'],
-        ['2012',  900],
-        ['2013',  1000],
-        ['2014',  1170],
-        ['2015',  1250],
-        ['2016',  1530]
-    ]);});
+    }
 }
 
 function mostrarTiempo(selectEscogido){

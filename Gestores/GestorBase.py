@@ -26,10 +26,7 @@ from Gestores import GestorExamenes
 #TODO OCULTAR MOSTRAR MENSAJE Y COULTAR BOTONES PARA BORRADOR
 #TODO QUITAR LO DE AM Y PM DEL INPUT DE TIPO TIME.
 
-#TODO CUANDO SE GENERA AL EXAMEN PREGUNTARLE AL MAE QUE SI QUIERE PUBLICAR EL EXAMEN.
-
-
-#TODO HTML DE GRAFICOS, FEEDBACK(ESTA VARA IBA CON DOS TABS).
+#TODO BORRAR EXAMENES GENERADOS (NO LOS DESCARGADOS)
 
 #FUNCIONES DE CONEXION Y QUERIES
 
@@ -774,8 +771,9 @@ def obtenerExamenes(usuario,contrasenna,filtrado): #PARA EL BANCO Y EL FEEDBACK
 
                 queryExamenesFeedback = "SELECT Enc.curso, Enc.escuela, Per.descPeriodo, Tip.descTipo, Exa.id,Exa.modalidadExamen, " \
                                         "Exa.fechaCreacion, Usu.nombreCompleto FROM Encabezado Enc, Periodo Per, TipoExamen Tip, Examen Exa, Usuario Usu, " \
-                                        "ExamenesFeedback EF " \
-                                        "WHERE Exa.id = EF.idExamen AND Exa.idEncabezado = Enc.id AND Exa.usuarioCreador = Usu.correo AND Enc.idPeriodo = Per.id AND Enc.idtipoexamen = Tip.id"
+                                        "ExamenesFeedback EF, ComentariosExamen CE " \
+                                        "WHERE Exa.id = EF.idExamen AND Exa.idEncabezado = Enc.id AND Exa.usuarioCreador = Usu.correo " \
+                                        "AND Enc.idPeriodo = Per.id AND Enc.idtipoexamen = Tip.id AND EF.codigo = CE.codigoFeed"
 
                 examenes.execute(queryExamenes) if filtrado == "Banco" else examenes.execute(queryExamenesFeedback)
 
@@ -925,21 +923,22 @@ def obtenerListaSemestresItem(usuario,contrasenna,idItem):
 
 # Funciones de Consulta para Gráficos
 
-def obtenerPromSubtema(usuario,contrasenna,idSubtema):
+def obtenerPromSubtema(usuario,contrasenna):
     nuevaConexion = establecerConexion(usuario,contrasenna)
-    promedio= 0
+    promedio= [["Subtema", "Promedio de Índice de Discriminación"]]
 
     if (nuevaConexion != False):
 
         try:
             with nuevaConexion.cursor() as Consulta:
 
-                queryNombreCompleto = "SELECT AVG(indiceDiscriminacion) FROM item WHERE idSubtema = %s"
+                queryNombreCompleto = "SELECT s.subtema, AVG(IFNULL(i.indiceDiscriminacion, 0)) " \
+                                      "FROM item i INNER JOIN subtema s ON i.idsubtema = s.id GROUP BY s.subtema"
 
-                Consulta.execute(queryNombreCompleto, (idSubtema))
+                Consulta.execute(queryNombreCompleto)
 
                 for atributos in Consulta:
-                    promedio = atributos[0]
+                    promedio.append([atributos[0], atributos[1]])
 
         except Exception as e:
             print(e)
@@ -975,6 +974,32 @@ def obtenerItemsModalidad(usuario,contrasenna):
 
     return contModalidad
 
+def obtenerComentariosReacciones(usuario,contrasenna, idExamen):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
+    contReaccion = [['Reacción', 'Cantidad']]
+    if(nuevaConexion != False):
+
+        try:
+            with nuevaConexion.cursor() as reaccion:
+
+                queryReaccion = "SELECT reaccion, COUNT(*) " \
+                                "FROM comentariosexamen ce JOIN examenesfeedback ef ON ce.codigoFeed = ef.codigo " \
+                                "WHERE ef.idExamen = %s GROUP BY reaccion"
+
+                reaccion.execute(queryReaccion, (idExamen))
+
+                for fila in reaccion:
+                    contReaccion.append([fila[0], fila[1]])
+
+        except Exception as e:
+            print(e)
+            print("Error al obtener las reacciones")
+
+        finally:
+            nuevaConexion.close()
+
+    return contReaccion
+
 def obtenerItemsIndice(usuario,contrasenna, rangoMenor, rangoMayor):
     nuevaConexion = establecerConexion(usuario,contrasenna)
     listaItems = []
@@ -999,31 +1024,6 @@ def obtenerItemsIndice(usuario,contrasenna, rangoMenor, rangoMayor):
 
     print(listaItems)
     return listaItems
-
-def obtenerComentariosReacciones(usuario,contrasenna):
-    nuevaConexion = establecerConexion(usuario,contrasenna)
-    contReaccion = []
-    contReaccion.append(['Reacción', 'Cantidad'])
-    if(nuevaConexion != False):
-
-        try:
-            with nuevaConexion.cursor() as reaccion:
-
-                queryReaccion = "SELECT reaccion, COUNT(*) FROM comentariosexamen GROUP BY reaccion"
-
-                reaccion.execute(queryReaccion)
-
-                for fila in reaccion:
-                    contReaccion.append([fila[0], fila[1]])
-
-        except Exception as e:
-            print(e)
-            print("Error al obtener las reacciones")
-
-        finally:
-            nuevaConexion.close()
-
-    return contReaccion
 
 #Funciones Feedback
 
