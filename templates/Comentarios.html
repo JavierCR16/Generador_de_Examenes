@@ -27,22 +27,23 @@
 
     <div class="row ">
         <div class="col-md-6 w3-container divs">
-            <input name="codigoExamen" type="text" placeholder="Código de Exámen: " />
+            <input id="codigoComentarExamen" type="text" placeholder="Código de Exámen: " />
+            <button name="ingresarCodigoComentario" class="btn btn-secondary" onclick="chequearCodigo()">Ingresar</button>
 
-            <h3>Comentario</h3>
-            <textarea name="Comentario"></textarea>
-            </br>
-            <h3>Para enviar el comentario presione el emoji que más se relacione a su comentario</h3>
-            </br>
-            <form action="comentarExamen" method="post" id="ComentarioForm">
-            <div class="btn-group" role="group" aria-label="Basic example">
-                <button type="button" class="btn btn-secondary emoji">😁</button>
-                <button type="button" class="btn btn-secondary emoji">🙂</button>
-                <button type="button" class="btn btn-secondary emoji">😶</button>
-                <button type="button" class="btn btn-secondary emoji">😕</button>
-                <button type="button" class="btn btn-secondary emoji">😭</button>
+            <div id="divComent" class="w3-hide">
+                <h3>Comentario</h3>
+                <textarea id="comentarioReaccion"></textarea>
+                </br>
+                <h3>Para enviar presione el emoji que más se relacione a su comentario</h3>
+                </br>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <button value="1" name="reaccion" class="btn btn-secondary emoji" onclick="procesarComentario(this)">😁</button>
+                    <button value="2" name="reaccion" class="btn btn-secondary emoji" onclick="procesarComentario(this)">🙂</button>
+                    <button value="3" name="reaccion" class="btn btn-secondary emoji" onclick="procesarComentario(this)">😶</button>
+                    <button value="4" name="reaccion" class="btn btn-secondary emoji" onclick="procesarComentario(this)">😕</button>
+                    <button value="5" name="reaccion" class="btn btn-secondary emoji" onclick="procesarComentario(this)">😭</button>
+                </div>
             </div>
-            </form>
         </div>
     </div>
 

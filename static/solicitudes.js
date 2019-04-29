@@ -285,7 +285,30 @@ function procesarAjaxGenerarExamen(encabezado,tipoExamen,conSolucion,itemsSelecc
                     $("#secretDownload").attr("href","../static/"+datos["archivoPDF"])[0].click();
                 }
 
-                window.location.href = "CreacionExamen.html";
+                var codigo = prompt("¿Desea ingresar un código de 9 caracteres para recibir retroalimentación del examen?");
+                if( codigo !== null || codigo !== "" ) { //../static/
+                    procesarAjaxPublicarExamen(codigo, datos["idExamen"]);
+                }
+                else {
+                    window.location.href = "CreacionExamen.html";
+                }
+            }
+        }
+    })
+}
+
+function procesarAjaxPublicarExamen(codigo,idExamen){
+    $.ajax({
+
+        url: "/publicarExamenFeedback",
+        type: 'post',
+        data:JSON.stringify({codigo: codigo, idExamen: idExamen}),
+        contentType: 'application/json;charset=UTF-8',
+        dataType: "json",
+
+        success: function (datos) {
+            if(datos["success"]){
+                window.location.href = "/CreacionExamen"
             }
         }
     })
@@ -305,6 +328,23 @@ function procesarAjaxDescargarExamen(idExamen,botonDescargar){
                 $(botonDescargar).removeAttr('onclick');
                 $(botonDescargar).attr("href","../static/"+datos["nombreExamen"])[0].click();
                 $(botonDescargar).attr("href","#").attr("onclick","descargarExamen(this);return false;")
+            }
+        }
+    })
+}
+
+function procesarAjaxComentario(reaccion, codigoExamenComent, comentario){
+    $.ajax({
+
+        url: "/agregarComentario",
+        type: 'post',
+        data:JSON.stringify({codigoExamen: codigoExamenComent, comentario: comentario, reaccion: reaccion}),
+        contentType: 'application/json;charset=UTF-8',
+        dataType: "json",
+
+        success: function (datos) {
+            if(datos["success"]){
+                window.location.reload();
             }
         }
     })
@@ -772,4 +812,101 @@ function marcarExamen(valorEncabezado,tipoExamen,listaItems){
     });
 
 
+}
+
+function mostrarSelectGraficos(selectEscogido){
+    var graficoEscogido = selectEscogido.options[selectEscogido.selectedIndex].text;
+
+    $("#divGraf-1").removeClass("w3-hide");
+    $("#divGraf-1").addClass("w3-hide");
+    $("#divGraf-3").removeClass("w3-hide");
+    $("#divGraf-3").addClass("w3-hide");
+
+    if (graficoEscogido === "1-Promedio de Índice de Discriminación"){
+        $("#divGraf-1").removeClass("w3-hide");
+    }
+    else if (graficoEscogido === "3-Conteo de Reacciones a Prueba"){
+        $("#divGraf-3").removeClass("w3-hide");
+    }
+}
+
+function drawChart(titulo, datos) {
+    // Define the chart to be drawn.
+    var data = google.visualization.arrayToDataTable(datos);
+
+    var options = {title: titulo};
+
+    // Instantiate and draw the chart.
+    var chart = new google.visualization.ColumnChart(document.getElementById('containerChart'));
+    chart.draw(data, options);
+}
+
+function graficar(selectEscogido){
+    var graficoEscogido = $("#selectGraficos").val();
+
+    if (graficoEscogido === "1-Promedio de Índice de Discriminación"){
+        alert(graficoEscogido);
+    }
+    else if (graficoEscogido === "2-Conteo de Ítems por Tipo"){
+        datos = $("#subtemaGrafico").val();
+    }
+    else if (graficoEscogido === "3-Conteo de Reacciones a Prueba"){
+        datos = $("#selectExamenesGrafico").val();
+    }
+
+    google.charts.setOnLoadCallback(function () { drawChart(graficoEscogido, [
+        ['Year', 'Asia'],
+        ['2012',  900],
+        ['2013',  1000],
+        ['2014',  1170],
+        ['2015',  1250],
+        ['2016',  1530]
+    ]);});
+}
+
+function mostrarTiempo(selectEscogido){
+    var tipoEscogido = selectEscogido.options[selectEscogido.selectedIndex].text;
+
+    $("#tiempoJuego").removeClass("w3-hide");
+    if (tipoEscogido === "1-Contrarreloj"){
+        $("#tiempoJuego").addClass("w3-hide");
+        $("#tiempoJuego").removeClass("w3-hide");
+    }
+    else{
+        $("#tiempoJuego").addClass("w3-hide");
+    }
+}
+
+function chequearCodigo(){
+    var codigo = $("#codigoComentarExamen").val();
+
+    $("#divComent").removeClass("w3-hide");
+
+    $.ajax({
+
+        url: "/codigoFeedback",
+        type: 'post',
+        data:JSON.stringify({codigo: codigo}),
+        contentType: 'application/json;charset=UTF-8',
+        dataType: "json",
+
+        success: function (datos) {
+            if (datos["success"]){
+                $("#divComent").addClass("w3-hide");
+                $("#divComent").removeClass("w3-hide");
+            }
+            else{
+                $("#divComent").addClass("w3-hide");
+                alert("Código Incorrecto");
+            }
+        }
+    })
+}
+
+function procesarComentario(reaccionEscogida){
+    var reaccion = $(reaccionEscogida).val();
+    var codigoExamenComent = $("#codigoComentarExamen").val();
+    var comentario = $("#comentarioReaccion").val();
+
+    procesarAjaxComentario(reaccion, codigoExamenComent, comentario);
 }

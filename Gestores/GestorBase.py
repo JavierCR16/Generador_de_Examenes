@@ -731,6 +731,8 @@ def loadInformacionGenerarExamen(tipoExamen,usuario,contrasenna):
 def guardarExamen(objetoExamen, usuario, contrasenna):
     nuevaConexion = establecerConexion(usuario,contrasenna)
 
+    idExamen = -1
+
     if(nuevaConexion != False):
 
         try:
@@ -755,6 +757,8 @@ def guardarExamen(objetoExamen, usuario, contrasenna):
         finally:
             nuevaConexion.close()
 
+    return idExamen
+
 def obtenerExamenes(usuario,contrasenna,filtrado): #PARA EL BANCO Y EL FEEDBACK
 
     nuevaConexion = establecerConexion(usuario,contrasenna)
@@ -774,8 +778,6 @@ def obtenerExamenes(usuario,contrasenna,filtrado): #PARA EL BANCO Y EL FEEDBACK
                                         "WHERE Exa.id = EF.idExamen AND Exa.idEncabezado = Enc.id AND Exa.usuarioCreador = Usu.correo AND Enc.idPeriodo = Per.id AND Enc.idtipoexamen = Tip.id"
 
                 examenes.execute(queryExamenes) if filtrado == "Banco" else examenes.execute(queryExamenesFeedback)
-
-                examenes.execute(queryExamenes)
 
                 for atributos in examenes:
                     id = atributos[4]
@@ -921,6 +923,8 @@ def obtenerListaSemestresItem(usuario,contrasenna,idItem):
 
     return lista
 
+# Funciones de Consulta para Gráficos
+
 def obtenerPromSubtema(usuario,contrasenna,idSubtema):
     nuevaConexion = establecerConexion(usuario,contrasenna)
     promedio= 0
@@ -949,6 +953,7 @@ def obtenerPromSubtema(usuario,contrasenna,idSubtema):
 def obtenerItemsModalidad(usuario,contrasenna):
     nuevaConexion = establecerConexion(usuario,contrasenna)
     contModalidad = []
+    contModalidad.append(['Tipo', 'Cantidad'])
     if(nuevaConexion != False):
 
         try:
@@ -969,7 +974,6 @@ def obtenerItemsModalidad(usuario,contrasenna):
             nuevaConexion.close()
 
     return contModalidad
-
 
 def obtenerItemsIndice(usuario,contrasenna, rangoMenor, rangoMayor):
     nuevaConexion = establecerConexion(usuario,contrasenna)
@@ -995,6 +999,31 @@ def obtenerItemsIndice(usuario,contrasenna, rangoMenor, rangoMayor):
 
     print(listaItems)
     return listaItems
+
+def obtenerComentariosReacciones(usuario,contrasenna):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
+    contReaccion = []
+    contReaccion.append(['Reacción', 'Cantidad'])
+    if(nuevaConexion != False):
+
+        try:
+            with nuevaConexion.cursor() as reaccion:
+
+                queryReaccion = "SELECT reaccion, COUNT(*) FROM comentariosexamen GROUP BY reaccion"
+
+                reaccion.execute(queryReaccion)
+
+                for fila in reaccion:
+                    contReaccion.append([fila[0], fila[1]])
+
+        except Exception as e:
+            print(e)
+            print("Error al obtener las reacciones")
+
+        finally:
+            nuevaConexion.close()
+
+    return contReaccion
 
 #Funciones Feedback
 
@@ -1039,7 +1068,7 @@ def publicarExamen(usuario,contrasenna,idExamen,codigo):
 
                 statementPublicar = "INSERT INTO ExamenesFeedback VALUES (%s,%s)"
 
-                publicacion.execute(statementPublicar,(idExamen,codigo))
+                publicacion.execute(statementPublicar,(codigo, idExamen))
 
                 nuevaConexion.commit()
 
@@ -1049,6 +1078,29 @@ def publicarExamen(usuario,contrasenna,idExamen,codigo):
 
         finally:
             nuevaConexion.close()
+
+def existeCodigo(usuario, contrasenna, codigo):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
+    codigoExiste = 0
+
+    if(nuevaConexion != False):
+
+        try:
+            with nuevaConexion.cursor() as verificacion:
+
+                queryVerificar = "SELECT codigo, count(*) FROM ExamenesFeedback WHERE codigo = %s group by(codigo)"
+
+                verificacion.execute(queryVerificar,(codigo))
+                codigoExiste= verificacion.rowcount
+                nuevaConexion.commit()
+
+        except Exception as e:
+            print(e)
+            print("Error al verificar código")
+
+        finally:
+            nuevaConexion.close()
+    return codigoExiste
 
 def agregarComentario(usuario,contrasenna,codigo,comentario,reaccion):
     nuevaConexion = establecerConexion(usuario, contrasenna)

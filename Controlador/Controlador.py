@@ -282,11 +282,16 @@ class Controlador:
 
         objetoExamen = ObjetoExamen(None,encabezado,tipoExamen,fechaParseada,usuario,archivoPDF,idItems)
 
-        GestorBase.guardarExamen(objetoExamen,usuario,contrasenna)
+        return GestorBase.guardarExamen(objetoExamen,usuario,contrasenna)
+
 
     def obtenerExamenes(self,usuario,contrasenna,filtrado):
 
         return GestorBase.obtenerExamenes(usuario,contrasenna,filtrado)
+
+    def obtenerExamenesFeedback(self,usuario,contrasenna):
+
+        return GestorBase.obtenerExamenesFeedback(usuario,contrasenna)
 
     def descargarExamen(self,idExamen,usuario,contrasenna):
 
@@ -323,6 +328,10 @@ class Controlador:
     def publicarExamen(self, usuario, contrasenna, idExamen, codigo):
 
         GestorBase.publicarExamen(usuario, contrasenna, idExamen, codigo)
+
+    def existeCodigo(self, usuario, contrasenna, codigo):
+
+        return GestorBase.existeCodigo(usuario, contrasenna, codigo)
 
     def agregarComentario(self, usuario, contrasenna,codigo,comentario, reaccion):
 

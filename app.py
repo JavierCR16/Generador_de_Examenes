@@ -441,9 +441,10 @@ def generarExamen():
 
     nombrePDF = Controller.generarExamen(objEncabezado,items,respuestas,tipoExamen,conSolucion,puntajes)
 
-    Controller.guardarExamen(objEncabezado.getId(),tipoExamen,"static/"+nombrePDF,idItems,session['user'],session['contrasenna'])
+    idExamen = Controller.guardarExamen(objEncabezado.getId(),tipoExamen,"static/"+nombrePDF,idItems,session['user'],session['contrasenna'])
 
-    return jsonify({"success":1,"archivoPDF":nombrePDF})
+
+    return jsonify({"success":1,"archivoPDF":nombrePDF, "idExamen":idExamen})
 
 @app.route("/BancoExamenes")
 def filtrarExamenes():
@@ -481,7 +482,16 @@ def ObtenerEstadisticas():
 #GRAFICOS
 @app.route('/Graficos')
 def obtenerGraficos():
-    return render_template("Graficos.html")
+    listaTemas = Controller.obtenerTemas(session['user'],session['contrasenna'])
+    listaExamenes = Controller.obtenerExamenes(session['user'], session['contrasenna'], "Feedback")
+    return render_template("Graficos.html", temas = listaTemas, examenes = listaExamenes)
+
+@app.route('/obtenerDatosGraficos', methods= ['post'])
+def obtenerDatosGraficos():
+    listaTemas = Controller.obtenerTemas(session['user'],session['contrasenna'])
+    listaExamenes = Controller.obtenerExamenes(session['user'], session['contrasenna'], "Feedback")
+
+    return render_template("Graficos.html", temas = listaTemas, examenes = listaExamenes)
 
 #FEEDBACK EXAMEN
 @app.route('/FeedbackExamenes')
@@ -509,38 +519,55 @@ def publicarExamenFeedback():
 
     Controller.publicarExamen(session['user'],session['contrasenna'],idExamen,codigo)
 
-    return jsonify()
+    return jsonify({"success":1})
+
+#JUEGO
+@app.route('/SesionJuego')
+def crearJuego():
+    listaTemas = Controller.obtenerTemas(session['user'], session['contrasenna'])
+
+    return render_template("SesionJuego.html", temas = listaTemas)
+
+#ESTUDIANTES
+
+@app.route('/EstudiantesInicio')
+def estudiantesInicio():
+    session['user'] = "estudiante.tec"
+    session['contrasenna'] = "e5tuD1ant3"
+
+    return render_template('EstudiantesInicio.html')
+
+@app.route('/JuegoLogIn')
+def juegoLogIn():
+
+    return render_template('JuegoLogIn.html')
+
+@app.route('/Comentarios')
+def comentarios():
+    return render_template('Comentarios.html')
+
+@app.route('/codigoFeedback', methods=['post'])
+def codigoFeedback():
+    datoFeedback = request.get_json()
+
+    codigo = datoFeedback["codigo"]
+
+    existeCodigo = Controller.existeCodigo(session['user'], session['contrasenna'], codigo)
+
+    return jsonify({"success": existeCodigo})
 
 @app.route('/agregarComentario',methods=['post'])
 def agregarComentario():
 
     infoComentario = request.get_json()
 
-    codigo = infoComentario["codigo"]
+    codigo = infoComentario["codigoExamen"]
     comentario = infoComentario["comentario"]
-    reaccion =  infoComentario["reaccion"]
+    reaccion = infoComentario["reaccion"]
 
     Controller.agregarComentario(session['user'],session['contrasenna'],codigo,comentario,reaccion)
 
-    return jsonify({"success":"Su comentario ha sido enviado con éxito"})
-
-#JUEGO
-
-@app.route('/EstudiantesInicio')
-def estudiantesInicioVolver():
-    return render_template('EstudiantesInicio.html')
-
-@app.route('/EstudiantesInicio',methods=['post'])
-def estudiantesInicio():
-    return render_template('EstudiantesInicio.html')
-
-@app.route('/JuegoLogIn')
-def juegoLogIn():
-    return render_template('JuegoLogIn.html')
-
-@app.route('/Comentarios')
-def comentarios():
-    return render_template('Comentarios.html')
+    return jsonify({"success":1,"mensaje":"Su comentario ha sido enviado con éxito"})
 
 if __name__ == '__main__':
 
