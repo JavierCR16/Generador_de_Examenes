@@ -26,8 +26,6 @@ from Gestores import GestorExamenes
 #TODO OCULTAR MOSTRAR MENSAJE Y COULTAR BOTONES PARA BORRADOR
 #TODO QUITAR LO DE AM Y PM DEL INPUT DE TIPO TIME.
 
-#TODO BORRAR EXAMENES GENERADOS (NO LOS DESCARGADOS)
-
 #FUNCIONES DE CONEXION Y QUERIES
 
 def establecerConexion(usuario,password):#usuario,password):
@@ -234,29 +232,6 @@ def filtrarItemsRespuestas(idSubtema, tipoFiltrado, usuario, contrasenna):
             nuevaConexion.close()
 
     return listaItems
-
-def filtrarItemsSeleccion(idSubtema,usuario,contrasenna): #FIXME Not in use
-    nuevaConexion = establecerConexion(usuario,contrasenna)
-    listaItemsSeleccion = []
-
-    if(nuevaConexion != False):
-
-        try:
-            with nuevaConexion.cursor() as itemsSelect:
-
-                queryItems = "SELECT idItem,id, descripcion,tipo, puntaje, indiceDiscriminacion FROM Item WHERE idSubtema = %s AND tipo = 'S' "
-
-                itemsSelect.execute(queryItems,(idSubtema))
-
-                for atributos in itemsSelect:
-                    listaItemsSeleccion+= [ObjetoItem(atributos[0],atributos[1],
-                                                      atributos[2],atributos[3],idSubtema,atributos[4],atributos[5])]
-
-        except:
-            print("Error al filtrar los ítems de selección única")
-        finally:
-            nuevaConexion.close()
-    return listaItemsSeleccion
 
 def cargarEncabezados(usuario,contrasenna):
 

@@ -453,7 +453,7 @@ def filtrarExamenes():
     return render_template("BancoExamenes.html",examenes = listaExamenes)
 
 @app.route("/descargarExamen", methods=['post'])
-def descargarExamen():#TODO BORRAR AQUI TODOS LOS ARCHIVOS QUE ESTEN EN STATIC QUE EMPIECEN CON Examen
+def descargarExamen():
 
     descargaInfo = request.get_json()
 

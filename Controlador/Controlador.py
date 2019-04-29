@@ -55,12 +55,6 @@ class Controlador:
 
         return GestorBase.obtenerInformacionItem(idItem,usuario,contrasenna)
 
-    def filtrarItemsSeleccion(self,subtemaRespuestas,usuario,contrasenna): #FIXME NOT IN USE.
-
-        idSubtema = subtemaRespuestas.split("-")[0]
-
-        return GestorBase.filtrarItemsSeleccion(idSubtema,usuario,contrasenna)
-
     def obtenerTExamen(self,usuario,contrasenna):
         return GestorBase.cargarTipoExamenes(usuario,contrasenna)
 
