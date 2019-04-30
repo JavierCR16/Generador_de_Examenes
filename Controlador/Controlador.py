@@ -122,9 +122,9 @@ class Controlador:
 
         informacionItem.idLargo = '-'.join(listaidLargo)
 
-        informacionItem.descripcion = descripcionModificar if descripcionModificar != "" else informacionItem.descripcion
+        informacionItem.descripcion =  descripcionModificar
 
-        informacionItem.puntaje = puntajeModificar if puntajeModificar != "" else informacionItem.puntaje
+        informacionItem.puntaje = puntajeModificar
 
         GestorBase.modificarItem(informacionItem,usuario,contrasenna)
 

@@ -204,6 +204,7 @@ function procesarAjaxVerificarEdiciones(accion,idSugerencia,sugerencia,idItem){
 
         success: function (datos) {
             $("#modalVerificacion").modal('hide');
+            window.location.href = "/VerificacionEdicion"
         }
     })
 }
@@ -428,9 +429,14 @@ function agregarIndiceDiscriminacion(descripItems) {
 
     var idSubtema = $('#idSubtemaSecretAdd').val();
 
-    procesarAjaxIndice(idItemSecreto,nuevoIndice,idSubtema,valorBoton,descripItems);
+    if(nuevoIndice.trim() !== "" && !isNaN(nuevoIndice)) {
 
-    closeFormAdd()
+        procesarAjaxIndice(idItemSecreto, nuevoIndice, idSubtema, valorBoton, descripItems);
+
+        closeFormAdd()
+    }
+    else
+        imprimirMensaje("Debe ingresar un índice de discriminación válido.")
 }
 
 function modificarEliminarIndiceDiscriminacion(valorBoton,descripItems) {
@@ -441,16 +447,18 @@ function modificarEliminarIndiceDiscriminacion(valorBoton,descripItems) {
 
     var idSubtema = $('#idSubtemaSecretMod').val();
 
-    procesarAjaxIndice(idItemSecreto,nuevoIndice,idSubtema,valorBoton,descripItems);
+    if(valorBoton === "eliminarIndiceBoton" || (nuevoIndice.trim() !== "" && !isNaN(nuevoIndice))) {
 
-    closeFormModDel()
+        procesarAjaxIndice(idItemSecreto, nuevoIndice, idSubtema, valorBoton, descripItems);
+
+        closeFormModDel()
+    }
+    else
+        imprimirMensaje("Debe ingresar un índice de discriminación válido.")
 }
 
 function verificarIndiceDiscriminacion(botonClickeado,descripItems) {
-    console.log(descripItems);
     descripItems = !(descripItems instanceof Array) ? descripItems.split(",") : descripItems;
-    console.log(descripItems);
-
 
     var indice = $(botonClickeado).closest('tr').index();
     var filaTablaDiscriminacion = $("#tablaDiscriminacion tr").eq(indice+1).find('td');
@@ -505,21 +513,16 @@ function desplegarDescripcion(descripcionesItems,selectItem) {
 
 function previewEncabezado() {
 
-    var curso = "Probabilidades";  //LUEGO INCLUIR UN SELECT CON CURSOS
-    var escuela = "Escuela de Matemáticas";  //LUEGO INCLUIR UN SELECT CON ESCUELAS
-
-    var periodoDOM = document.getElementById("selectPeriodo");
-    var periodo = periodoDOM.options[periodoDOM.selectedIndex].text;
-
+    var curso = "Probabilidades";
+    var escuela = "Escuela de Matemáticas";
+    var periodo = $("#selectPeriodo").val();
     var fecha = $("#fechaEncabezado").val();
     var tiempo = $("#tiempoEncabezado").val();
-
-    var tipoDOM = document.getElementById("selectTipo");
-    var tipo = tipoDOM.options[tipoDOM.selectedIndex].text;
-
+    var tipo = $("#selectTipo").val();
     var instrucciones = $("#instruccionesEncabezado").val();
 
-    procesarAjaxEncabezado(curso, escuela, periodo, fecha, tiempo,tipo, instrucciones);
+    if(validarEncabezado())
+        procesarAjaxEncabezado(curso, escuela, periodo, fecha, tiempo,tipo, instrucciones);
 
 }
 
@@ -583,7 +586,10 @@ function enviarSugerencia(idItem){
 
     var comentarios = $("#comentarios").val();
 
-    procesarAjaxSugerencias(nuevaEdicion,comentarios,idItem)
+    if(nuevaEdicion.trim() === "" || comentarios.trim() === "")
+        imprimirMensaje("Se debe ingresar una nueva descripción como sugerencia y comentarios respecto a dicha sugerencia");
+    else
+        procesarAjaxSugerencias(nuevaEdicion,comentarios,idItem)
 }
 
 function aprobacionSugerencia(accion,idSugerencia,sugerencia = null,idItem = null){procesarAjaxVerificarEdiciones(accion,idSugerencia,sugerencia,idItem);}
@@ -920,4 +926,135 @@ function procesarComentario(reaccionEscogida){
     var comentario = $("#comentarioReaccion").val();
 
     procesarAjaxComentario(reaccion, codigoExamenComent, comentario);
+}
+
+function imprimirMensaje(mensaje){
+
+    var modal = "<div class=\"modal fade\" id=\"modalAlerta\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">\n" +
+        "        <div class=\"modal-dialog\" role=\"document\">\n" +
+        "            <div class=\"modal-content\">\n" +
+        "                <div class=\"modal-header\">\n" +
+        "                    <h2 class=\"modal-title\" id=\"exampleModalLabel\">Alerta</h2>\n" +
+        "                    <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n" +
+        "                        <span aria-hidden=\"true\">&times;</span>\n" +
+        "                    </button>\n" +
+        "                </div>\n" +
+        "                <div id='descripcionAlerta' class=\"modal-body\">\n" +
+        "                    ...\n" +
+        "                </div>\n" +
+        "                <div class=\"modal-footer\">\n" +
+        "                    <button type=\"button\" class=\"btn btn-secondary modalB\" data-dismiss=\"modal\">Cerrar</button>\n" +
+        "                </div>\n" +
+        "            </div>\n" +
+        "        </div>\n" +
+        "    </div>";
+
+    var modalJquery = $(modal);
+    modalJquery.find("#descripcionAlerta").text(mensaje);
+
+    modalJquery.modal({
+        show:true
+    })
+
+
+
+}
+
+function subtemaValido(idSelect){
+
+    var select =  $("#"+idSelect);
+    if(select.val() === null ||select.val() === "Escoger Subtema"){
+        imprimirMensaje("Debe escoger un subtema válido.");
+        return false;
+    }
+
+    return true
+}
+
+function itemValido(idSelect){
+    var select =  $("#"+idSelect);
+    if(select.val() === null ||select.val() === "Escoger Item"){
+
+        imprimirMensaje("Debe escoger un item válido.");
+        return false;
+    }
+
+    return true
+}
+
+function validarItem(descripcion,puntaje,selectSubtema){
+
+    var subtemaValidado = subtemaValido(selectSubtema);
+    var puntajeObj = $("#"+puntaje);
+    if(subtemaValidado){
+        if($("#"+descripcion).val().trim() === "" || puntajeObj.val().trim() === "" || isNaN(puntajeObj.val()) ) {
+            imprimirMensaje("Ingrese una descripción y un puntaje válidos. Ninguno puede estar vacío.");
+            return false
+        }
+        return true
+    }
+    else{
+        return false
+    }
+
+}
+
+function validarItemModificar(descripcion,puntaje){
+
+    var puntajeObj = $("#"+puntaje);
+
+    if(itemValido("itemModiEli")) {
+        if ($("#" + descripcion).val().trim() === "" || puntajeObj.val().trim() === "" || isNaN(puntajeObj.val())) {
+            imprimirMensaje("Ingrese una descripción y un puntaje válidos. Ninguno puede estar vacío.");
+            return false
+        }
+        return true
+    }
+    return false
+
+
+
+}
+
+function validarRespuestas(idSelectItem,listaRespuestas,idRespDesarrollo){
+    var itemValidado = itemValido(idSelectItem);
+
+    if(itemValidado){
+        var tipoItem = $("#"+idSelectItem).val().split("/Item")[0].split("-")[2];
+        if (tipoItem === "S" || tipoItem === "PS"){
+
+            for(var i =0; i< listaRespuestas.length; i++){
+                if($(listaRespuestas[i]).val().trim() === "") {
+                    imprimirMensaje("Se deben ingresar todas las respuestas.");
+                    return false
+                }
+            }
+        }
+        else{
+            if ($("#"+idRespDesarrollo).val().trim() === "")
+                imprimirMensaje("La respuesta del item seleccionado no puede ser vacía.");
+            return false
+        }
+        return true
+
+
+    }
+    return false
+
+
+
+}
+
+function validarEncabezado(){
+
+    var fecha = $("#fechaEncabezado").val();
+    var tiempo = $("#tiempoEncabezado").val();
+    var instrucciones = $("#instruccionesEncabezado").val();
+
+    if (fecha.trim() === ""  || tiempo === "" || instrucciones.trim() === "") {
+        imprimirMensaje("Se deben ingresar todos los datos para la previsualización del encabezado");
+        return false
+    }
+
+    return true
 }

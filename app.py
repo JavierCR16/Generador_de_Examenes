@@ -49,7 +49,7 @@ def ventanaCRUDTemasSubtemas():
 
     return render_template("CRUDTemasSubtemas.html", temas = listaTemas)
 
-@app.route('/crudTemasSubtemas', methods=['post'])
+@app.route('/crudTemasSubtemas', methods=['post']) #TODO PONER MENSAJE DE EXITO O FALLO
 def crudTemasSubtemas():
 
     valor_boton = request.form.get("accioncrudtemassubtemas")
@@ -529,8 +529,8 @@ def crearJuego():
 
 @app.route('/EstudiantesInicio')
 def estudiantesInicio():
-    session['user'] = "estudiante.tec"
-    session['contrasenna'] = "e5tuD1ant3"
+    session['userEst'] = "estudiante.tec"
+    session['contrasennaEst'] = "e5tuD1ant3"
 
     return render_template('EstudiantesInicio.html')
 
@@ -549,7 +549,7 @@ def codigoFeedback():
 
     codigo = datoFeedback["codigo"]
 
-    existeCodigo = Controller.existeCodigo(session['user'], session['contrasenna'], codigo)
+    existeCodigo = Controller.existeCodigo(session['userEst'], session['contrasennaEst'], codigo)
 
     return jsonify({"success": existeCodigo})
 
@@ -562,7 +562,7 @@ def agregarComentario():
     comentario = infoComentario["comentario"]
     reaccion = infoComentario["reaccion"]
 
-    Controller.agregarComentario(session['user'],session['contrasenna'],codigo,comentario,reaccion)
+    Controller.agregarComentario(session['userEst'],session['contrasennaEst'],codigo,comentario,reaccion)
 
     return jsonify({"success":1,"mensaje":"Su comentario ha sido enviado con éxito"})
 

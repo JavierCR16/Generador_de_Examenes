@@ -21,10 +21,12 @@ from Gestores import GestorExamenes
 #TODO Buscar cualquier uso que se haga de arreglos en un for y dejar setteado el valor que corresponde mediante loop.index0
 
 #TODO VER LO DEL API DEL GMAIL PARA ENVIAR CORREO
-#TODO VALIDACIONES, CAMPOS COMPLETOS, MOSTRAR MENSAJES DE EXITO.
+#TODO VALIDACIONES, CAMPOS COMPLETOS, MOSTRAR MENSAJES DE EXITO. VER BUG EN BORRADOR, NO SETEA BIEN EL TIPO DE EXAMEN SI YA ESTA MARCADO
 
 #TODO OCULTAR MOSTRAR MENSAJE Y COULTAR BOTONES PARA BORRADOR
 #TODO QUITAR LO DE AM Y PM DEL INPUT DE TIPO TIME.
+#TODO PARA EVITAR FORMS RESUBMISSION POR SI EL MAE RECARGARA LA PAGINA, CUALQUIER RENDER TEMPLATE QUE NO SEA EL ORIGINAL, HACERLE UN REDIRECT AL ORIGINAL
+#TODO AL ACEPTAR O RECHAZAR UNA SUGERENCIA DE EDICION SE TIENE QUE ACTUALIZAR LA TABLA EN EL MOMENTO
 
 #FUNCIONES DE CONEXION Y QUERIES
 
@@ -53,6 +55,7 @@ def obtenerInformacionItem(idItem,usuario,contrasenna):
                     objetoItem = ObjetoItem(idItem,atributos[0],atributos[1],atributos[2], None,atributos[3],None)
         except:
             print("Error al obtener la informacion del item")
+
         finally:
             nuevaConexion.close()
     return objetoItem
@@ -78,6 +81,7 @@ def cargarUsuarios(usuario,contrasenna):
 
         except:
             print("Error al cargar los usuarios.")
+            return "Error"
 
         finally:
             nuevaConexion.close()
@@ -928,6 +932,7 @@ def obtenerItemsModalidad(usuario,contrasenna):
     nuevaConexion = establecerConexion(usuario,contrasenna)
     contModalidad = []
     contModalidad.append(['Tipo', 'Cantidad'])
+    diccionarioTipos = {"S":"Selección Única","D":"Desarrollo","PS":"Práctica de Selección Única","PD":"Práctica de Desarrollo"}
     if(nuevaConexion != False):
 
         try:
@@ -938,7 +943,7 @@ def obtenerItemsModalidad(usuario,contrasenna):
                 modalidad.execute(queryModalidad)
 
                 for fila in modalidad:
-                    contModalidad.append([fila[0], fila[1]])
+                    contModalidad.append([diccionarioTipos[fila[0]], fila[1]])
 
         except Exception as e:
             print(e)
@@ -950,7 +955,7 @@ def obtenerItemsModalidad(usuario,contrasenna):
     return contModalidad
 
 def obtenerComentariosReacciones(usuario,contrasenna, idExamen):
-    emojis = ["😁", "🙂", "😶", "😕", "😭"];
+    emojis = ["😁", "🙂", "😶", "😕", "😭"]
     nuevaConexion = establecerConexion(usuario,contrasenna)
     contReaccion = [['Reacción', 'Cantidad']]
     if(nuevaConexion != False):

@@ -52,7 +52,6 @@
                     <label>Subtemas</label>
 
                     <select id = "selectSubAgregar" name = "selectSubAgregar">
-                        <option>Escoger Subtema</option>
                     </select>
 
                     <label>Selección Única</label>
@@ -72,12 +71,12 @@
                     <br><br>
 
                     <label>Inserte un ítem en formato LaTeX</label>
-                    <textarea name="descripcionItemAgregar"> </textarea>
+                    <textarea id = "descripcionItemAgregar" name="descripcionItemAgregar"> </textarea>
 
                     <label>Puntaje </label>
-                    <input type = text name="puntajeAgregar">
+                    <input type = text id = "puntajeAgregar" name="puntajeAgregar">
 
-                    <input type = submit name = "accioncruditems" value = "Agregar Item">
+                    <input type = submit name = "accioncruditems" onclick = "return validarItem('descripcionItemAgregar','puntajeAgregar','selectSubAgregar')" value = "Agregar Item">
 
                 </form>
             </div>
@@ -122,9 +121,9 @@
                         <label>Puntaje </label>
                         <input id ="puntajeMod" type = text name="puntajeModificar">
 
-                        <input type = submit name = "accioncruditems" value = "Modificar Item">
+                        <input type = submit name = "accioncruditems" onclick="return validarItemModificar('descItemMod','puntajeMod')" value = "Modificar Item">
 
-                        <input type = submit name = "accioncruditems" value = "Eliminar Item">
+                        <input type = submit name = "accioncruditems" onclick="return itemValido('itemModiEli')" value = "Eliminar Item">
                     </div>
                 </form>
             </div>

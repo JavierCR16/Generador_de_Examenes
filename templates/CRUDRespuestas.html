@@ -65,22 +65,22 @@
 
                     <h2>Respuestas</h2>
                     <div hidden id = "divrespAddSelect">
-                        <input type="text" name="Arespuesta1" placeholder="respuesta1">
+                        <input id="Arespuesta1" type="text" name="Arespuesta1" placeholder="respuesta1">
                         <input type="radio" name="Arespuesta" value=1 checked><br>
-                        <input type="text" name="Arespuesta2" placeholder="respuesta2">
+                        <input id="Arespuesta2" type="text" name="Arespuesta2" placeholder="respuesta2">
                         <input type="radio" name="Arespuesta" value=2><br>
-                        <input type="text" name="Arespuesta3" placeholder="respuesta3">
+                        <input id="Arespuesta3" type="text" name="Arespuesta3" placeholder="respuesta3">
                         <input type="radio" name="Arespuesta" value=3><br>
-                        <input type="text" name="Arespuesta4" placeholder="respuesta4">
+                        <input id="Arespuesta4" type="text" name="Arespuesta4" placeholder="respuesta4">
                         <input type="radio" name="Arespuesta" value=4><br>
 
                     </div>
 
                     <div hidden id = "divrespAddDesarrollo">
-                        <textarea name = "respAddDesarrollo"> </textarea>
+                        <textarea id = "respAddDesarrollo" name = "respAddDesarrollo"> </textarea>
                     </div>
 
-                    <input hidden id="botonAddResp" name = "respuestasAdd" class="btnSearch" type="submit" value="Agregar Respuestas">
+                    <input hidden id="botonAddResp" name = "respuestasAdd" class="btnSearch" type="submit" onclick="return validarRespuestas('selectItemRespAgregar',['#Arespuesta1','#Arespuesta2','#Arespuesta3','#Arespuesta4'],'respAddDesarrollo')" value="Agregar Respuestas">
                 </form>
             </div>
             <div class="tab-pane tabs fade" id="nav-ModificarEliminarRespuestas" role="tabpanel" aria-labelledby="nav-ModificarEliminarRespuestas-tab">
@@ -105,7 +105,7 @@
                 <label>Ítems</label>
                 <select onchange="cargarRespuestasModificar(this)" id = "selectItemRespModificar" name = "selectItemRespModificar">
 
-                </select><br></select>
+                </select><br>
 
                 <i id="despDescModResp" class="fa fa-eye"></i> <br><br>
 
@@ -133,7 +133,7 @@
                     <textarea id = "respModDesarrollo" name = "respModDesarrollo" ></textarea>
                 </div>
 
-                <input hidden id = "botonModResp" name = "respuestasMod" class="btnSearch" type="submit" value="Modificar Respuestas">
+                <input hidden id = "botonModResp" name = "respuestasMod" class="btnSearch" type="submit" onclick ="return validarRespuestas('selectItemRespModificar',['#Mrespuesta1','#Mrespuesta2','#Mrespuesta3','#Mrespuesta4'],'respModDesarrollo')" value="Modificar Respuestas">
             </form>
             </div>
         </div>
