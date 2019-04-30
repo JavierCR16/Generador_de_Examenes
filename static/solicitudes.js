@@ -280,18 +280,24 @@ function procesarAjaxGenerarExamen(encabezado,tipoExamen,conSolucion,itemsSelecc
         dataType: "json",
 
         success: function (datos) {
+            var codigo = "";
+
             if(datos["success"]){
                 var retVal = confirm("¿Desea descargar el examen en formato PDF? De igual forma puede descargarlo en la sección de Filtrado de Exámenes");
                 if( retVal === true ) { //../static/
                     $("#secretDownload").attr("href","../static/"+datos["archivoPDF"])[0].click();
                 }
 
-                var codigo = prompt("¿Desea ingresar un código de 9 caracteres para recibir retroalimentación del examen?");
-                if( codigo !== null && codigo !== "" ) { //../static/
-                    procesarAjaxPublicarExamen(codigo, datos["idExamen"]);
-                }
-                else {
-                    window.location.href = "/CreacionExamen";
+                while(true) {
+                    codigo = prompt("Ingrese un código de 9 caracteres si desea publicar el examen para obtener retroalimentación por parte de los estudiantes.");
+                    if (codigo === null) {
+                        window.location.href = "/CreacionExamen";
+                        break;
+                    }
+                    else if (codigo.length === 9) {
+                        procesarAjaxPublicarExamen(codigo, datos["idExamen"]);
+                        break;
+                    }
                 }
             }
         }
@@ -659,13 +665,15 @@ function loadInformacionExamen(){
 
 }
 
-function ObtenerDatosdeEstadistica() {
+function ObtenerDatosdeEstadistica(selectItem) {
 
-    var idEstadistica = $("#selectEstadisticas").children("option:selected").val().split("-")[0];
+    if(itemValido(selectItem)) {
+        var idEstadistica = $("#selectEstadisticas").children("option:selected").val().split("-")[0];
 
-    var idItem = $("#selectItemEstadisticas").children("option:selected").val().split("/Item")[1];
+        var idItem = $("#selectItemEstadisticas").children("option:selected").val().split("/Item")[1];
 
-    obtenerAjaxEstadisticasItems(idItem,idEstadistica)
+        obtenerAjaxEstadisticasItems(idItem, idEstadistica)
+    }
 }
 
 function obtenerAjaxEstadisticasItems(idItem,idEstadistica) {
@@ -873,11 +881,14 @@ function drawChart(titulo, datos) {
 }
 
 function graficar(selectEscogido){
-    if(selectEscogido.index !== 0){
-        var graficoEscogido = $("#"+selectEscogido).val().split("-")[1];
-        var id = $("#"+selectEscogido).val().split("-")[0];
+    var select = $("#"+selectEscogido);
+
+    if(select[0].selectedIndex!== 0){
+        var id = select.val().split("-")[0];
+        var graficoEscogido = select.val().split("-")[1];
 
         var datos = "";
+
         switch(graficoEscogido){
             case "Promedio de Índice de Discriminación":
                 break;
@@ -887,9 +898,13 @@ function graficar(selectEscogido){
                 datos = $("#selectExamenesGrafico").val().split("-")[0];
                 break;
         }
-        procesarAjaxGrafico(id, graficoEscogido, datos);
-
+        if(isNaN(datos))
+            imprimirMensaje("Debe seleccionar un exámen válido");
+        else
+            procesarAjaxGrafico(id, graficoEscogido, datos);
     }
+    else
+        imprimirMensaje("Seleccione una opción para graficar.")
 }
 
 function mostrarTiempo(selectEscogido){
@@ -935,7 +950,10 @@ function procesarComentario(reaccionEscogida){
     var codigoExamenComent = $("#codigoComentarExamen").val();
     var comentario = $("#comentarioReaccion").val();
 
-    procesarAjaxComentario(reaccion, codigoExamenComent, comentario);
+    if(comentario.trim() === "")
+        imprimirMensaje("El comentario no puede ir vacío.")
+    else
+        procesarAjaxComentario(reaccion, codigoExamenComent, comentario);
 }
 
 function imprimirMensaje(mensaje){
