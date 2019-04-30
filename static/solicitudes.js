@@ -351,8 +351,8 @@ function procesarAjaxComentario(reaccion, codigoExamenComent, comentario){
 }
 
 function procesarAjaxGrafico(consulta, titulo, datos){
-    $.ajax({
 
+    $.ajax({
         url: "/obtenerDatosGraficos",
         type: 'post',
         data:JSON.stringify({consulta: consulta, datos: datos}),
@@ -892,8 +892,6 @@ function mostrarTiempo(selectEscogido){
 function chequearCodigo(){
     var codigo = $("#codigoComentarExamen").val();
 
-    $("#divComent").removeClass("w3-hide");
-
     $.ajax({
 
         url: "/codigoFeedback",
@@ -908,6 +906,7 @@ function chequearCodigo(){
                 $("#divComent").removeClass("w3-hide");
             }
             else{
+                $("#divComent").removeClass("w3-hide");
                 $("#divComent").addClass("w3-hide");
                 alert("Código Incorrecto");
             }

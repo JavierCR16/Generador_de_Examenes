@@ -950,6 +950,7 @@ def obtenerItemsModalidad(usuario,contrasenna):
     return contModalidad
 
 def obtenerComentariosReacciones(usuario,contrasenna, idExamen):
+    emojis = ["😁", "🙂", "😶", "😕", "😭"];
     nuevaConexion = establecerConexion(usuario,contrasenna)
     contReaccion = [['Reacción', 'Cantidad']]
     if(nuevaConexion != False):
@@ -964,7 +965,7 @@ def obtenerComentariosReacciones(usuario,contrasenna, idExamen):
                 reaccion.execute(queryReaccion, (idExamen))
 
                 for fila in reaccion:
-                    contReaccion.append([fila[0], fila[1]])
+                    contReaccion.append([emojis[fila[0]-1], fila[1]])
 
         except Exception as e:
             print(e)

@@ -495,7 +495,7 @@ def obtenerDatosGraficos():
     return jsonify({"success": 1, "estadisticas": datos})
 
 #FEEDBACK EXAMEN VISUALIZAR
-@app.route('/filtrarExamenesFeedback',methods=['post'])
+@app.route('/filtrarComentariosFeedback',methods=['post'])
 def filtrarExamenesFeedback():
 
     infoFeedback = request.get_json()
