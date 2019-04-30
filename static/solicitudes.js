@@ -351,6 +351,7 @@ function procesarAjaxComentario(reaccion, codigoExamenComent, comentario){
 
         success: function (datos) {
             if(datos["success"]){
+                alert(datos["mensaje"]);
                 window.location.reload();
             }
         }
@@ -983,8 +984,6 @@ function imprimirMensaje(mensaje){
     modalJquery.modal({
         show:true
     })
-
-
 
 }
 
