@@ -727,7 +727,10 @@ function generarExamen(botonSeleccionado){
         itemsSeleccionados.push($(this).val());
 });
 
-    procesarAjaxGenerarExamen(encabezado,tipoExamen,conSolucion,itemsSeleccionados);
+    if(encabezado === "Escoger Encabezado" || tipoExamen === undefined || itemsSeleccionados.length === 0)
+        imprimirMensaje("Se debe escoger un encabezado válido, un tipo de examen y al menos un ítem de examen. Por favor intente de nuevo.");
+    else
+        procesarAjaxGenerarExamen(encabezado,tipoExamen,conSolucion,itemsSeleccionados);
 
 
 }
@@ -750,13 +753,19 @@ function guardarBorrador(){
 
     var idItems = [];
 
-    $.each($("input[name ='items']:checked"), function () {
+    if(encabezado === "Escoger Encabezado" || tipoExamen === undefined)
+        imprimirMensaje("Debe seleccionar un encabezado válido y un tipo de examen para poder generar un borrador de examen.");
+
+    else
+    {
+        $.each($("input[name ='items']:checked"), function () {
             idItems.push($(this).val().split(",")[1])
-    });
+        });
 
-    var data = encabezado + "%" +tipoExamen + "%" + JSON.stringify(idItems);
+        var data = encabezado + "%" + tipoExamen + "%" + JSON.stringify(idItems);
 
-    download("Borrador.exam",data)
+        download("Borrador.exam", data)
+    }
 
 }
 
@@ -831,8 +840,9 @@ function marcarExamen(valorEncabezado,tipoExamen,listaItems){
     });
 
     $.each($("input[name = 'tipoExamen']"),function () {
+
         if($(this).val() === tipoExamen)
-            $(this).attr('checked', true);
+            $(this).prop('checked', true);
     });
 
 

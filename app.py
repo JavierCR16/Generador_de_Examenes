@@ -408,7 +408,7 @@ def creacionExamen():
 def loadInformacionExamen():
     infoExamen = request.get_json()
 
-    tipoExamen = infoExamen["tipoExamen"]#request.form.get("tipoExamen")
+    tipoExamen = infoExamen["tipoExamen"]
 
     informacionExamen = Controller.loadInformacionExamen(tipoExamen, session['user'], session['contrasenna'])
 
