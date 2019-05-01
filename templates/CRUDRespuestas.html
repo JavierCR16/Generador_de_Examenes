@@ -39,7 +39,7 @@
         <div class="tab-content" id="nav-tabContent">
             <div class="tab-pane tabs fade show active" id="nav-AgregarRespuestas" role="tabpanel" aria-labelledby="nav-AgregarRespuestas-tab">
                 <form action="crudRespuestasAgregar" method="post">
-                    <label>Tema</label>
+                    <h3>Tema</h3>
                     <select onchange="obtenerSubtemas(this,'selectSubAgregarResp')" name="selectTemaRespAgregar">
                         <option>Escoger Tema</option>
 
@@ -47,21 +47,21 @@
                             <option> {{ tema.getId()}}-{{tema.getTema()}} </option>
                         {% endfor %}
 
-                    </select><br>
+                    </select>
 
-                    <label>Subtemas</label>
+                    <h3>Subtemas</h3>
 
                     <select id = "selectSubAgregarResp" name="selectSubAgregarResp" onchange="obtenerItemsRespuestas(this,'SinResp','selectItemRespAgregar','despDescAddResp')">
 
-                    </select><br>
+                    </select>
 
-                    <label>Ítems</label>
+                    <h3>Ítems</h3>
 
                     <select onchange="mostrarAddRespuestas(this)" id = "selectItemRespAgregar" name = "selectItemRespAgregar">
 
-                    </select><br>
+                    </select>
 
-                    <i id="despDescAddResp" class="fa fa-eye"></i> <br>
+                    <i id="despDescAddResp" class="fa fa-eye eyeI"></i> <br>
 
                     <h2>Respuestas</h2>
                     <div hidden id = "divrespAddSelect">
