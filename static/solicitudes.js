@@ -186,15 +186,8 @@ function procesarAjaxJuego(codigo,cantItems,idSubtema,tipoJuego,cantidadTiempo){
         dataType: "json",
 
         success: function (datos) {
-
-            for(var i=0; i< datos["nombreImagenes"].length;i++){
-                alert("Iniciar Juego");
-
-                var nombre = datos["nombreImagenes"][i]
-
-                //AQUI CARGAR EL CARRUSEL CON LA LISTA DE IMAGENES
-
-            }
+            alert("Iniciar Juego?");
+            window.location.href = '/JuegoActividad' + datos["imagenes"]
         }
     })
 
