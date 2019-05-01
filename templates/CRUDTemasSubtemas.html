@@ -39,13 +39,13 @@
             </nav>
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane tabs fade show active" id="nav-AgregarTema" role="tabpanel" aria-labelledby="nav-AgregarTema-tab">
-                    <input type = text name = "temaNuevo" placeholder="Nombre"> <br>
-                    <input type = submit name = "accioncrudtemassubtemas" value = "Agregar Tema">
+                    <input id="temaNuevo" type = text name = "temaNuevo" placeholder="Nombre"> <br>
+                    <input type = submit onclick = "return validarTema('temaNuevo')" name = "accioncrudtemassubtemas" value = "Agregar Tema">
                 </div>
                 <div class="tab-pane tabs fade" id="nav-ModificarEliminarTemas" role="tabpanel" aria-labelledby="nav-ModificarEliminarTemas-tab">
                     <h3>Seleccionar Tema</h3>
 
-                    <select name = "selectTemaModEli">
+                    <select id ="selectTemaModEli" name = "selectTemaModEli">
                         <option>Escoger Tema </option>
                         {% for tema in temas %}
                             <option> {{ tema.getId()}}-{{tema.getTema()}}</option>
@@ -54,16 +54,16 @@
                     <br>
 
                     <h3>Cambiar Nombre</h3><br>
-                    <input type = text name = nuevoModificarTema> <br>
+                    <input type = text id="nuevoModificarTema" name = nuevoModificarTema> <br>
 
-                    <input type = submit name = "accioncrudtemassubtemas" value = "Modificar Tema"><br>
+                    <input type = submit onclick="return validarModTema()" name = "accioncrudtemassubtemas" value = "Modificar Tema"><br>
 
-                    <input type = submit name = "accioncrudtemassubtemas" value = "Eliminar Tema">
+                    <input type = submit onclick="return validarSelectTema('selectTemaModEli')" name = "accioncrudtemassubtemas" value = "Eliminar Tema">
                 </div>
                 <div class="tab-pane tabs fade" id="nav-AgregarSubTema" role="tabpanel" aria-labelledby="nav-AgregarSubTema-tab">
                     <h3>Seleccionar Tema</h3>
 
-                    <select name = "selectTema">
+                    <select id ="selectTemaAddSub" name = "selectTema">
                         <option>Escoger Tema </option>
                         {% for tema in temas %}
                             <option> {{ tema.getId()}}-{{tema.getTema()}} </option>
@@ -71,8 +71,8 @@
                     </select> <br>
 
                     <h3> Nuevo Subtema </h3> <br>
-                    <input type = text name = "subtemaNuevo"><br>
-                    <input type = submit value = "Agregar Subtema" name = "accioncrudtemassubtemas">
+                    <input id = "subtemaNuevo" type = text name = "subtemaNuevo"><br>
+                    <input type = submit onclick="return validarAddSubtema()" value = "Agregar Subtema" name = "accioncrudtemassubtemas">
                 </div>
                 <div class="tab-pane tabs fade" id="nav-ModificarEliminarSubTemas" role="tabpanel" aria-labelledby="nav-ModificarEliminarSubTemas-tab">
                     <div>
@@ -95,11 +95,11 @@
 
                     <h3>Cambiar Nombre </h3> <br>
 
-                    <input type = text name = nuevoModificarSubtema><br>
+                    <input id = "nuevoModificarSubtema" type = text name = nuevoModificarSubtema><br>
 
-                    <input type = submit name = "accioncrudtemassubtemas" value = "Modificar Subtema"><br>
+                    <input type = submit onclick="return validarModSubtema()" name = "accioncrudtemassubtemas" value = "Modificar Subtema"><br>
 
-                    <input type = submit name = "accioncrudtemassubtemas" value = "Eliminar Subtema">
+                    <input type = submit onclick="return validarSelectSubtema('selectSubModificar')" name = "accioncrudtemassubtemas" value = "Eliminar Subtema">
 
                 </div>
             </div>

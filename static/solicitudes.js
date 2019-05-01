@@ -1085,3 +1085,56 @@ function validarEncabezado(){
 
     return true
 }
+
+function validarTema(idInputTema){
+
+    if($("#"+idInputTema).val().trim() === ""){
+        imprimirMensaje("El tema ingresado no puede ser vacío. Intente de nuevo");
+        return false
+    }
+
+    return true
+
+}
+
+function validarSubtema(idInputSubtema){
+    if($("#"+idInputSubtema).val().trim() === ""){
+        imprimirMensaje("El subtema ingresado no puede ser vacío. Intente de nuevo");
+        return false
+    }
+
+    return true
+}
+
+function validarSelectTema(idSelect){
+    if($("#"+idSelect).val() === "Escoger Tema"){
+        imprimirMensaje("Debe escoger un tema válido");
+        return false
+    }
+    return true
+}
+
+function validarSelectSubtema(idSelect){
+    var selectSubtema = $("#"+idSelect).val();
+    if(selectSubtema === "Escoger Subtema" || selectSubtema === null){
+        imprimirMensaje("Debe escoger un subtema válido");
+        return false
+    }
+    return true
+}
+
+function validarModTema(){
+
+    return validarSelectTema('selectTemaModEli') && validarTema('nuevoModificarTema')
+}
+
+function validarAddSubtema(){
+
+    return validarSelectTema('selectTemaAddSub') && validarSubtema('subtemaNuevo')
+}
+
+
+function validarModSubtema(){
+
+    return validarSelectSubtema('selectSubModificar') && validarSubtema('nuevoModificarSubtema')
+}
