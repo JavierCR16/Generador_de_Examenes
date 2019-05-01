@@ -303,7 +303,11 @@ def guardarEncabezado():
     instrucciones = request.form.get("txtInstrucciones")
     periodo = request.form.get("selectPeriodo")
     fecha = request.form.get("inputFecha")
-    tiempo = request.form.get("inputTiempo")
+
+    tiempoHoras = request.form.get("tiempoEncabezadoHoras")
+    tiempoMinutos = request.form.get("tiempoEncabezadoMinutos")
+    tiempo = tiempoHoras + ":" + tiempoMinutosx
+
     tipo = request.form.get("selectTipo")
 
     Controller.insertarNuevoEncabezado(curso,escuela,instrucciones, periodo, fecha, tiempo, tipo,session['user'],session['contrasenna'])
@@ -517,6 +521,12 @@ def publicarExamenFeedback():
     Controller.publicarExamen(session['user'],session['contrasenna'],idExamen,codigo)
 
     return jsonify({"success":1})
+
+@app.route("/ComentariosEstudiantes")
+def filtrarComentariosEstudiantes():
+
+    listaExamenesComentarios     = Controller.obtenerExamenes(session['user'],session['contrasenna'],"Feedback")
+    return render_template("ComentariosEstudiantes.html",examenes = listaExamenesComentarios)
 
 #JUEGO
 @app.route('/SesionJuego')

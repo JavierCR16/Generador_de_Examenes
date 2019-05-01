@@ -254,7 +254,7 @@ input[type=radio]:hover, input[type=checkbox]:hover{
 	cursor: pointer;
 }
 
-button:not(#aFalse):not(#titulo):not(.close):not(.modalB):not(.emoji), input[type="submit"]{
+button:not(#aFalse):not(#titulo):not(.close):not(.modalB):not(.emoji):not(.iconB), input[type="submit"]{
 	font-family: 'Montserrat', sans-serif;
 	font-size: 2.5vh;
 	background-color: #00457c;
@@ -268,12 +268,26 @@ button:not(#aFalse):not(#titulo):not(.close):not(.modalB):not(.emoji), input[typ
 	height: 9%;
 }
 
-button:not(#aFalse):not(#titulo):not(.close):not(.emoji):hover, input[type=submit]:hover{
+button:not(#aFalse):not(#titulo):not(.close):not(.emoji):not(.iconB):hover, input[type=submit]:hover{
 	background-color: #0a86f0;
 	color: white;
 	border: 0px solid white;
 	cursor: pointer;
 	-webkit-border-radius: 15px;
+	-webkit-transition: all 0.4s ease-in-out;
+}
+
+.iconB{
+	background-color: transparent;
+	font-size: 3.5vh;
+	color: #00457c;
+	border: 0px solid white;
+	-webkit-transition: all 0.2s ease-in-out;
+}
+
+.iconB:hover{
+	color: #0a86f0;
+	border: 0px solid white;
 	-webkit-transition: all 0.4s ease-in-out;
 }
 

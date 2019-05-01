@@ -45,8 +45,11 @@
                 <h3>Año:</h3>
                 <input id="fechaEncabezado" type="number" min="1900" max="4000" step="1" name = "inputFecha" />
 
-                <h3>Duración:</h3>
-                <input id = "tiempoEncabezado" type= "time" name = inputTiempo>
+                <h3>Duración del Examen:</h3>
+                <div style="display: flex;">
+                    <input id="tiempoEncabezadoHoras" name="tiempoEncabezadoHoras" type="number" style="width: 44%; margin-right: 2%;" placeholder="Horas" min="0"/>
+                    <input id="tiempoEncabezadoMinutos" name="tiempoEncabezadoMinutos" type="number" style="width: 44%;" placeholder="Minutos" min="1"/>
+                </div>
 
                 <h3>Tipo</h3>
                 <select id ="selectTipo" name = selectTipo>
@@ -61,7 +64,7 @@
 
                 <button onclick="previewEncabezado()" type="button" id="botonPreview" value="PreviewEncabezado">Preview</button>
 
-                <button type="submit" onclick="return validarEncabezado()" class="btn btn-primary" id = "botonGuardar" name="AccionEncabezado" value="GuardarEncabezado" >Guardar</button>
+                <button type="submit" onclick="return validarEncabezado()" id = "botonGuardar" name="AccionEncabezado" value="GuardarEncabezado" >Guardar</button>
             </div>
         </div>
     </form>

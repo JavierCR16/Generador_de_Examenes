@@ -524,7 +524,11 @@ function previewEncabezado() {
     var escuela = "Escuela de Matemáticas";
     var periodo = $("#selectPeriodo").val();
     var fecha = $("#fechaEncabezado").val();
-    var tiempo = $("#tiempoEncabezado").val();
+
+    var tiempoHoras = $("#tiempoEncabezadoHoras").val();
+    var tiempoMin = $("#tiempoEncabezadoMinutos").val();
+    var tiempo = tiempoHoras + ":" + tiempoMin;
+
     var tipo = $("#selectTipo").val();
     var instrucciones = $("#instruccionesEncabezado").val();
 
@@ -1075,7 +1079,11 @@ function validarRespuestas(idSelectItem,listaRespuestas,idRespDesarrollo){
 function validarEncabezado(){
 
     var fecha = $("#fechaEncabezado").val();
-    var tiempo = $("#tiempoEncabezado").val();
+
+    var tiempoHoras = $("#tiempoEncabezadoHoras").val();
+    var tiempoMin = $("#tiempoEncabezadoMinutos").val();
+    var tiempo = tiempoHoras + ":" + tiempoMin;
+
     var instrucciones = $("#instruccionesEncabezado").val();
 
     if (fecha.trim() === ""  || tiempo === "" || instrucciones.trim() === "") {
