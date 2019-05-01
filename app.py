@@ -300,7 +300,7 @@ def guardarEncabezado():
 
     tiempoHoras = request.form.get("tiempoEncabezadoHoras")
     tiempoMinutos = request.form.get("tiempoEncabezadoMinutos")
-    tiempo = tiempoHoras + ":" + tiempoMinutosx
+    tiempo = tiempoHoras + ":" + tiempoMinutos
 
     tipo = request.form.get("selectTipo")
 

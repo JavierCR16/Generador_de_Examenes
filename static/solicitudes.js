@@ -1082,11 +1082,10 @@ function validarEncabezado(){
 
     var tiempoHoras = $("#tiempoEncabezadoHoras").val();
     var tiempoMin = $("#tiempoEncabezadoMinutos").val();
-    var tiempo = tiempoHoras + ":" + tiempoMin;
 
     var instrucciones = $("#instruccionesEncabezado").val();
 
-    if (fecha.trim() === ""  || tiempo === "" || instrucciones.trim() === "") {
+    if (fecha.trim() === ""  || tiempoHoras.trim() === "" || tiempoMin.trim() === "" || instrucciones.trim() === "") {
         imprimirMensaje("Se deben ingresar todos los datos para la previsualización del encabezado");
         return false
     }
