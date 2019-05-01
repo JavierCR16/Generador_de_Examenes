@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+    <script type="text/javascript" src="/static/solicitudes.js"></script>
+    <title>GEMA 💎 </title>
+</head>
+<body>
+
+    <script>
+        $(document).ready(function(){
+          $("#filtro").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#tablaExamenesComentariosBody tr").filter(function() {
+              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+          });
+        });
+    </script>
+
+    <img class= "imgs" src="../static/bkg.jpg">
+
+    <div class="col-md-12 header">
+        <a href="/OpcionesPrincipales"><i class="material-icons backA">chevron_left</i></a>
+        <h1>Comentarios de Estudiantes</h1>
+        <form id="formlogout" action="cerrarSesion" method="post">
+            <a href="javascript:$('#formlogout').submit();" data-toggle="SignOutTooltip" data-placement="bottom" title="Cerrar Sesión"><i class="material-icons signO">exit_to_app</i></a>
+        </form>
+    </div>
+
+    <div class= "col-md-8 w3-container divsG">
+        <nav class = "nav-justified">
+            <div class="nav nav-tabs navs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-BuscarPorExamen-tab" data-toggle="tab" href="#nav-BuscarPorExamen" role="tab" aria-controls="nav-BuscarPorExamen" aria-selected="true">Buscar por Exámen</a>
+                <a class="nav-item nav-link" id="nav-BuscarPorCodigo-tab" data-toggle="tab" href="#nav-BuscarPorCodigo" role="tab" aria-controls="nav-BuscarPorCodigo" aria-selected="false">Buscar por Código</a>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane tabs fade show active" id="nav-BuscarPorExamen" role="tabpanel" aria-labelledby="nav-BuscarPorExamen-tab">
+            <input class="form-control" id="filtro" type="text" placeholder="Buscar">
+            <table id="tablaExamenesComentarios" class="table-striped">
+                <thead>
+                <tr>
+                    <th>Examen</th>
+                    <th>Curso</th>
+                    <th>Escuela</th>
+                    <th>Periodo</th>
+                    <th>Tipo</th>
+                    <th>Modalidad</th>
+                    <th>Fecha de Creación</th>
+                    <th>Autor</th>
+                </tr>
+                </thead>
+                <tbody id="tablaExamenesComentariosBody">
+                    {% for examen in examenes %}
+                        <tr>
+                            <td>{{ examen.getId() }}</td>
+                            <td>{{ examen.getEncabezado().getCurso() }}</td>
+                            <td>{{ examen.getEncabezado().getEscuela() }}</td>
+                            <td>{{ examen.getEncabezado().getIdPeriodo() }}</td>
+                            <td>{{ examen.getEncabezado().getIdTipoExamen() }}</td>
+                            <td>{{ examen.getModalidadExamen() }}</td>
+                            <td>{{ examen.getFechaCreacion() }}</td>
+                            <td>{{ examen.getCreador() }}</td>
+                            <td><button style="background-color: transparent;" class="iconB" name="VerComentarioTabla"><i class="fas fa-comment-alt"></i></button></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            </div>
+            <div div class="tab-pane tabs fade" id="nav-BuscarPorCodigo" role="tabpanel" aria-labelledby="nav-BuscarPorCodigo-tab">
+                </br>
+                <h3>Código de Exámen para Comentarios:</h3>
+                </br>
+                <input name ="codigoExamenFeedback" type="text" placeholder="Código: "/>
+                <button name="VerComentarioCodigo">Ver Comentarios</button>
+                </br>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

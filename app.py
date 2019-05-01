@@ -526,6 +526,15 @@ def crearJuego():
 
     return render_template("SesionJuego.html", temas = listaTemas)
 
+@app.route('/JuegoActividad')
+def juegoActividad():
+    return render_template('JuegoActividad.html')
+
+@app.route('/Puntuaciones')
+def puntuaciones():
+    return render_template('Puntuaciones.html')
+
+
 #ESTUDIANTES
 
 @app.route('/EstudiantesInicio')

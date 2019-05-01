@@ -98,12 +98,26 @@
 }
 
 .divsG {
-	padding: 2% 2% 2% 2%;
+	padding: 2% 0.5% 2% 0.5%;
 	top: 15%;
 	height: auto;
 	max-height: 80%;
 	overflow: auto;
 	left: 18%;
+	position: absolute;
+	background-color: white;
+	-webkit-border-radius: 15px;
+	text-align: center;
+	margin-bottom: 5%;
+}
+
+.divsGG{
+	padding: 2% 2% 2% 2%;
+	top: 15%;
+	height: auto;
+	max-height: 80%;
+	overflow: auto;
+	left: 8.5%;
 	position: absolute;
 	background-color: white;
 	-webkit-border-radius: 15px;
@@ -133,20 +147,65 @@
 	text-align: center;
 }
 
+.w3-container.divSlidG {
+	padding: 1% 1% 1% 1%;
+	top: 15%;
+	height: auto;
+	max-height: 80%;
+	/*overflow: auto;*/
+	left: 8.5%;
+	position: fixed;
+	background-color: white;
+	-webkit-border-radius: 15px;
+	text-align: center;
+}
+
 .aSL {
 	left: 10%;
 	position: fixed;
+	height: 5%;
+	top: 45%;
+	width: 2.5%;
+	background-color: rgba(0,69,124,0.8);
 }
 
 .aSR {
 	right: 10%;
 	position: fixed;
+	height: 5%;
+	top: 45%;
+	width: 2.5%;
+	background-color: rgba(0,69,124,0.8);
+}
+
+.aSLG {
+	left: 2%;
+	position: fixed;
+	height: 5%;
+	top: 45%;
+	width: 2.5%;
+	background-color: rgba(0,69,124,0.8);
+}
+
+.aSRG {
+	right: 2%;
+	position: fixed;
+	height: 5%;
+	top: 45%;
+	width: 2.5%;
+	background-color: rgba(0,69,124,0.8);
 }
 
 .imgs {
 	width: 100%;
 	opacity: 0.2;
 	z-index:-1;
+}
+
+.imgJuego {
+	width: 55%;
+	height: 40%;
+	margin-bottom: 2%;
 }
 
 html, body {
