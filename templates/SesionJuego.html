@@ -26,11 +26,9 @@
     </div>
 
     <div class="col-md-6 w3-container divs">
-        <input name ="codigoSesion" type="text" placeholder="Código: "/>
+        <input id = "codigoSesion" name ="codigoSesion" type="text" placeholder="Código: "/>
         </br>
-        <input name ="cantItems" type="number" placeholder="Cant Items: "/>
-        </br>
-        <input name="nombreCurso" type="text" placeholder="Curso: " />
+        <input id = "cantItems" name ="cantItems" type="number" placeholder="Cant Items: "/>
         </br>
 
         <h3>Tema:</h3>
@@ -47,7 +45,7 @@
         </select>
 
         <h3>Tipo:</h3>
-        <select name="selectTipoJuego" onchange="mostrarTiempo(this)">
+        <select id ="selectTipoJuego" name="selectTipoJuego" onchange="mostrarTiempo(this)">
             <option>Escoger Tipo</option>
             <option>1-Contrarreloj</option>
             <option>2-Manual</option>
@@ -57,9 +55,9 @@
 
         </br>
 
-        <form action="unirseJuego" method="post" id="LogInForm">
-            <button type="submit"> Iniciar </button>
-        </form>
+
+        <button type="button" onclick="guardarJuego()"> Iniciar </button>
+
         </br>
     </div>
 

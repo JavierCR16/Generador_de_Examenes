@@ -336,3 +336,16 @@ class Controlador:
     def agregarComentario(self, usuario, contrasenna,codigo,comentario, reaccion):
 
         GestorBase.agregarComentario(usuario, contrasenna,codigo,comentario, reaccion)
+
+    #Funciones Juego
+
+    def guardarJuego(self,usuario,contrasenna,codigo):
+
+        GestorBase.guardarJuego(usuario,contrasenna,codigo)
+
+
+    def generarItemsImagenes(self,usuario,contrasenna,cantItems,idSubtema):
+
+        itemsExtraidos = GestorBase.filtrarItemsJuego(idSubtema,cantItems,usuario,contrasenna)
+
+        GestorImagenes.generarItemsLatex(itemsExtraidos)

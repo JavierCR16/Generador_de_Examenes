@@ -175,6 +175,31 @@ function procesarAjaxEncabezado(curso,escuela,periodo,fecha,tiempo,tipo,instrucc
     })
 }
 
+function procesarAjaxJuego(codigo,cantItems,idSubtema,tipoJuego,cantidadTiempo){
+
+     $.ajax({
+
+        url: "/guardarJuego",
+        type: 'post',
+        data:JSON.stringify({codigo:codigo,cantItems:cantItems,idSubtema:idSubtema}),
+        contentType: 'application/json;charset=UTF-8',
+        dataType: "json",
+
+        success: function (datos) {
+
+            for(var i=0; i< datos["nombreImagenes"].length;i++){
+                alert("Iniciar Juego");
+
+                var nombre = datos["nombreImagenes"][i]
+
+                //AQUI CARGAR EL CARRUSEL CON LA LISTA DE IMAGENES
+
+            }
+        }
+    })
+
+}
+
 function procesarAjaxSugerencias(nuevaEdicion,comentarios,idItem){
 
     $.ajax({
@@ -1140,8 +1165,22 @@ function validarAddSubtema(){
     return validarSelectTema('selectTemaAddSub') && validarSubtema('subtemaNuevo')
 }
 
-
 function validarModSubtema(){
 
     return validarSelectSubtema('selectSubModificar') && validarSubtema('nuevoModificarSubtema')
+}
+
+function guardarJuego(){
+    var codigo = $("#codigoSesion").val();
+    var cantItems = $("#cantItems").val();
+    var idSubtema = $("#subtemaJuego").val();
+    var tipoJuego = $("#selectTipoJuego").val();
+    var cantidadTiempo = 0 ? $("#tiempoJuego").val().trim() === "": $("#tiempoJuego").val();
+
+    if(codigo.trim() === "" || cantItems.trim()===""||isNaN(cantItems) || idSubtema=== null || idSubtema ==="Escoger Subtema" ||
+    tipoJuego === "Escoger Tipo")
+        print("Error, verifique que todos los campos hayan sido llenados y con los datos correctos.");
+    else
+        procesarAjaxJuego(codigo,cantItems,idSubtema.split("-")[0],tipoJuego,cantidadTiempo)
+
 }

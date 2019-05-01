@@ -1012,16 +1012,16 @@ def mostrarComentariosFeedback(usuario,contrasenna,listaParametros): #ListaParam
         try:
             with nuevaConexion.cursor() as feedbackExamenes:
 
-                queryFeedbackConCodigo = "SELECT comentario FROM ComentariosExamen WHERE codigoFeed=%s"
+                queryFeedbackConCodigo = "SELECT comentario,reaccion FROM ComentariosExamen WHERE codigoFeed=%s"
 
-                queryFeedbackConExamen = "SELECT comentario FROM ComentariosExamen,ExamenesFeedback " \
+                queryFeedbackConExamen = "SELECT comentario,reaccion FROM ComentariosExamen,ExamenesFeedback " \
                                          "WHERE ExamenesFeedback.codigo = ComentariosExamen.codigoFeed AND idExamen = %s"
 
                 feedbackExamenes.execute(queryFeedbackConCodigo,(listaParametros[1])) if(listaParametros[0] == "Feedback") else \
                     feedbackExamenes.execute(queryFeedbackConExamen,(listaParametros[1]))
 
                 for tupla in feedbackExamenes:
-                    listaComentarios.append(tupla[0])
+                    listaComentarios.append([tupla[0],tupla[1]])
 
         except Exception as e:
             print(e)
@@ -1095,6 +1095,57 @@ def agregarComentario(usuario,contrasenna,codigo,comentario,reaccion):
         except Exception as e:
             print(e)
             print("Error al publicar examen")
+
+        finally:
+            nuevaConexion.close()
+
+#Funciones Juego
+
+def filtrarItemsJuego(idSubtema,limiteItems,usuario,contrasenna):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
+    items_resp = []
+
+    if(nuevaConexion != False):
+        try:
+            with nuevaConexion.cursor() as itemsJuego:
+                queryItems = "SELECT DISTINCT I.idItem,I.descripcion, I.puntaje FROM Item i, Respuestas r WHERE " \
+                             "i.idSubtema =%s AND i.idItem = r.idItem ORDER BY RAND() LIMIT %s"
+
+                itemsJuego.execute(queryItems,(idSubtema,limiteItems))
+
+                for tupla in itemsJuego:
+
+                    objetoRespuesta = filtrarRespuestasViejas(tupla[0],usuario,contrasenna)
+
+                    items_resp.append([ObjetoItem(tupla[0],None,tupla[1],None,None,tupla[2],None),objetoRespuesta])
+
+        except Exception as e:
+            print(e)
+            print("Error al obtener los items de juego.")
+
+        finally:
+            nuevaConexion.close()
+
+    return items_resp
+
+def guardarJuego(usuario,contrasenna,codigo):
+
+    nuevaConexion = establecerConexion(usuario,contrasenna)
+
+    if(nuevaConexion != False):
+
+        try:
+            with nuevaConexion.cursor() as newJuego:
+
+                statementGuardar = "INSERT INTO SESIONJUEGO VALUES(%s)"
+
+                newJuego.execute(statementGuardar,(codigo))
+
+                nuevaConexion.commit()
+
+        except Exception as e:
+            print(e)
+            print("Error al guardar el juego")
 
         finally:
             nuevaConexion.close()

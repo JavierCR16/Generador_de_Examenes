@@ -526,6 +526,21 @@ def crearJuego():
 
     return render_template("SesionJuego.html", temas = listaTemas)
 
+@app.route('/guardarJuego')
+def guardarJuego():
+
+    infoJuego = request.get_json()
+
+    codigo = infoJuego["codigo"]
+    cantItems = infoJuego["cantItems"]
+    idSubtema = infoJuego["idSubtema"]
+
+    Controller.guardarJuego(session['user'],session['contrasenna'],codigo)
+    nombreImagenes = Controller.generarItemsImagenes(session['user'],session['contrasenna'],cantItems,idSubtema)
+
+    return jsonify({"nombreImagenes":nombreImagenes})
+
+
 @app.route('/JuegoActividad')
 def juegoActividad():
     return render_template('JuegoActividad.html')
