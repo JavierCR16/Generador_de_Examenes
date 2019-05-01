@@ -71,7 +71,7 @@
                             <td>{{ examen.getModalidadExamen() }}</td>
                             <td>{{ examen.getFechaCreacion() }}</td>
                             <td>{{ examen.getCreador() }}</td>
-                            <td><button style="background-color: transparent;" class="iconB" name="VerComentarioTabla"><i class="fas fa-comment-alt"></i></button></td>
+                            <td><button style="background-color: transparent;" class="iconB" name="VerComentarioTabla" value="tab" onclick="obtenerDatosComentarios(this, {{ examen.getId() }})"><i class="fas fa-comment-alt"></i></button></td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -81,8 +81,8 @@
                 </br>
                 <h3>Código de Exámen para Comentarios:</h3>
                 </br>
-                <input name ="codigoExamenFeedback" type="text" placeholder="Código: "/>
-                <button name="VerComentarioCodigo">Ver Comentarios</button>
+                <input id ="codigoExamenFeedback" type="text" placeholder="Código: "/>
+                <button name="VerComentarioCodigo" value="cod" onclick="obtenerDatosComentarios(this)">Ver Comentarios</button>
                 </br>
             </div>
         </div>
@@ -92,11 +92,12 @@
         <table id= "tablaComentarios" class="table-striped ">
             <thead>
             <tr>
-                <td>Comentario</td>
-                <td>Reaccion</td>
+                <th>Comentario</th>
+                <th>Reaccion</th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="tablaComentariosBody">
+
             </tbody>
         </table>
     </div>

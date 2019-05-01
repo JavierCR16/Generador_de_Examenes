@@ -383,6 +383,27 @@ function procesarAjaxComentario(reaccion, codigoExamenComent, comentario){
     })
 }
 
+function procesarAjaxDatosComentarios(tipoFiltrado, examenID){
+    $.ajax({
+
+        url: "/filtrarComentariosFeedback",
+        type: 'post',
+        data: JSON.stringify({filtrado: tipoFiltrado, parametro: examenID}),
+        contentType: 'application/json;charset=UTF-8',
+        dataType: "json",
+
+        success: function (datos) {
+            var emojis = ["😁", "🙂", "😶", "😕", "😭"];
+            $("#tablaComentariosBody").children().remove();
+            for (var i = 0; i < datos["comentarios"].length; i++) {
+                var tupla = datos["comentarios"][i];
+
+                $("#tablaComentariosBody").append($("<tr>").append($("<td>", {text: tupla[0]})).append($("<td>", {text: emojis[tupla[1]-1]})))
+            }
+        }
+    })
+}
+
 function procesarAjaxGrafico(consulta, titulo, datos){
 
     $.ajax({
@@ -414,6 +435,15 @@ function obtenerItems(selectEscogido,tipoFiltrado ,idSelectItems,idPopDescripcio
 
     procesarAjaxItems(subtemaEscogido,tipoFiltrado,idSelectItems,idPopDescripcion,"/filtrarItems")
 
+}
+
+function obtenerDatosComentarios(botonPresionado,examenID = -1){
+    var tipoFiltrado = $(botonPresionado).val();
+
+    if (tipoFiltrado === "cod"){
+        examenID = $("#codigoExamenFeedback").val();
+    }
+    procesarAjaxDatosComentarios(tipoFiltrado, examenID);
 }
 
 function obtenerItemsRespuestas(selectEscogido, tipoFiltrado, idSelectItems, idPopDescripcion){
@@ -965,6 +995,8 @@ function chequearCodigo(){
             if (datos["success"]){
                 $("#divComent").addClass("w3-hide");
                 $("#divComent").removeClass("w3-hide");
+                $("#divCodComent").removeClass("w3-hide");
+                $("#divCodComent").addClass("w3-hide");
             }
             else{
                 $("#divComent").removeClass("w3-hide");

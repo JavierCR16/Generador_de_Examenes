@@ -743,7 +743,7 @@ def obtenerExamenes(usuario,contrasenna,filtrado): #PARA EL BANCO Y EL FEEDBACK
                                 "Exa.fechaCreacion, Usu.nombreCompleto FROM Encabezado Enc, Periodo Per, TipoExamen Tip, Examen Exa, Usuario Usu " \
                                 "WHERE Exa.idEncabezado = Enc.id AND Exa.usuarioCreador = Usu.correo AND Enc.idPeriodo = Per.id AND Enc.idtipoexamen = Tip.id"
 
-                queryExamenesFeedback = "SELECT Enc.curso, Enc.escuela, Per.descPeriodo, Tip.descTipo, Exa.id,Exa.modalidadExamen, " \
+                queryExamenesFeedback = "SELECT DISTINCT Enc.curso, Enc.escuela, Per.descPeriodo, Tip.descTipo, Exa.id,Exa.modalidadExamen, " \
                                         "Exa.fechaCreacion, Usu.nombreCompleto FROM Encabezado Enc, Periodo Per, TipoExamen Tip, Examen Exa, Usuario Usu, " \
                                         "ExamenesFeedback EF, ComentariosExamen CE " \
                                         "WHERE Exa.id = EF.idExamen AND Exa.idEncabezado = Enc.id AND Exa.usuarioCreador = Usu.correo " \
@@ -1017,7 +1017,7 @@ def mostrarComentariosFeedback(usuario,contrasenna,listaParametros): #ListaParam
                 queryFeedbackConExamen = "SELECT comentario,reaccion FROM ComentariosExamen,ExamenesFeedback " \
                                          "WHERE ExamenesFeedback.codigo = ComentariosExamen.codigoFeed AND idExamen = %s"
 
-                feedbackExamenes.execute(queryFeedbackConCodigo,(listaParametros[1])) if(listaParametros[0] == "Feedback") else \
+                feedbackExamenes.execute(queryFeedbackConCodigo,(listaParametros[1])) if(listaParametros[0] == "cod") else \
                     feedbackExamenes.execute(queryFeedbackConExamen,(listaParametros[1]))
 
                 for tupla in feedbackExamenes:
