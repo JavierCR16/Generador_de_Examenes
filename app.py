@@ -84,9 +84,7 @@ def crudTemasSubtemas():
         subAEliminar = request.form.get("selectSub")
         Controller.eliminarSubtema(subAEliminar,session['user'],session['contrasenna'])
 
-    temasExistentes = Controller.obtenerTemas(session['user'],session['contrasenna'])
-
-    return render_template('CRUDTemasSubtemas.html',temas = temasExistentes)
+    return redirect(url_for("ventanaCRUDTemasSubtemas"))
 
 @app.route('/filtrarSubtemas', methods=["post"])
 def filtrarSubtemas():
@@ -149,9 +147,7 @@ def crudItemsAgregar():
 
     Controller.agregarItem(descripcion,tipo,subtemaSeleccionado,puntaje,session['user'],session['contrasenna'])
 
-    temasExistentes = Controller.obtenerTemas(session['user'],session['contrasenna'])
-
-    return render_template('CRUDItems.html', temas = temasExistentes)
+    return redirect(url_for("ventanaCRUDItems"))
 
 @app.route('/filtrarItems', methods = ['post'])
 def filtrarItems():
@@ -199,9 +195,7 @@ def crudItemsModificar():
         itemEliminar = request.form.get("selectItemModificarEliminar")
         Controller.eliminarItem(itemEliminar,session['user'],session['contrasenna'])
 
-    temasExistentes = Controller.obtenerTemas(session['user'],session['contrasenna'])
-
-    return render_template('CRUDItems.html', temas=temasExistentes)
+    return redirect(url_for("ventanaCRUDItems"))
 
 @app.route("/extraerInformacionItem", methods=['post'])
 def extraerInformacionItem():
@@ -237,8 +231,8 @@ def crudRespuestasAgregar():
 
     Controller.agregarRespuestas(itemSeleccionado,respuestas,respCorrecta,session['user'],session['contrasenna'])
 
-    listaTemas = Controller.obtenerTemas(session['user'],session['contrasenna'])
-    return render_template("CRUDRespuestas.html",temas = listaTemas)
+    return redirect(url_for("ventanaCRUDRespuestas"))
+
 
 @app.route("/crudRespuestasModificar", methods=['post'])  ##Revisar
 def crudRespuestasModificar():
@@ -258,9 +252,9 @@ def crudRespuestasModificar():
         respuestas = request.form.getlist("respModDesarrollo")
 
     Controller.modificarRespuestas(itemSeleccionado,respuestas,respCorrecta,session['user'],session['contrasenna'])
-    listaTemas = Controller.obtenerTemas(session['user'],session['contrasenna'])
 
-    return render_template("CRUDRespuestas.html", temas=listaTemas)
+    return redirect(url_for("ventanaCRUDRespuestas"))
+
 
 @app.route("/extraerRespuestasItem", methods = ['post'])
 def extraerRespuestasItem():
@@ -312,10 +306,7 @@ def guardarEncabezado():
 
     Controller.insertarNuevoEncabezado(curso,escuela,instrucciones, periodo, fecha, tiempo, tipo,session['user'],session['contrasenna'])
 
-    Periodos = Controller.obtenerPeriodos(session['user'],session['contrasenna'])
-    Tipos = Controller.obtenerTExamen(session['user'],session['contrasenna'])
-
-    return render_template("CRUDEncabezado.html", tiposExamen=Tipos, periodos=Periodos)
+    return redirect(url_for("ventanaCRUDEncabezado"))
 
 #CRUD SUGERIR VERIFICAR EDICIONES
 
