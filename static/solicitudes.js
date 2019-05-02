@@ -1238,7 +1238,7 @@ function agregarEquipo(){
     var nombreEquipo = $("#nombreEquipo").val();
 
     if(codigo.trim() === "" || nombreEquipo.trim()==="")
-        print("Error, ingrese todos los datos");
+        imprimirMensaje("Error, ingrese todos los datos");
     else
         procesarAjaxAgregarEquipo(codigo,nombreEquipo)
 }
