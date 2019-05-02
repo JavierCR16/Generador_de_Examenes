@@ -1149,3 +1149,48 @@ def guardarJuego(usuario,contrasenna,codigo):
 
         finally:
             nuevaConexion.close()
+
+def verificarCodigoSesion(usuario, contrasenna, codigo):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
+    existeSesion = 0
+
+    if(nuevaConexion != False):
+
+        try:
+            with nuevaConexion.cursor() as verificacion:
+
+                queryVerificar = "SELECT count(*) FROM sesionjuego WHERE codigo=%s"
+
+                verificacion.execute(queryVerificar,(codigo))
+
+                for atributos in verificacion:
+                    existeSesion = atributos[0]
+
+        except Exception as e:
+            print(e)
+            print("Error al verificar código")
+
+        finally:
+            nuevaConexion.close()
+    return existeSesion
+
+def unirseJuego(usuario, contrasenna, codigo, equipo):
+    nuevaConexion = establecerConexion(usuario,contrasenna)
+
+    if(nuevaConexion != False):
+
+        try:
+            with nuevaConexion.cursor() as nuevoEquipo:
+
+                statementEquipo = "INSERT INTO EQUIPO(nombre, puntaje, codigoSesion) VALUES (%s, 0,%s)"
+
+                nuevoEquipo.execute(statementEquipo,(equipo, codigo))
+
+                nuevaConexion.commit()
+
+        except Exception as e:
+            print(e)
+            print("Error al unirse a la sesión")
+
+        finally:
+            nuevaConexion.close()

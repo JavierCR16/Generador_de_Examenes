@@ -187,7 +187,6 @@ function procesarAjaxJuego(codigo,cantItems,idSubtema,tipoJuego,cantidadTiempo){
 
         success: function (datos) {
             alert("Iniciar Juego?");
-            window.location.href = '/JuegoActividad' + datos["imagenes"]
         }
     })
 
@@ -410,6 +409,27 @@ function procesarAjaxGrafico(consulta, titulo, datos){
             if(datos["success"]){
                 $("#containerChart").removeClass("w3-hide");
                 google.charts.setOnLoadCallback(function () { drawChart(titulo, datos["estadisticas"]);});
+            }
+        }
+    })
+}
+
+function procesarAjaxAgregarEquipo(codigo,nombreEquipo){
+    $.ajax({
+        url: "/JuegoLogIn",
+        type: 'post',
+        data:JSON.stringify({codigo: codigo, nombreEquipo: nombreEquipo}),
+        contentType: 'application/json;charset=UTF-8',
+        dataType: "json",
+
+        success: function (datos) {
+            if(datos["success"]) {
+                alert("Su equipo ha sido agregado con éxito");
+                window.location.href = "/EstudiantesInicio";
+            }
+            else {
+                alert("Código de juego incorrecto");
+                window.location.reload();
             }
         }
     })
@@ -1195,17 +1215,12 @@ function validarModSubtema(){
     return validarSelectSubtema('selectSubModificar') && validarSubtema('nuevoModificarSubtema')
 }
 
-function guardarJuego(){
+function agregarEquipo(){
     var codigo = $("#codigoSesion").val();
-    var cantItems = $("#cantItems").val();
-    var idSubtema = $("#subtemaJuego").val();
-    var tipoJuego = $("#selectTipoJuego").val();
-    var cantidadTiempo = 0 ? $("#tiempoJuego").val().trim() === "": $("#tiempoJuego").val();
+    var nombreEquipo = $("#nombreEquipo").val();
 
-    if(codigo.trim() === "" || cantItems.trim()===""||isNaN(cantItems) || idSubtema=== null || idSubtema ==="Escoger Subtema" ||
-    tipoJuego === "Escoger Tipo")
-        print("Error, verifique que todos los campos hayan sido llenados y con los datos correctos.");
+    if(codigo.trim() === "" || nombreEquipo.trim()==="")
+        print("Error, ingrese todos los datos");
     else
-        procesarAjaxJuego(codigo,cantItems,idSubtema.split("-")[0],tipoJuego,cantidadTiempo)
-
+        procesarAjaxAgregarEquipo(codigo,nombreEquipo)
 }

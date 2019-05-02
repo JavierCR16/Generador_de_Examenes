@@ -534,7 +534,7 @@ def guardarJuego():
     cantItems = infoJuego["cantItems"]
     idSubtema = infoJuego["idSubtema"]
 
-    # Controller.guardarJuego(session['user'],session['contrasenna'],codigo)
+    Controller.guardarJuego(session['user'],session['contrasenna'],codigo)
     # nombreImagenes = Controller.generarItemsImagenes(session['user'],session['contrasenna'],cantItems,idSubtema)
 
     return jsonify({"imagenes":"Cualquier valor"})
@@ -544,8 +544,6 @@ def guardarJuego():
 def juegoActividad(listaImagenes):
     print(listaImagenes + " / input")
     return render_template('JuegoActividad.html')
-
-def juegoActividad()
 
 @app.route('/Puntuaciones')
 def puntuaciones():
@@ -562,9 +560,23 @@ def estudiantesInicio():
     return render_template('EstudiantesInicio.html')
 
 @app.route('/JuegoLogIn')
-def juegoLogIn():
+def JuegoLogIn():
 
     return render_template('JuegoLogIn.html')
+
+@app.route('/JuegoLogIn', methods=['post'])
+def agregarEquipo():
+    datosEquipo = request.get_json()
+
+    codigo = datosEquipo["codigo"]
+    nombreEquipo = datosEquipo["nombreEquipo"]
+
+    existeSesion = Controller.verificarCodigoSesion(session['userEst'], session['contrasennaEst'], codigo)
+
+    if (existeSesion):
+        Controller.unirseJuego(session['userEst'], session['contrasennaEst'], codigo, nombreEquipo)
+
+    return jsonify({"success": existeSesion})
 
 @app.route('/Comentarios')
 def comentarios():

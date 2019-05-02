@@ -349,3 +349,11 @@ class Controlador:
         itemsExtraidos = GestorBase.filtrarItemsJuego(idSubtema,cantItems,usuario,contrasenna)
 
         GestorImagenes.generarItemsLatex(itemsExtraidos)
+
+    #Estudiantes
+
+    def verificarCodigoSesion(self, usuario, contrasenna, codigo):
+        return GestorBase.verificarCodigoSesion(usuario, contrasenna, codigo)
+
+    def unirseJuego(self, usuario, contrasenna, codigo, equipo):
+        GestorBase.unirseJuego(usuario, contrasenna, codigo, equipo)

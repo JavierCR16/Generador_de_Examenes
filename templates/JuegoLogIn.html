@@ -27,13 +27,11 @@
 
     <div class="row ">
         <div class="col-md-6 w3-container divs">
-            <input name="nombreEquipo" type="text" placeholder="Equipo: " />
+            <input id ="codigoSesion" name ="codigoSesion" type="text" placeholder="Código: "/>
             </br>
-            <input name ="codigoSesion" type="text" placeholder="Código: "/>
+            <input id="nombreEquipo" name="nombreEquipo" type="text" placeholder="Equipo: " />
             </br>
-            <form action="unirseJuego" method="post" id="LogInForm">
-                <button type="submit"> Unirse </button>
-            </form>
+            <button type="button" onclick="agregarEquipo()"> Unirse </button>
             </br>
         </div>
     </div>
