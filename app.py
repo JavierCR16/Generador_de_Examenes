@@ -529,26 +529,30 @@ def crearJuego():
 def guardarJuego():
 
     infoJuego = request.get_json()
-
     codigo = infoJuego["codigo"]
-    cantItems = infoJuego["cantItems"]
-    idSubtema = infoJuego["idSubtema"]
 
     Controller.guardarJuego(session['user'],session['contrasenna'],codigo)
-    # nombreImagenes = Controller.generarItemsImagenes(session['user'],session['contrasenna'],cantItems,idSubtema)
+    session["codJuego"] = codigo
 
-    return jsonify({"imagenes":"Cualquier valor"})
+    return jsonify()
 
 
-@app.route('/JuegoActividad/<string:listaImagenes>')
-def juegoActividad(listaImagenes):
-    print(listaImagenes + " / input")
-    return render_template('JuegoActividad.html')
+@app.route('/JuegoActividad' ,methods = ['post'])
+def juegoActividad():
+
+    cantItems = request.form.get("cantItems")
+    idSubtema = request.form.get("subtemaJuego")
+    tipoJuego = request.form.get("selectTipoJuego")
+    cantidadTiempo = request.form.get("tiempoJuego")
+
+    nombreImagenes,itemsJuego = Controller.generarItemsImagenes(session['user'], session['contrasenna'], cantItems, idSubtema,session['codJuego'])
+
+    return render_template('JuegoActividad.html', imagenes = nombreImagenes,
+                           itemsJuego = itemsJuego,tipoJuego = tipoJuego,cantTiempo = cantidadTiempo)
 
 @app.route('/Puntuaciones')
 def puntuaciones():
     return render_template('Puntuaciones.html')
-
 
 #ESTUDIANTES
 

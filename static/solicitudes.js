@@ -175,18 +175,21 @@ function procesarAjaxEncabezado(curso,escuela,periodo,fecha,tiempo,tipo,instrucc
     })
 }
 
-function procesarAjaxJuego(codigo,cantItems,idSubtema,tipoJuego,cantidadTiempo){
+function procesarAjaxJuego(codigo){
 
      $.ajax({
 
         url: "/guardarJuego",
         type: 'post',
-        data:JSON.stringify({codigo:codigo,cantItems:cantItems,idSubtema:idSubtema}),
+        data:JSON.stringify({codigo:codigo}),
         contentType: 'application/json;charset=UTF-8',
         dataType: "json",
 
         success: function (datos) {
-            alert("Iniciar Juego?");
+
+            $("#modalSesionJuego").modal({
+                show: true
+            });
         }
     })
 
@@ -1132,9 +1135,10 @@ function validarRespuestas(idSelectItem,listaRespuestas,idRespDesarrollo){
             }
         }
         else{
-            if ($("#"+idRespDesarrollo).val().trim() === "")
+            if ($("#"+idRespDesarrollo).val().trim() === "") {
                 imprimirMensaje("La respuesta del item seleccionado no puede ser vacía.");
-            return false
+                return false
+            }
         }
         return true
 
@@ -1213,6 +1217,20 @@ function validarAddSubtema(){
 function validarModSubtema(){
 
     return validarSelectSubtema('selectSubModificar') && validarSubtema('nuevoModificarSubtema')
+}
+
+function guardarJuego(){
+    var codigo = $("#codigoSesion").val();
+    var cantItems = $("#cantItems").val();
+    var idSubtema = $("#subtemaJuego").val();
+    var tipoJuego = $("#selectTipoJuego").val();
+    var cantidadTiempo = 0 ? $("#tiempoJuego").val().trim() === "": $("#tiempoJuego").val();
+
+    if(codigo.trim() === "" || cantItems.trim()===""||isNaN(cantItems) || idSubtema=== null || idSubtema ==="Escoger Subtema" ||
+    tipoJuego === "Escoger Tipo")
+        print("Error, verifique que todos los campos hayan sido llenados y con los datos correctos.");
+    else
+        procesarAjaxJuego(codigo)
 }
 
 function agregarEquipo(){

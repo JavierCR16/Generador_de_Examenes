@@ -25,42 +25,42 @@
         </form>
     </div>
 
-    <div class="col-md-6 w3-container divs">
-        <input id = "codigoSesion" name ="codigoSesion" type="text" placeholder="Código: "/>
-        </br>
-        <input id = "cantItems" name ="cantItems" type="number" placeholder="Cant Items: "/>
-        </br>
+    <form id = "formJuegoActividad" action="JuegoActividad" method="post">
+        <div class="col-md-6 w3-container divs">
+            <input id = "codigoSesion" name ="codigoSesion" type="text" placeholder="Código: "/>
+            </br>
+            <input id = "cantItems" name ="cantItems" type="number" placeholder="Cant Items: "/>
+            </br>
 
-        <h3>Tema:</h3>
-        <select onchange="obtenerSubtemas(this,'subtemaJuego')" name="selectBuscarTemaJuego">
-            <option>Escoger Tema</option>
-            {% for tema in temas %}
-                <option> {{ tema.getId()}}-{{tema.getTema()}}</option>
-            {% endfor %}
-        </select>
+            <h3>Tema:</h3>
+            <select onchange="obtenerSubtemas(this,'subtemaJuego')" name="selectBuscarTemaJuego">
+                <option>Escoger Tema</option>
+                {% for tema in temas %}
+                    <option> {{ tema.getId()}}-{{tema.getTema()}}</option>
+                {% endfor %}
+            </select>
 
-        <h3>Subtema:</h3>
-        <select id = "subtemaJuego" name="subtemaJuego">
-            <option>Escoger Subtema</option>
-        </select>
+            <h3>Subtema:</h3>
+            <select id = "subtemaJuego" name="subtemaJuego">
+                <option>Escoger Subtema</option>
+            </select>
 
-        <h3>Tipo:</h3>
-        <select id ="selectTipoJuego" name="selectTipoJuego" onchange="mostrarTiempo(this)">
-            <option>Escoger Tipo</option>
-            <option>1-Contrarreloj</option>
-            <option>2-Manual</option>
-        </select>
+            <h3>Tipo:</h3>
+            <select id ="selectTipoJuego" name="selectTipoJuego" onchange="mostrarTiempo(this)">
+                <option>Escoger Tipo</option>
+                <option>1-Contrarreloj</option>
+                <option>2-Manual</option>
+            </select>
 
-        <input id="tiempoJuego" type="number" class="w3-hide" placeholder="Tiempo por pregunta: (min)" min="1"/>
+            <input id="tiempoJuego" name = "tiempoJuego" type="number" class="w3-hide" placeholder="Tiempo por pregunta: (min)" min="1"/>
 
-        </br>
+            </br>
 
+            <button type="button" onclick="guardarJuego()"> Iniciar </button>
 
-        <button type="button" onclick="guardarJuego()"> Iniciar </button>
-
-        </br>
-    </div>
-
+            </br>
+        </div>
+    </form>
 
     <!-- Modal -->
     <div class="modal fade" id="modalSesionJuego" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -76,7 +76,9 @@
                     Para iniciar el juego presione el botón de confirmar
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary modalB" data-dismiss="modal">Cerrar</button>
+
+                    <button onclick="$('#formJuegoActividad').submit()" class="btn btn-secondary modalB">Confirmar</button>
+
                 </div>
             </div>
         </div>

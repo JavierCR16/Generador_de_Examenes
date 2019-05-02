@@ -16,3 +16,18 @@ def previewEncabezado(ObjetoEncabezado):#TODO VER COMO SE INCLUYEN PAQUETES PARA
 
     return nombreImagen
 
+def generarItemsLatex(itemsExtraidos,codigoSesion):
+    listaImagenes = []
+    for index, tupla in enumerate(itemsExtraidos):
+        objImagen = tupla[0]
+
+        latex= "\\paragraph{} "+objImagen.getDescripcion() +"\\hfill " +"("+str(objImagen.getPuntaje()) +" Puntos)"
+
+        nombreImagen = codigoSesion+"-"+str(index)+ ".png"
+        preview(latex, viewer="file", filename="static/" + nombreImagen)
+
+        listaImagenes.append(nombreImagen)
+
+    return listaImagenes
+
+

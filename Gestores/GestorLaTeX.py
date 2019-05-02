@@ -81,9 +81,3 @@ def generarStringEncabezado(objEncabezado,puntajes):
                        + objEncabezado.getInstrucciones() + "\\\\ \\hrulefill"
 
     return stringEncabezado
-
-
-
-
-
-

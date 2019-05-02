@@ -1,7 +1,7 @@
 import datetime
 from Gestores import GestorBase
 from Gestores import GestorCorreo
-from Gestores import GestorEncabezado
+from Gestores import GestorPreviewLatex
 from Gestores import GestorExamenes
 from Gestores import GestorIndiceDiscriminacion
 from Gestores import GestorItems
@@ -162,7 +162,7 @@ class Controlador:
 
         nuevoEncabezado = ObjetoEncabezado(None,curso,escuela,instrucciones, fecha, tiempo,periodo, tipo)
 
-        return GestorEncabezado.previewEncabezado(nuevoEncabezado)
+        return GestorPreviewLatex.previewEncabezado(nuevoEncabezado)
 
     def obtenerEncabezados(self,usuario,contrasenna):
 
@@ -344,13 +344,15 @@ class Controlador:
         GestorBase.guardarJuego(usuario,contrasenna,codigo)
 
 
-    def generarItemsImagenes(self,usuario,contrasenna,cantItems,idSubtema):
+    def generarItemsImagenes(self,usuario,contrasenna,cantItems,idSubtema,codigoSesion):
 
-        itemsExtraidos = GestorBase.filtrarItemsJuego(idSubtema,cantItems,usuario,contrasenna)
+        itemsExtraidos = GestorBase.filtrarItemsJuego(idSubtema.split("-")[0],int(cantItems),usuario,contrasenna)
 
-        GestorImagenes.generarItemsLatex(itemsExtraidos)
+        nombreImagenes = GestorPreviewLatex.generarItemsLatex(itemsExtraidos,codigoSesion)
 
-    #Estudiantes
+        return nombreImagenes,itemsExtraidos
+
+        # Estudiantes
 
     def verificarCodigoSesion(self, usuario, contrasenna, codigo):
         return GestorBase.verificarCodigoSesion(usuario, contrasenna, codigo)

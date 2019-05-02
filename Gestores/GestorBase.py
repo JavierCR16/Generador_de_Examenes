@@ -1109,7 +1109,7 @@ def filtrarItemsJuego(idSubtema,limiteItems,usuario,contrasenna):
         try:
             with nuevaConexion.cursor() as itemsJuego:
                 queryItems = "SELECT DISTINCT I.idItem,I.descripcion, I.puntaje FROM Item i, Respuestas r WHERE " \
-                             "i.idSubtema =%s AND i.idItem = r.idItem ORDER BY RAND() LIMIT %s"
+                             "i.idSubtema =%s AND (I.tipo = 'PS' OR I.tipo = 'PD') AND i.idItem = r.idItem ORDER BY RAND() LIMIT %s"
 
                 itemsJuego.execute(queryItems,(idSubtema,limiteItems))
 
