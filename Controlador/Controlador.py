@@ -359,3 +359,10 @@ class Controlador:
 
     def unirseJuego(self, usuario, contrasenna, codigo, equipo):
         GestorBase.unirseJuego(usuario, contrasenna, codigo, equipo)
+
+
+    def obtenerEquiposSesion(self, usuario, contrasenna, sesion, tipo):
+        return GestorBase.obtenerEquiposSesion(usuario, contrasenna, sesion, tipo)
+
+    def puntuar(self,   usuario, contrasenna, sesion, equipo, puntaje):
+        GestorBase.puntuar(usuario, contrasenna, sesion, equipo, puntaje)
