@@ -1242,3 +1242,58 @@ function agregarEquipo(){
     else
         procesarAjaxAgregarEquipo(codigo,nombreEquipo)
 }
+
+function mostrarRespuestaJuego(respuestaActual){
+
+    var modal = "<div class=\"modal fade\" id=\"modalRespuestaJuego\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">\n" +
+        "        <div class=\"modal-dialog modal-dialog-centered\" role=\"document\">\n" +
+        "            <div class=\"modal-content\">\n" +
+        "                <div class=\"modal-header\">\n" +
+        "                    <h2 class=\"modal-title\" id=\"exampleModalLabel\">Respuesta Correcta</h2>\n" +
+        "                    <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n" +
+        "                        <span aria-hidden=\"true\">&times;</span>\n" +
+        "                    </button>\n" +
+        "                </div>\n" +
+        "                <div id='descripcionRespuestaJuego' class=\"modal-body\">\n" +
+        "                    ...\n" +
+        "                </div>\n" +
+        "                <div class=\"modal-footer\">\n" +
+        "                    <button type=\"button\" class=\"btn btn-secondary modalB\" data-dismiss=\"modal\">Cerrar</button>\n" +
+        "                </div>\n" +
+        "            </div>\n" +
+        "        </div>\n" +
+        "    </div>";
+
+    var modalJquery = $(modal);
+    modalJquery.find("#descripcionRespuestaJuego").text(respuestaActual);
+
+    modalJquery.modal({
+        show:true
+    })
+}
+
+function iniciarCronometro(boton,tiempo, idCronometro,respuesta){
+    var tiempoActual = new Date().getTime() + 60* parseFloat(tiempo) * 1000 + 2000;
+    $(boton).attr("disabled",true);
+    var x = setInterval(function() {
+
+      var now = new Date().getTime();
+
+      // Find the distance between now and the count down date
+      var distance = tiempoActual - now;
+
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      $("#"+idCronometro).text(minutes+"m :"+seconds+"s");
+
+    if (distance <= 0) {
+        clearInterval(x);
+        $(boton).removeAttr("disabled",true);
+        $("#"+idCronometro).text("Tiempo Finalizado.");
+
+         mostrarRespuestaJuego(respuesta)
+      }
+
+    },1000);
+}

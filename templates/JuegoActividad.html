@@ -28,21 +28,46 @@
     <form action="juegoActividadDatos" method="post" id="juegoActividadForm">
         <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="false">
             <div class="carousel-inner">
-                <div class= "col-md-10 w3-container divSlidG carousel-item active" id="Ejercicio1">
-                    <form action="unirseJuego" method="post" id="LogInForm">
-                        <img class="imgJuego" src="../static/bkg.jpg">
 
-                        <div style="display: flex;">
-                            <button style="width: 30%; margin:0% 2% 0% 19%" type="submit"> Mostrar Respuesta </button>
-                            <button style="width: 30%; margin: 0% 2% 0% 0%;" type="submit"> Calificar </button>
+                {% for imagen in imagenes %}
+                    {% set indexRespBuena =itemsJuego[loop.index0][1].getRespuestaCorrecta() - 1  %}
+                    {% set respuestaActual = itemsJuego[loop.index0][1].getRespuestas()[indexRespBuena] %}
+                    {% if loop.index0 ==0 %}
+                        <div class= "col-md-10 w3-container divSlidG carousel-item active">
+                        <h1 id ="Ejercicio{{loop.index}}"> </h1>
+                            <img class="imgJuego" src="../static/{{ imagen }}">
+
+                            <div style="display: flex;">
+                                {% if tipoJuego == "1" %}
+                                    <button style="width: 30%; margin:0% 2% 0% 19%"  onclick="iniciarCronometro(this,{{ cantTiempo }},'Ejercicio{{loop.index}}','{{ respuestaActual }}')" type="button">Iniciar Tiempo</button>
+                                {% else %}
+                                    <button style="width: 30%; margin:0% 2% 0% 19%"  onclick="mostrarRespuestaJuego('{{ respuestaActual }}')" type="button">Mostrar Respuesta</button>
+                                {% endif %}
+
+                                <button style="width: 30%; margin: 0% 2% 0% 0%;" onclick="" type="button">Calificar</button>
+                            </div>
+
+                            </br>
                         </div>
-                    </form>
-                    </br>
-                </div>
 
-                <div class= "col-md-10 w3-container divSlidG carousel-item" id="Ejercicio2">
+                    {% else %}
+                        <div class= "col-md-10 w3-container divSlidG carousel-item" >
+                            <h1 id ="Ejercicio{{loop.index}}"> </h1>
+                            <img class="imgJuego" src="../static/{{ imagen }}">
 
-                </div>
+                            <div style="display: flex;">
+                                {% if tipoJuego == "1" %}
+                                    <button style="width: 30%; margin:0% 2% 0% 19%"  onclick="iniciarCronometro(this,{{ cantTiempo }},'Ejercicio{{loop.index}}','{{ respuestaActual }}')" type="button">Iniciar Tiempo</button>
+                                {% else %}
+                                    <button style="width: 30%; margin:0% 2% 0% 19%"  onclick="mostrarRespuestaJuego('{{ respuestaActual }}')" type="button">Mostrar Respuesta</button>
+                                {% endif %}
+                                <button style="width: 30%; margin: 0% 2% 0% 0%;" onclick="" type="button">Calificar</button>
+                            </div>
+
+                            </br>
+                        </div>
+                    {% endif %}
+                {% endfor %}
             </div>
 
             <a class="carousel-control-prev aSLG" href="#carouselExampleControls" role="button" data-slide="prev">

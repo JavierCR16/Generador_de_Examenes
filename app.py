@@ -542,13 +542,13 @@ def juegoActividad():
 
     cantItems = request.form.get("cantItems")
     idSubtema = request.form.get("subtemaJuego")
-    tipoJuego = request.form.get("selectTipoJuego")
+    idTipoJuego = request.form.get("selectTipoJuego").split("-")[0]
     cantidadTiempo = request.form.get("tiempoJuego")
 
     nombreImagenes,itemsJuego = Controller.generarItemsImagenes(session['user'], session['contrasenna'], cantItems, idSubtema,session['codJuego'])
 
     return render_template('JuegoActividad.html', imagenes = nombreImagenes,
-                           itemsJuego = itemsJuego,tipoJuego = tipoJuego,cantTiempo = cantidadTiempo)
+                           itemsJuego = itemsJuego,tipoJuego = idTipoJuego,cantTiempo = cantidadTiempo)
 
 @app.route('/Puntuaciones')
 def puntuaciones():
