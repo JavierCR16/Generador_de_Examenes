@@ -574,6 +574,18 @@ def obtenerEquipoPuntaje():
 
     return jsonify({"equipos":listaEquipos})
 
+@app.route('/cargarScoreboard', methods=['post'])
+def cargarScoreboard():
+    listaEquipos = Controller.obtenerEquiposSesion(session['user'],session['contrasenna'],session['codJuego'],"Scoreboard")
+
+    return jsonify({"listaEquipos":listaEquipos})
+
+@app.route('/finalizarSesion', methods=['post'])
+def finalizarSesion():
+    Controller.borrarSesion(session['user'],session['contrasenna'],session['codJuego'])
+    session.pop('codJuego', None)
+    return jsonify()
+
 #ESTUDIANTES
 
 @app.route('/EstudiantesInicio')

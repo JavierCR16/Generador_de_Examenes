@@ -64,7 +64,7 @@ function procesarAjaxIndice(idItemSecreto,nuevoIndice, idSub,valorBoton,descripI
                 var puntaje = datos["items"][i]["puntaje"];
                 var indice = datos["items"][i]["indiceDiscriminacion"];
                 var idSubtema = datos["items"][i]["idSubtema"];
-                var boton = $('<button class="consult-button"><i class="material-icons" style="font-size:20px;">info</i></button>').attr(
+                var boton = $('<button class="iconB"><i class="fas fa-info-circle"></i></button>').attr(
                     "onclick","verificarIndiceDiscriminacion(this," + JSON.stringify(descripItems) +")"
                 );
 
@@ -1364,4 +1364,37 @@ function mostrarEquiposCalificar(puntaje){
 
     procesarAjaxEquipos(puntaje)
 
+}
+
+function mostrarScoreboard(){
+    $.ajax({
+        url: "/cargarScoreboard",
+        type: 'post',
+        dataType: "json",
+
+        success: function (datos) {
+            var tbody =  $("#tablaScoreboardBody");
+
+            tbody.children().remove();
+            for(var i = 0; i< datos["listaEquipos"].length; i++){
+                tbody.append($('<tr>').append($('<td>',{text:datos["listaEquipos"][i][1]})).append($('<td>',{text:datos["listaEquipos"][i][2]})));
+            }
+
+            $("#modalScoreboard").modal({
+                show:true
+            })
+        }
+    })
+}
+
+function finalizarSesion(){
+    $.ajax({
+        url: "/finalizarSesion",
+        type: 'post',
+        dataType: "json",
+
+        success: function () {
+            window.location.href = "/OpcionesPrincipales";
+        }
+    })
 }

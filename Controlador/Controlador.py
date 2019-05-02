@@ -367,3 +367,6 @@ class Controlador:
     def puntuar(self, usuario, contrasenna, sesion, equipo, puntaje):
 
         GestorBase.puntuar(usuario, contrasenna, sesion, equipo.split("-")[0], puntaje)
+
+    def borrarSesion(self, usuario, contrasenna, sesion):
+        GestorBase.borrarSesion(usuario, contrasenna, sesion)

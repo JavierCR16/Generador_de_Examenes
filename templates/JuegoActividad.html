@@ -69,6 +69,10 @@
                         </div>
                     {% endif %}
                 {% endfor %}
+
+                <div class= "col-md-10 w3-container divSlidG carousel-item">
+                    <button type="button" onclick="mostrarScoreboard()">Scoreboard</button>
+                </div>
             </div>
 
             <a class="carousel-control-prev aSLG" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -92,7 +96,7 @@
                             </button>
                         </div>
                         <div id='descripcionCalificar' class="modal-body">
-                            <select id="selectEquipos">
+                            <select class="modalI" id="selectEquipos">
 
                             </select> <br>
 
@@ -100,6 +104,37 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary modalB" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+<div class="modal fade" id="modalScoreboard" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title" id="exampleModalLabel">Scoreboard</h2>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div id='descripcionScoreboard' class="modal-body">
+                            <table id="tablaScoreboard" class="table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Equipo</th>
+                                    <th>Puntaje</th>
+                                </tr>
+                                </thead>
+                                <tbody id="tablaScoreboardBody">
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary modalB" onclick="finalizarSesion()" id="FinalizarJuego">Finalizar Juego</button>
+                            <button type="button" class="btn btn-secondary modalB" data-dismiss="modal" id="CerrarScoreboard">Cerrar</button>
                         </div>
                     </div>
                 </div>

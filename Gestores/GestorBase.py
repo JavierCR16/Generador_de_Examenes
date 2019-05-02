@@ -1243,4 +1243,26 @@ def puntuar(usuario, contrasenna, sesion, equipo, nuevoPuntaje):
         finally:
             nuevaConexion.close()
 
+def borrarSesion(usuario, contrasenna, sesion):
+
+    nuevaConexion = establecerConexion(usuario,contrasenna)
+
+    if(nuevaConexion != False):
+
+        try:
+            with nuevaConexion.cursor() as finalizar:
+
+                statementSesion = "DELETE FROM sesionjuego WHERE codigo=%s"
+
+                finalizar.execute(statementSesion,(sesion))
+
+                nuevaConexion.commit()
+
+        except Exception as e:
+            print(e)
+            print("Error al asignar el puntaje")
+
+        finally:
+            nuevaConexion.close()
+
 
