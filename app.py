@@ -554,6 +554,26 @@ def juegoActividad():
 def puntuaciones():
     return render_template('Puntuaciones.html')
 
+@app.route('/calificarEquipo',methods=['post'])
+def calificarEquipo():
+
+    infoCalificar = request.get_json()
+
+    equipo = infoCalificar["equipo"]
+
+    nuevoPuntaje = infoCalificar["puntaje"]
+
+    Controller.puntuar(session['user'],session['contrasenna'],session['codJuego'],equipo,nuevoPuntaje)
+
+    return jsonify()
+
+@app.route('/obtenerEquipoPuntaje', methods=['post'])
+def obtenerEquipoPuntaje():
+
+    listaEquipos = Controller.obtenerEquiposSesion(session['user'],session['contrasenna'],session['codJuego'],"Calificaciones")
+
+    return jsonify({"equipos":listaEquipos})
+
 #ESTUDIANTES
 
 @app.route('/EstudiantesInicio')

@@ -1204,14 +1204,14 @@ def obtenerEquiposSesion(usuario, contrasenna, sesion, tipo):
             with nuevaConexion.cursor() as listaEquipos:
 
                 if (tipo == "Scoreboard"):
-                    queryListaEquipos = "SELECT nombre, puntaje FROM EQUIPO WHERE codigoSesion =%s ORDER BY PUNTAJE DESC"
+                    queryListaEquipos = "SELECT id,nombre, puntaje FROM EQUIPO WHERE codigoSesion =%s ORDER BY PUNTAJE DESC"
                 else:
-                    queryListaEquipos = "SELECT nombre, puntaje FROM EQUIPO WHERE codigoSesion =%s"
+                    queryListaEquipos = "SELECT id,nombre, puntaje FROM EQUIPO WHERE codigoSesion =%s"
 
                 listaEquipos.execute(queryListaEquipos, (sesion))
 
                 for tupla in listaEquipos:
-                    lista.append([tupla[0], tupla[1]])
+                    lista.append([tupla[0],tupla[1],tupla[2]])
 
         except Exception as e:
             print(e)
@@ -1221,34 +1221,7 @@ def obtenerEquiposSesion(usuario, contrasenna, sesion, tipo):
             nuevaConexion.close()
     return lista
 
-
-def obtenerPuntaje(usuario, contrasenna, sesion, equipo):
-    nuevaConexion = establecerConexion(usuario,contrasenna)
-    equipo = equipo.split("-")[0]
-    puntaje = 0
-    if(nuevaConexion != False):
-
-        try:
-            with nuevaConexion.cursor() as consultaPuntaje:
-
-                queryPuntaje = "SELECT puntaje from EQUIPO WHERE id=%s and codigoSesion=%s"
-
-                consultaPuntaje.execute(queryPuntaje,(equipo, sesion))
-
-                for atributos in consultaPuntaje:
-                    puntaje = atributos[0]
-
-        except Exception as e:
-            print(e)
-            print("Error al obtener el puntaje")
-
-        finally:
-            nuevaConexion.close()
-    return puntaje
-
-def puntuar(usuario, contrasenna, sesion, equipo, puntaje):
-    equipo = equipo.split("-")[0]
-    puntaje = puntaje + obtenerPuntaje(usuario, contrasenna, sesion, equipo)
+def puntuar(usuario, contrasenna, sesion, equipo, nuevoPuntaje):
 
     nuevaConexion = establecerConexion(usuario,contrasenna)
 
@@ -1257,9 +1230,9 @@ def puntuar(usuario, contrasenna, sesion, equipo, puntaje):
         try:
             with nuevaConexion.cursor() as puntuar:
 
-                statementPuntaje = "UPDATE EQUIPO SET puntaje=%s WHERE id=%s and codigoSesion=%s"
+                statementPuntaje = "UPDATE EQUIPO SET puntaje= puntaje +%s WHERE id=%s and codigoSesion=%s"
 
-                puntuar.execute(statementPuntaje,(puntaje, equipo, sesion))
+                puntuar.execute(statementPuntaje,(nuevoPuntaje, equipo, sesion))
 
                 nuevaConexion.commit()
 
@@ -1269,3 +1242,5 @@ def puntuar(usuario, contrasenna, sesion, equipo, puntaje):
 
         finally:
             nuevaConexion.close()
+
+

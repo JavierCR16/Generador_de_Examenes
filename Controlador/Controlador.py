@@ -365,4 +365,5 @@ class Controlador:
         return GestorBase.obtenerEquiposSesion(usuario, contrasenna, sesion, tipo)
 
     def puntuar(self,   usuario, contrasenna, sesion, equipo, puntaje):
-        GestorBase.puntuar(usuario, contrasenna, sesion, equipo, puntaje)
+
+        GestorBase.puntuar(usuario, contrasenna, sesion, equipo.split("-")[0], puntaje)

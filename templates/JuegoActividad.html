@@ -32,6 +32,7 @@
                 {% for imagen in imagenes %}
                     {% set indexRespBuena =itemsJuego[loop.index0][1].getRespuestaCorrecta() - 1  %}
                     {% set respuestaActual = itemsJuego[loop.index0][1].getRespuestas()[indexRespBuena] %}
+                    {% set puntajeItem = itemsJuego[loop.index0][0].getPuntaje() %}
                     {% if loop.index0 ==0 %}
                         <div class= "col-md-10 w3-container divSlidG carousel-item active">
                         <h1 id ="Ejercicio{{loop.index}}"> </h1>
@@ -44,7 +45,7 @@
                                     <button style="width: 30%; margin:0% 2% 0% 19%"  onclick="mostrarRespuestaJuego('{{ respuestaActual }}')" type="button">Mostrar Respuesta</button>
                                 {% endif %}
 
-                                <button style="width: 30%; margin: 0% 2% 0% 0%;" onclick="" type="button">Calificar</button>
+                                <button style="width: 30%; margin: 0% 2% 0% 0%;" onclick="mostrarEquiposCalificar('{{ puntajeItem }}')" type="button">Calificar</button>
                             </div>
 
                             </br>
@@ -61,7 +62,7 @@
                                 {% else %}
                                     <button style="width: 30%; margin:0% 2% 0% 19%"  onclick="mostrarRespuestaJuego('{{ respuestaActual }}')" type="button">Mostrar Respuesta</button>
                                 {% endif %}
-                                <button style="width: 30%; margin: 0% 2% 0% 0%;" onclick="" type="button">Calificar</button>
+                                <button style="width: 30%; margin: 0% 2% 0% 0%;" onclick="mostrarEquiposCalificar('{{ puntajeItem }}')" type="button">Calificar</button>
                             </div>
 
                             </br>
@@ -80,6 +81,29 @@
             </a>
         </div>
     </form>
+
+<div class="modal fade" id="modalCalificar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 class="modal-title" id="exampleModalLabel">Respuesta Correcta</h2>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div id='descripcionCalificar' class="modal-body">
+                            <select id="selectEquipos">
+
+                            </select> <br>
+
+                            <button id="botonCalificar" type="button" class="modalB">Calificar</button>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary modalB" data-dismiss="modal">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 </body>
 </html>

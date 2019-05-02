@@ -438,6 +438,68 @@ function procesarAjaxAgregarEquipo(codigo,nombreEquipo){
     })
 }
 
+function procesarAjaxCalificar(equipo,puntaje){
+    $.ajax({
+        url: "/calificarEquipo",
+        type: 'post',
+        data: JSON.stringify({equipo: equipo, puntaje:puntaje}),
+        contentType: 'application/json;charset=UTF-8',
+        dataType: "json",
+
+        success: function (datos) {
+            imprimirMensaje("Puntaje Actualizado Correctamente")
+        }
+    })
+}
+
+function ejecutarModalCalificar(datos,nuevoPuntaje){
+     $("#selectEquipos").children().remove();
+
+     $("#selectEquipos").append($("<option>",{
+         text:"Escoger Equipo"
+     }));
+
+    for(var i =0; i< datos["equipos"].length;i++){
+
+        $("#selectEquipos").append($("<option>",{
+            text: datos["equipos"][i][0] + "-" + datos["equipos"][i][1]
+        }));
+    }
+
+    $("#botonCalificar").attr("onclick","calificar("+JSON.stringify(nuevoPuntaje)+")");
+
+    $("#modalCalificar").modal({
+        show:true
+    })
+}
+
+function calificar(nuevoPuntaje){
+    var equipoSeleccionado = $("#selectEquipos").val();
+
+    if (equipoSeleccionado.trim() === "Escoger Equipo")
+        imprimirMensaje("Debe seleccionar un equipo válido.");
+    else
+        procesarAjaxCalificar(equipoSeleccionado,nuevoPuntaje);
+
+    $("#modalCalificar").modal("hide");
+
+}
+
+
+function procesarAjaxEquipos(puntaje) {
+
+    $.ajax({
+        url: "/obtenerEquipoPuntaje",
+        type: 'post',
+        dataType: "json",
+
+        success: function (datos) {
+            ejecutarModalCalificar(datos,puntaje)
+        }
+    })
+
+}
+
 function obtenerSubtemas(selectEscogido, idObjHTML){
 
     var temaEscogido = selectEscogido.options[selectEscogido.selectedIndex].text;
@@ -1037,7 +1099,7 @@ function procesarComentario(reaccionEscogida){
 function imprimirMensaje(mensaje){
 
     var modal = "<div class=\"modal fade\" id=\"modalAlerta\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\">\n" +
-        "        <div class=\"modal-dialog\" role=\"document\">\n" +
+        "        <div class=\"modal-dialog modal-dialog-centered\" role=\"document\">\n" +
         "            <div class=\"modal-content\">\n" +
         "                <div class=\"modal-header\">\n" +
         "                    <h2 class=\"modal-title\" id=\"exampleModalLabel\">Alerta</h2>\n" +
@@ -1296,4 +1358,10 @@ function iniciarCronometro(boton,tiempo, idCronometro,respuesta){
       }
 
     },1000);
+}
+
+function mostrarEquiposCalificar(puntaje){
+
+    procesarAjaxEquipos(puntaje)
+
 }
