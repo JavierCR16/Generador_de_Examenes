@@ -22,6 +22,7 @@ from Gestores import GestorExamenes
 #TODO Buscar cualquier uso que se haga de arreglos en un for y dejar setteado el valor que corresponde mediante loop.index0
 #TODO VER LO DEL API DEL GMAIL PARA ENVIAR CORREO
 #TODO MOSTRAR MENSAJES DE EXITO.
+#TODO PANTALLA PARA LA GESTION DE USUARIOS
 
 #FUNCIONES DE CONEXION Y QUERIES
 
