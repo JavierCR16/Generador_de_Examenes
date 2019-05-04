@@ -49,7 +49,7 @@ def ventanaCRUDTemasSubtemas():
 
     return render_template("CRUDTemasSubtemas.html", temas = listaTemas)
 
-@app.route('/crudTemasSubtemas', methods=['post']) #TODO PONER MENSAJE DE EXITO O FALLO
+@app.route('/crudTemasSubtemas', methods=['post'])
 def crudTemasSubtemas():
 
     valor_boton = request.form.get("accioncrudtemassubtemas")
