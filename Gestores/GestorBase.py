@@ -60,7 +60,7 @@ def obtenerInformacionItem(idItem,usuario,contrasenna):
 def cerrarConexion(objetoConexion):
     objetoConexion.close()
 
-def cargarUsuarios(usuario,contrasenna):
+def cargarUsuarios(usuario,contrasenna, tipo):
 
     nuevaConexion = establecerConexion(usuario,contrasenna)
     listaUsuarios = []
@@ -68,9 +68,12 @@ def cargarUsuarios(usuario,contrasenna):
 
         try:
             with nuevaConexion.cursor() as usuarios:
-                queryUsuarios = "SELECT nombreCompleto, correo FROM USUARIO WHERE correo != %s"
-
-                usuarios.execute(queryUsuarios,(usuario))
+                if tipo == "admin":
+                    queryUsuarios = "SELECT nombreCompleto, correo FROM USUARIO"
+                    usuarios.execute(queryUsuarios)
+                else:
+                    queryUsuarios = "SELECT nombreCompleto, correo FROM USUARIO WHERE correo != %s"
+                    usuarios.execute(queryUsuarios, (usuario))
 
                 for atributos in usuarios:
                     nuevoUsuario = ObjetoUsuario(atributos[0],atributos[1])

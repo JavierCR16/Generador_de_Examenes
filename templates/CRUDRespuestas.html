@@ -86,56 +86,56 @@
             </div>
             <div class="tab-pane tabs fade" id="nav-ModificarEliminarRespuestas" role="tabpanel" aria-labelledby="nav-ModificarEliminarRespuestas-tab">
                 <form action="crudRespuestasModificar" method="post">
-                <label>Tema</label>
-                <select onchange="obtenerSubtemas(this,'selectSubModificarResp')" name="selectTemaRespModificar">
-                    <option>Escoger Tema</option>
+                    <label>Tema</label>
+                    <select onchange="obtenerSubtemas(this,'selectSubModificarResp')" name="selectTemaRespModificar">
+                        <option>Escoger Tema</option>
 
-                    {% for tema in temas %}
-                        <option> {{tema.getId()}}-{{tema.getTema()}}</option>
-                    {% endfor %}
+                        {% for tema in temas %}
+                            <option> {{tema.getId()}}-{{tema.getTema()}}</option>
+                        {% endfor %}
 
-                </select><br>
+                    </select><br>
 
-                <label>Subtemas</label>
+                    <label>Subtemas</label>
 
-                <select id="selectSubModificarResp" name="selectSubModificarResp" onchange="obtenerItemsRespuestas(this,'ConResp','selectItemRespModificar',
-                    'despDescModResp')">
+                    <select id="selectSubModificarResp" name="selectSubModificarResp" onchange="obtenerItemsRespuestas(this,'ConResp','selectItemRespModificar',
+                        'despDescModResp')">
 
-                </select><br>
+                    </select><br>
 
-                <label>Ítems</label>
-                <select onchange="cargarRespuestasModificar(this)" id = "selectItemRespModificar" name = "selectItemRespModificar">
+                    <label>Ítems</label>
+                    <select onchange="cargarRespuestasModificar(this)" id = "selectItemRespModificar" name = "selectItemRespModificar">
 
-                </select><br>
+                    </select><br>
 
-                <i id="despDescModResp" class="fa fa-eye"></i> <br><br>
+                    <i id="despDescModResp" class="fa fa-eye"></i> <br><br>
 
-                <div id="divrespModSelect" hidden>
-                    <h1>Respuestas</h1>
-                    <input id ="Mrespuesta1" type="text" name="Mrespuesta1" placeholder="respuesta1">
+                    <div id="divrespModSelect" hidden>
+                        <h1>Respuestas</h1>
+                        <input id ="Mrespuesta1" type="text" name="Mrespuesta1" placeholder="respuesta1">
 
-                    <input type="radio" name="Mrespuesta" value=1><br>
+                        <input type="radio" name="Mrespuesta" value=1><br>
 
-                    <input id ="Mrespuesta2" type="text" name="Mrespuesta2" placeholder="respuesta2">
+                        <input id ="Mrespuesta2" type="text" name="Mrespuesta2" placeholder="respuesta2">
 
-                    <input type="radio" name="Mrespuesta" value=2><br>
+                        <input type="radio" name="Mrespuesta" value=2><br>
 
-                    <input id ="Mrespuesta3" type="text" name="Mrespuesta3" placeholder="respuesta3">
+                        <input id ="Mrespuesta3" type="text" name="Mrespuesta3" placeholder="respuesta3">
 
-                    <input type="radio" name="Mrespuesta" value=3><br>
+                        <input type="radio" name="Mrespuesta" value=3><br>
 
-                    <input id ="Mrespuesta4" type="text" name="Mrespuesta4" placeholder="respuesta4">
+                        <input id ="Mrespuesta4" type="text" name="Mrespuesta4" placeholder="respuesta4">
 
-                    <input type="radio" name="Mrespuesta" value=4><br>
+                        <input type="radio" name="Mrespuesta" value=4><br>
 
-                </div>
+                    </div>
 
-                <div id = "divrespModDesarrollo" hidden>
-                    <textarea id = "respModDesarrollo" name = "respModDesarrollo" ></textarea>
-                </div>
+                    <div id = "divrespModDesarrollo" hidden>
+                        <textarea id = "respModDesarrollo" name = "respModDesarrollo" ></textarea>
+                    </div>
 
-                <input hidden id = "botonModResp" name = "respuestasMod" class="btnSearch" type="submit" onclick ="return validarRespuestas('selectItemRespModificar',['#Mrespuesta1','#Mrespuesta2','#Mrespuesta3','#Mrespuesta4'],'respModDesarrollo')" value="Modificar Respuestas">
-            </form>
+                    <input hidden id = "botonModResp" name = "respuestasMod" class="btnSearch" type="submit" onclick ="return validarRespuestas('selectItemRespModificar',['#Mrespuesta1','#Mrespuesta2','#Mrespuesta3','#Mrespuesta4'],'respModDesarrollo')" value="Modificar Respuestas">
+                </form>
             </div>
         </div>
     </div>

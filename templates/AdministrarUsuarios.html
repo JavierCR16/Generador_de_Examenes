@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
+    <script type="text/javascript" src="/static/solicitudes.js"></script>
+    <title>GEMA 💎 </title>
+</head>
+<body>
+
+    <img class= "imgs" src="../static/bkg.jpg">
+
+
+    <div class="col-md-12 header">
+        <a href="/OpcionesPrincipales"><i class="material-icons backA">chevron_left</i></a>
+        <h1>Administración de Usuarios</h1>
+        <form id="formlogout" action="cerrarSesion" method="post">
+            <a href="javascript:$('#formlogout').submit();" data-toggle="SignOutTooltip" data-placement="bottom" title="Cerrar Sesión"><i class="material-icons signO">exit_to_app</i></a>
+        </form>
+    </div>
+
+    <div class= "col-md-6 w3-container divs">
+        <nav class = "nav-justified">
+            <div class="nav nav-tabs navs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-AgregarUsuario-tab" data-toggle="tab" href="#nav-AgregarUsuario" role="tab" aria-controls="nav-AgregarUsuario" aria-selected="true">Agregar Usuarios</a>
+                <a class="nav-item nav-link" id="nav-ModificarUsuario-tab" data-toggle="tab" href="#nav-ModificarUsuario" role="tab" aria-controls="nav-ModificarUsuario" aria-selected="false">Modificar Usuarios</a>
+                <a class="nav-item nav-link" id="nav-EliminarUsuario-tab" data-toggle="tab" href="#nav-EliminarUsuario" role="tab" aria-controls="nav-EliminarUsuario" aria-selected="false">Eliminar Usuarios</a>
+            </div>
+        </nav>
+
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane tabs fade show active" id="nav-AgregarUsuario" role="tabpanel" aria-labelledby="nav-AgregarUsuario-tab">
+                <input id ="nombreAdmUsuarioAg" type="text" name="nombreAdmUsuarioAg" placeholder="Nombre:">
+                <input id ="apellidosAdmUsuarioAg" type="text" name="apellidosAdmUsuarioAg" placeholder="Apellidos:">
+                <input id ="contrasennaAdmUsuarioAg" type="password" name="contrasennaAdmUsuarioAg" placeholder="Contraseña::">
+                <input id ="confContraAdmUsuarioAg" type="password" name="confContraAdmUsuarioAg" placeholder="Confirmar Contraseña::">
+
+                <button>Agregar Usuario</button>
+            </div>
+            <div class="tab-pane tabs fade" id="nav-ModificarUsuario" role="tabpanel" aria-labelledby="nav-ModificarUsuario-tab">
+                <select name="adminUsuarios" id="adminUsuarios">
+                    {% for usuario in usuarios %}
+                        <option>{{ usuario.getNombre() }} ({{ usuario.getCorreo() }})</option>
+                    {% endfor %}
+                </select>
+
+                <input id ="nombreAdmUsuarioMod" type="text" name="nombreAdmUsuarioMod" placeholder="Nombre:">
+                <input id ="apellidosAdmUsuarioMod" type="text" name="apellidosAdmUsuarioMod" placeholder="Apellidos:">
+                <input id ="contrasennaAdmUsuarioMod" type="password" name="contrasennaAdmUsuarioMod" placeholder="Contraseña:">
+                <input id ="confContraAdmUsuarioMod" type="password" name="confContraAdmUsuarioMod" placeholder="Confirmar Contraseña:">
+
+                <button>Modificar Usuario</button>
+            </div>
+            <div class="tab-pane tabs fade" id="nav-EliminarUsuario" role="tabpanel" aria-labelledby="nav-EliminarUsuario-tab">
+                <select name="adminUsuarios" id="adminUsuarios">
+                    {% for usuario in usuarios %}
+                        <option>{{ usuario.getNombre() }} ({{ usuario.getCorreo() }})</option>
+                    {% endfor %}
+                </select>
+
+                <button>Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

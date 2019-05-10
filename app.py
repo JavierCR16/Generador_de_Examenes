@@ -370,7 +370,7 @@ def aprobarRechazarSugerencia(): #1 = Aprobar, 0 = Rechazar
 #COMPARTIR EXAMENES
 @app.route('/CompartirExamenes')
 def compartirExamenes():
-    usuarios = Controller.cargarUsuarios(session['user'],session['contrasenna'])
+    usuarios = Controller.cargarUsuarios(session['user'],session['contrasenna'], "compartir")
 
     return render_template("CompartirExamenes.html",usuarios = usuarios)
 
@@ -385,7 +385,7 @@ def enviarCorreo():
 
     Controller.enviarExamen(nombreSender,asunto,cuerpo,archivosExamen,listaCorreos)
 
-    usuarios = Controller.cargarUsuarios(session['user'], session['contrasenna'])
+    usuarios = Controller.cargarUsuarios(session['user'], session['contrasenna'], "correo")
 
     return render_template("CompartirExamenes.html", usuarios=usuarios)
 
@@ -640,6 +640,12 @@ def agregarComentario():
     Controller.agregarComentario(session['userEst'],session['contrasennaEst'],codigo,comentario,reaccion)
 
     return jsonify({"success":1,"mensaje":"Su comentario ha sido enviado con éxito"})
+
+@app.route('/AdministrarUsuarios')
+def adminUsuarios():
+    usuarios = Controller.cargarUsuarios(session['user'], session['contrasenna'], "admin")
+
+    return render_template('AdministrarUsuarios.html', usuarios = usuarios)
 
 if __name__ == '__main__':
 
