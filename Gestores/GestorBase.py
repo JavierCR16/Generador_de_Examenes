@@ -60,7 +60,7 @@ def obtenerInformacionItem(idItem,usuario,contrasenna):
 def cerrarConexion(objetoConexion):
     objetoConexion.close()
 
-def cargarUsuarios(usuario,contrasenna, tipo):
+def cargarUsuarios(usuario,contrasenna):
 
     nuevaConexion = establecerConexion(usuario,contrasenna)
     listaUsuarios = []

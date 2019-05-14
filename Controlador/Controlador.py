@@ -247,9 +247,9 @@ class Controlador:
         return GestorBase.loadInformacionGenerarExamen(tipoExamen,usuario,contrasenna)
 
     #Funciones Compartir Examenes
-    def cargarUsuarios(self,usuario,contrasenna, tipo):
+    def cargarUsuarios(self,usuario,contrasenna):
 
-        return GestorBase.cargarUsuarios(usuario,contrasenna, tipo)
+        return GestorBase.cargarUsuarios(usuario,contrasenna)
 
     def enviarExamen(self,usuarioLogueado,asunto,cuerpo,examenes,listaCorreos):
 
