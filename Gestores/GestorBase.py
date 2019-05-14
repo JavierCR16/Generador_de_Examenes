@@ -68,12 +68,12 @@ def cargarUsuarios(usuario,contrasenna, tipo):
 
         try:
             with nuevaConexion.cursor() as usuarios:
-                if tipo == "admin":
-                    queryUsuarios = "SELECT nombreCompleto, correo FROM USUARIO"
-                    usuarios.execute(queryUsuarios)
-                else:
-                    queryUsuarios = "SELECT nombreCompleto, correo FROM USUARIO WHERE correo != %s"
-                    usuarios.execute(queryUsuarios, (usuario))
+                # if tipo == "admin":
+                #     queryUsuarios = "SELECT nombreCompleto, correo FROM USUARIO"
+                #     usuarios.execute(queryUsuarios)
+                # else:
+                queryUsuarios = "SELECT nombreCompleto, correo FROM USUARIO WHERE correo != %s"
+                usuarios.execute(queryUsuarios, (usuario))
 
                 for atributos in usuarios:
                     nuevoUsuario = ObjetoUsuario(atributos[0],atributos[1])
@@ -1270,4 +1270,24 @@ def borrarSesion(usuario, contrasenna, sesion):
         finally:
             nuevaConexion.close()
 
+#Funciones Administrador Usuarios
 
+def gestionarUsuarios(accion,adminUser,adminContra,usuario,nombre = "",contrasenna =""):
+    nuevaConexion = establecerConexion(adminUser,adminContra)
+    error = False
+
+    if(nuevaConexion!=False):
+
+        try:
+            with nuevaConexion.cursor() as usuarios:
+                usuarios.callproc('gestionarUsuarios',[accion,usuario,nombre,contrasenna])
+
+        except Exception as e:
+            print(e)
+            print("Error en el manejo de usuarios")
+            error= True
+
+        finally:
+            nuevaConexion.close()
+
+    return error

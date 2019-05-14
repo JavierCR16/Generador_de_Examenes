@@ -42,14 +42,16 @@
             <div class="tab-pane tabs fade show active" id="nav-AgregarUsuario" role="tabpanel" aria-labelledby="nav-AgregarUsuario-tab">
                 <input id ="nombreAdmUsuarioAg" type="text" name="nombreAdmUsuarioAg" placeholder="Nombre:">
                 <input id ="apellidosAdmUsuarioAg" type="text" name="apellidosAdmUsuarioAg" placeholder="Apellidos:">
+                <input id ="correoAdmUsuarioAg" type="text" name="correoAdmUsuarioAg" placeholder="Correo Electrónico:">
                 <input id ="contrasennaAdmUsuarioAg" type="password" name="contrasennaAdmUsuarioAg" placeholder="Contraseña::">
                 <input id ="confContraAdmUsuarioAg" type="password" name="confContraAdmUsuarioAg" placeholder="Confirmar Contraseña::">
 
-                <button>Agregar Usuario</button>
+                <button onclick="agregarUsuarios()">Agregar Usuario</button>
             </div>
             <div class="tab-pane tabs fade" id="nav-ModificarUsuario" role="tabpanel" aria-labelledby="nav-ModificarUsuario-tab">
-                <select name="adminUsuarios" id="adminUsuarios">
+                <select name="adminUsuariosMod" id="adminUsuariosMod">
                     {% for usuario in usuarios %}
+                        <option>Escoger Usuario</option>
                         <option>{{ usuario.getNombre() }} ({{ usuario.getCorreo() }})</option>
                     {% endfor %}
                 </select>
@@ -59,16 +61,16 @@
                 <input id ="contrasennaAdmUsuarioMod" type="password" name="contrasennaAdmUsuarioMod" placeholder="Contraseña:">
                 <input id ="confContraAdmUsuarioMod" type="password" name="confContraAdmUsuarioMod" placeholder="Confirmar Contraseña:">
 
-                <button>Modificar Usuario</button>
+                <button onclick="modificarUsuarios()">Modificar Usuario</button>
             </div>
             <div class="tab-pane tabs fade" id="nav-EliminarUsuario" role="tabpanel" aria-labelledby="nav-EliminarUsuario-tab">
-                <select name="adminUsuarios" id="adminUsuarios">
+                <select name="adminUsuariosMod" id="adminUsuariosElim">
                     {% for usuario in usuarios %}
                         <option>{{ usuario.getNombre() }} ({{ usuario.getCorreo() }})</option>
                     {% endfor %}
                 </select>
 
-                <button>Eliminar</button>
+                <button onclick="eliminarUsuarios()">Eliminar</button>
             </div>
         </div>
     </div>

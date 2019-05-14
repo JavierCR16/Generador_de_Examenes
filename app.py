@@ -641,11 +641,51 @@ def agregarComentario():
 
     return jsonify({"success":1,"mensaje":"Su comentario ha sido enviado con éxito"})
 
+#ADMINISTRADOR
 @app.route('/AdministrarUsuarios')
 def adminUsuarios():
-    usuarios = Controller.cargarUsuarios(session['user'], session['contrasenna'], "admin")
+    usuarios = Controller.cargarUsuarios(session['user'], session['contrasenna'],"")
 
     return render_template('AdministrarUsuarios.html', usuarios = usuarios)
+
+@app.route('/agregarUsuarios',methods=['post'])
+def agregarUsuarios():
+    infoUsuario = request.get_json()
+
+    usuario = infoUsuario["user"]
+    contrasenna = infoUsuario["password"]
+    nombre = infoUsuario["nombreUsuario"]
+
+
+    error = Controller.agregarUsuarios(session['user'],session['contrasenna'],usuario,nombre,contrasenna)
+
+    mensaje = "Usuario "+usuario+" Agregado con Éxito" if not error else "Error al agregar el usuario "+usuario +". El usuario ya existe o hubo un problema en el servidor."
+
+    return jsonify({"mensaje":mensaje})
+
+@app.route('/modificarUsuarios',methods=['post'])
+def modificarUsuarios():
+    infoUsuario = request.get_json()
+
+    usuario = infoUsuario["user"]
+    contrasenna = infoUsuario["password"]
+    nombre = infoUsuario["nombreUsuario"]
+
+    error = Controller.modificarUsuarios(session['user'],session['contrasenna'],usuario,nombre,contrasenna)
+    mensaje = "Usuario "+usuario+" Modificado con Éxito" if not error else "Error al modificar el usuario "+usuario +". Intente de nuevo."
+
+    return jsonify({"success":1,"mensaje":mensaje})
+
+@app.route('/eliminarUsuarios',methods=['post'])
+def eliminarUsuarios():
+    infoUsuario = request.get_json()
+
+    usuario = infoUsuario["user"]
+
+    error = Controller.eliminarUsuarios(session['user'],session['contrasenna'],usuario)
+    mensaje = "Usuario " + usuario + " Eliminado con Éxito" if not error else "Error al eliminar el usuario " + usuario + ". Intente de nuevo."
+
+    return jsonify({"success":1,"mensaje":mensaje})
 
 if __name__ == '__main__':
 

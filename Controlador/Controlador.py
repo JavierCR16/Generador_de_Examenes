@@ -370,3 +370,16 @@ class Controlador:
 
     def borrarSesion(self, usuario, contrasenna, sesion):
         GestorBase.borrarSesion(usuario, contrasenna, sesion)
+
+        #Administrador Usuarios
+
+    def agregarUsuarios(self,adminUser,adminContra,usuario,nombre,contrasenna):
+        return GestorBase.gestionarUsuarios(0,adminUser,adminContra,usuario,nombre,contrasenna)
+
+    def modificarUsuarios(self,adminUser,adminContra,usuario,nombre,contrasenna):
+
+        return GestorBase.gestionarUsuarios(1,adminUser,adminContra,usuario,nombre,contrasenna)
+
+    def eliminarUsuarios(self,adminUser,adminContra,usuario):
+
+        return GestorBase.gestionarUsuarios(2,adminUser,adminContra,usuario)

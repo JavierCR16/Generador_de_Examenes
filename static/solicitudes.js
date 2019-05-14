@@ -452,6 +452,23 @@ function procesarAjaxCalificar(equipo,puntaje){
     })
 }
 
+function procesarAjaxUsuarios(url,user, password,nombreUsuario){
+    $.ajax({
+
+        url: url,
+        type: 'post',
+        data:JSON.stringify({user:user,nombreUsuario:nombreUsuario,password:password}),
+        contentType: 'application/json;charset=UTF-8',
+        dataType: "json",
+
+        success: function (datos) {
+            alert(datos["mensaje"]);
+
+            window.location.reload();
+        }
+    })
+}
+
 function ejecutarModalCalificar(datos,nuevoPuntaje){
      $("#selectEquipos").children().remove();
 
@@ -484,7 +501,6 @@ function calificar(nuevoPuntaje){
     $("#modalCalificar").modal("hide");
 
 }
-
 
 function procesarAjaxEquipos(puntaje) {
 
@@ -1091,7 +1107,7 @@ function procesarComentario(reaccionEscogida){
     var comentario = $("#comentarioReaccion").val();
 
     if(comentario.trim() === "")
-        imprimirMensaje("El comentario no puede ir vacío.")
+        imprimirMensaje("El comentario no puede ir vacío.");
     else
         procesarAjaxComentario(reaccion, codigoExamenComent, comentario);
 }
@@ -1397,4 +1413,64 @@ function finalizarSesion(){
             window.location.href = "/OpcionesPrincipales";
         }
     })
+}
+
+function agregarUsuarios(){
+    var nombre = $("#nombreAdmUsuarioAg").val().trim();
+    var apellidos = $("#apellidosAdmUsuarioAg").val().trim();
+
+    var nombreCompleto = nombre+" "+ apellidos;
+
+    var usuario = $("#correoAdmUsuarioAg").val().trim();
+
+    var password = $("#contrasennaAdmUsuarioAg").val().trim();
+    var passConfirm = $("#confContraAdmUsuarioAg").val().trim();
+
+
+    if (nombre === ""|| apellidos === "" || usuario=== "" || password === "" || passConfirm === "")
+        imprimirMensaje("Ningun campo debe ir vacio.");
+    else{
+        if(password !== passConfirm)
+            imprimirMensaje("Las contraseñas deben ser iguales.");
+        else
+            procesarAjaxUsuarios("/agregarUsuarios",usuario,password,nombreCompleto)
+    }
+
+}
+
+function modificarUsuarios(){
+    var usuario = $("#adminUsuariosMod").val();
+    var nombre = $("#nombreAdmUsuarioMod").val().trim();
+    var apellidos = $("#apellidosAdmUsuarioMod").val().trim();
+
+    var nuevoNombre = nombre + " " + apellidos;
+
+    var nuevaPass = $("#contrasennaAdmUsuarioMod").val().trim();
+    var nuevaPassConfirm = $("#confContraAdmUsuarioMod").val().trim();
+
+    if(usuario === "Escoger Usuario" || usuario === null)
+        imprimirMensaje("Debe Seleccionar un Usuario.");
+
+    else if(nombre === "" || apellidos === "" || nuevaPass === "" || nuevaPassConfirm === "")
+        imprimirMensaje("Ningun campo debe ir vacio.");
+
+    else if(nuevaPass !== nuevaPassConfirm)
+        imprimirMensaje("Las contraseñas deben ser iguales.");
+    else {
+        usuario = usuario.split("(")[1].substring(0,usuario.split("(")[1].length - 1);
+        procesarAjaxUsuarios("/modificarUsuarios", usuario, nuevaPass, nuevoNombre);
+    }
+
+
+}
+
+function eliminarUsuarios(){
+    var usuarioEliminar = $("#adminUsuariosElim").val();
+
+    if(usuarioEliminar === null)
+        imprimirMensaje("Debe Seleccionar un Usuario.");
+    else {
+        usuarioEliminar = usuarioEliminar.split("(")[1].substring(0,usuarioEliminar.split("(")[1].length - 1);
+        procesarAjaxUsuarios("/eliminarUsuarios", usuarioEliminar)
+    }
 }
