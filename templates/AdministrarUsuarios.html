@@ -50,8 +50,8 @@
             </div>
             <div class="tab-pane tabs fade" id="nav-ModificarUsuario" role="tabpanel" aria-labelledby="nav-ModificarUsuario-tab">
                 <select name="adminUsuariosMod" id="adminUsuariosMod">
+                <option>Escoger Usuario</option>
                     {% for usuario in usuarios %}
-                        <option>Escoger Usuario</option>
                         <option>{{ usuario.getNombre() }} ({{ usuario.getCorreo() }})</option>
                     {% endfor %}
                 </select>

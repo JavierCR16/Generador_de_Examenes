@@ -1280,7 +1280,7 @@ def gestionarUsuarios(accion,adminUser,adminContra,usuario,nombre = "",contrasen
 
         try:
             with nuevaConexion.cursor() as usuarios:
-                usuarios.callproc('gestionarUsuarios',[accion,usuario,nombre,contrasenna])
+                usuarios.callproc('gestionar_usuarios',[accion,usuario,nombre,contrasenna])
 
         except Exception as e:
             print(e)
