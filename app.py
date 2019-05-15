@@ -25,20 +25,33 @@ def login():
         session['contrasenna'] = contrasenna
         Controller.cerrarConexion(conexion)
 
+        if(Controller.revisarAdmin(session['user'],session['contrasenna'])):
+            session['admin'] = 1
+
         return redirect(url_for('opcionesPrincipales'))
 
     return render_template('LogIn.html')
 
 @app.route('/OpcionesPrincipales')
 def opcionesPrincipales():
+
+    if(session.get('admin') is not None):
+        return redirect (url_for('opcionesPrinAdmi'))
+
     usuario = Controller.getNombreUsuario(session['user'],session['contrasenna'])
     return render_template("OpcionesPrincipales.html", nombre = usuario)
+
+@app.route('/rutaOpcionesAdmi')
+def opcionesPrinAdmi():
+    usuario = Controller.getNombreUsuario(session['user'], session['contrasenna'])
+    return render_template("OpcionesPrincipalesAdmi.html", nombre=usuario)
 
 @app.route('/cerrarSesion',methods = ['post'])
 def cerrarSesion():
 
     session.pop('user',None)
     session.pop('contrasenna',None)
+    session.pop('admin',None)
 
     return render_template("LogIn.html")
 

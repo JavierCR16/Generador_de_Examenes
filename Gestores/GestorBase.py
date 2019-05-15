@@ -22,7 +22,6 @@ from Gestores import GestorExamenes
 #TODO Buscar cualquier uso que se haga de arreglos en un for y dejar setteado el valor que corresponde mediante loop.index0
 #TODO VER LO DEL API DEL GMAIL PARA ENVIAR CORREO
 #TODO MOSTRAR MENSAJES DE EXITO.
-#TODO PANTALLA PARA LA GESTION DE USUARIOS
 #TODO VER LO DE MATHJAX
 
 #FUNCIONES DE CONEXION Y QUERIES
@@ -36,6 +35,28 @@ def establecerConexion(usuario,password):#usuario,password):
         print("Error de Conexión ",e)
 
         return False
+
+def esAdministrador(usuario,password):
+
+    nuevaConexion = establecerConexion(usuario,password)
+
+    if(nuevaConexion != False):
+        try:
+            with nuevaConexion.cursor() as rolUsuario:
+                queryRol = "SELECT FROM_USER AS Rol FROM mysql.role_edges WHERE TO_USER = %s"
+
+                rolUsuario.execute(queryRol,(usuario))
+
+                for tupla in rolUsuario:
+                    if tupla[0] == "Administrador":
+                        return True
+
+        except Exception as e:
+            print(e)
+            print("Error al obtener el rol del usuario")
+        finally:
+            nuevaConexion.close()
+    return False
 
 def obtenerInformacionItem(idItem,usuario,contrasenna):
 
@@ -1291,3 +1312,4 @@ def gestionarUsuarios(accion,adminUser,adminContra,usuario,nombre = "",contrasen
             nuevaConexion.close()
 
     return error
+

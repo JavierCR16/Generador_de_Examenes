@@ -28,6 +28,10 @@ class Controlador:
     def __init__(self):
         pass
 
+    def revisarAdmin(self,usuario,contrasenna):
+
+        return GestorBase.esAdministrador(usuario,contrasenna)
+
     def obtenerTemas(self,usuario,contrasenna):
         return GestorBase.cargarTemas(usuario,contrasenna)
 
