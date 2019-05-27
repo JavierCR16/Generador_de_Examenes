@@ -3,12 +3,7 @@ from Gestores import GestorBase
 from Gestores import GestorCorreo
 from Gestores import GestorPreviewLatex
 from Gestores import GestorExamenes
-from Gestores import GestorIndiceDiscriminacion
-from Gestores import GestorItems
 from Gestores import GestorLaTeX
-from Gestores import GestorPDF
-from Gestores import GestorRespuestas
-from Gestores import GestorTemasSubtemas
 from Gestores import GestorLaTeX
 from Gestores import GestorJSON
 from Gestores import GestorArchivos
